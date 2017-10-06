@@ -7,7 +7,7 @@ pl.connect();
 
 
 
-% Collect Baseline Data:
+%%%============[ Collect Baseline Data  ]================%%%
 
 
 % Initialize
@@ -27,11 +27,28 @@ end
 end
 
 
-
 %%--- Get ROIs-----%
 % Save reference image
-imwrite(uint16(mean(Im,3)),'Ref_Im.tif');
+imwrite(uint16(mean(Im1,3)),'Ref_Im.tif');
 [ROI] = caBMI_annotate_image('Ref_Im.tif');
+
+% make a figure qith the ROIs
+figure(); imagesc(ROI.reference_image); colormap(bone);
+color = hsv(size(ROI.coordinates,2))
+
+hold on;
+for i = 1:size(ROI.coordinates,2);
+  plot(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),'o','MarkerEdgeColor',color(i,:),'MarkerFaceColor',color(i,:));
+end;
+% legend('cell01, cell02, cell02, cell04')
+
+% Plot from coords.
+figure();
+hold on;
+for i = 1:size(ROI.coordinates,2);
+plot(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),'Color',color(i,:)+i+10);
+end
+title('ROI Baseline activity')
 
 
 
