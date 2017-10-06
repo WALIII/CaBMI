@@ -46,9 +46,15 @@ end;
 figure();
 hold on;
 for i = 1:size(ROI.coordinates,2);
-plot(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),'Color',color(i,:)+i+10);
+trace = mean(squeeze(mean(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),1)),1); % average pixels in mask
+trace = (trace-prctile(trace,5))./prctile(trace,5)*100
+plot(trace,'Color',color(i,:));
+clear trace;
 end
 title('ROI Baseline activity')
+xlabel('frames')
+ylabel('df/f')
+% legend('ROI_01, ROI_02, ROI_03, ROI_04')
 
 
 
