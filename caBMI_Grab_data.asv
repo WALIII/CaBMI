@@ -17,21 +17,16 @@ Y = pl.LinesPerFrame();
 Im1(:,:,1) =  pl.GetImage_2(1,X,Y);
 counter = 2;
 
-while counter <  2000;
+while counter <  100;
 Im = pl.GetImage_2(1,X,Y);
 if Im1(:,:,counter-1) == Im;
 pause(0.01) % This will approximately itteratively sync
 else
   Im1(:,:,counter) = Im;
-  if((max(max(Im,[],1),[],1)-max(max(Im1(:,:,counter-1),[],1),[],1))>1000);
-      outputSingleScan(s,[1]);
-      disp('HIT')
-      pause(0.01);
-      outputSingleScan(s,[0]);
-  end
+  if
   counter = counter+1;
  % if mean(Im1,1)
-  pause(0.01) % should be a bit less than the frame rate
+  pause(0.03) % should be a bit less than the frame rate
 end
 end
 

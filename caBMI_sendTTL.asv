@@ -16,7 +16,7 @@ s = daq.createSession('ni')
 
 % Add a digital channel
 addDigitalChannel(s,'Dev5','port0/line0','OutputOnly')
-addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
+addDigitalChannel(s,'Dev5','port0/line0','OutputOnly')
 
 s.Rate = 8000
 
