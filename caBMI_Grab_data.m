@@ -26,7 +26,7 @@ hold on;
 for i = 1:size(ROI.coordinates,2);
   plot(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),'o','MarkerEdgeColor',color(i,:),'MarkerFaceColor',color(i,:));
 end
-% legend('cell01, cell02, cell02, cell04')
+
 
 % Plot from coords.
 figure();
@@ -40,20 +40,20 @@ end
 title('ROI Baseline activity')
 xlabel('frames')
 ylabel('df/f')
-% legend('ROI_01, ROI_02, ROI_03, ROI_04')
 
 
 
 
-figure();
-imagesc(std(Im1,[],3)); colormap(bone);
-colorbar
 
-
-
-
-% to do: function that computes running baseline and
-[baseline] caBMI_GetBase(rois)
+% figure();
+% imagesc(std(Im1,[],3)); colormap(bone);
+% colorbar
+%
+%
+%
+%
+% % to do: function that computes running baseline and
+% [baseline] caBMI_GetBase(rois)
 
 
 
