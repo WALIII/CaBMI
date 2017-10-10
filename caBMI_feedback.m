@@ -1,6 +1,8 @@
+function [data] = caBMI_feedback(pl,s,ROI,max_frame)
+% Test Feedback
 
-function [Im1] = pull_pixel(pl,s,max_frame)
-% Initialize
+% sample = ROI{1}+ROI{2}>ROI{3}+ROI{4}
+
 clear Im1
 % get dims
 X = pl.PixelsPerLine();
@@ -12,11 +14,16 @@ while counter <  max_frame;
 Im = pl.GetImage_2(1,X,Y);
 if Im1(X,Y,counter-1) ~= Im(X,Y); % if this is true, there is a new frame
 
-  if((max(max(Im,[],1),[],1)-max(max(Im1(:,:,counter-1),[],1),[],1))>1000);
-      outputSingleScan(s,[1]);
-      pause(0.01);
-      outputSingleScan(s,[0]);
-      disp('HIT')
+% cursor
+if counter> 100; % buffer time
+  [out_state(counter), cursor(counter)] = WAL3_cursor(Im1,Im,ROI);
+
+    if out_state ==1;
+          outputSingleScan(s,[1]);
+            pause(0.01);
+          outputSingleScan(s,[0]);
+            disp('HIT')
+    end
   end
 
     Im1(:,:,counter) = Im;   % log the frame to RAM
