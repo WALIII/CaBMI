@@ -1,4 +1,4 @@
-function caBMI_refPlot(ROI,im)
+function caBMI_refPlot(ROI,Im1)
 % caBMI_refPlot
 
 % Plot the ROIs, for reference

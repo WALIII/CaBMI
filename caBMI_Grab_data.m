@@ -6,26 +6,29 @@ function caBMI_Grab_data()
 pl = actxserver('PrairieLink.Application');
 pl.Connect();
 
+% conncet to NiDaq
+s = daq.createSession('ni');
+addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
+
 
 
 %%%============[ Collect Baseline Data  ]================%%%
 
-[Im1] = pull_pixel(pl,max_frame);
+[Im1] = pull_pixel(pl,s,max_frame)
 
 %%--- Get ROIs-----%
 
 % Save reference image
+Ref_Im = uint16(mean(Im1,3));
 imwrite(uint16(mean(Im1,3)),'Ref_Im.tif');
 [ROI] = caBMI_annotate_image('Ref_Im.tif');
 
 % make a figure qith the ROIs
-caBMI_refPlot(ROI,im)
+caBMI_refPlot(ROI,Im1)
 
 
 % Run experiment
-[data] = caBMI_feedback(pl,ROI,max_frame)
-
-
+[data] = caBMI_feedback(pl,s,ROI,max_frame)
 
 
 
