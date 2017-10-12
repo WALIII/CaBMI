@@ -2,7 +2,8 @@
 % caBMI_Main.m
 
 % Walkthorugh of the basic functions of the BMI setup.
-% grab pixel values and do perform basic operations on them
+% grab pixel values  under user selected Regions of interest
+% and perform numerical operations on them.
 
 
 %% PreFlight
