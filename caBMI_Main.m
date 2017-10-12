@@ -1,4 +1,7 @@
-function caBMI_Grab_data()
+
+% caBMI_Main.m
+
+% Walkthorugh of the basic functions of the BMI setup.
 % grab pixel values and do perform basic operations on them
 
 
@@ -10,7 +13,7 @@ pl.SendScriptCommands('-lbs true 5')
 
 % conncet to NiDaq
 s = daq.createSession('ni');
-s.Rate = 8000
+s.Rate = 8000; % up the sampling rate
 addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
 
 
