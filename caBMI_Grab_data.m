@@ -2,18 +2,21 @@ function caBMI_Grab_data()
 % grab pixel values and do perform basic operations on them
 
 
+% PreFlight
 % Connect to the PrairieLink
 pl = actxserver('PrairieLink.Application');
 pl.Connect();
+pl.SendScriptCommands('-lbs true 5')
 
 % conncet to NiDaq
 s = daq.createSession('ni');
+s.Rate = 8000
 addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
 
 
 
 %%%============[ Collect Baseline Data  ]================%%%
-
+max_frame = 100;
 [Im1] = pull_pixel(pl,s,max_frame)
 
 %%--- Get ROIs-----%
@@ -28,7 +31,8 @@ caBMI_refPlot(ROI,Im1)
 
 
 % Run experiment
-[data] = caBMI_feedback(pl,s,ROI,max_frame)
+max_time = 30; %seconds
+[data] = caBMI_feedback(pl,s,ROI,max_time)
 
 
 
