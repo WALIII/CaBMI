@@ -8,6 +8,9 @@ mice Brain Machine Interface (BMI) experiments.
 
 ## Hardware Prerequisites
 
-These functions are exclusively designed for the Bruker 2P (Ultima) Microscope,
-and are currently susceptible to delays like OS scheduling, etc.
-ATM the software output is an NI 3009 usb device.
+These functions are dependent on the proprietary Bruker 2P (Ultima) Microscope interface,
+which by current design is not 'real time', and is highly susceptible to delays
+like OS scheduling, etc. that increase jitter in the on-line analysis
+and feedback deployment.
+
+ ATM the hardware output is an NI 3009 usb device.
