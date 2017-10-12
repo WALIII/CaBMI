@@ -1,5 +1,5 @@
 
-function [Im1] = pull_pixel(pl,s,max_frame)
+function [Im1] = caBMI_pullPixel(pl,s,max_frame)
 % pull_pixel.m
 
 % Pull basic time series from the 2P.

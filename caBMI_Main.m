@@ -22,7 +22,7 @@ addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
 
 % Collect Baseline Data
 max_frame = 100;
-[Im1] = pull_pixel(pl,s,max_frame)
+[Im1] = caBMI_pullPixel(pl,s,max_frame)
 
 % Selec ROIs & Save reference image
 Ref_Im = uint16(mean(Im1,3));
