@@ -2,7 +2,7 @@ function caBMI_Grab_data()
 % grab pixel values and do perform basic operations on them
 
 
-% PreFlight
+%% PreFlight
 % Connect to the PrairieLink
 pl = actxserver('PrairieLink.Application');
 pl.Connect();
@@ -14,14 +14,13 @@ s.Rate = 8000
 addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
 
 
+%% GET ROI DATA
 
-%%%============[ Collect Baseline Data  ]================%%%
+% Collect Baseline Data
 max_frame = 100;
 [Im1] = pull_pixel(pl,s,max_frame)
 
-%%--- Get ROIs-----%
-
-% Save reference image
+% Selec ROIs & Save reference image
 Ref_Im = uint16(mean(Im1,3));
 imwrite(uint16(mean(Im1,3)),'Ref_Im.tif');
 [ROI] = caBMI_annotate_image('Ref_Im.tif');
@@ -30,37 +29,14 @@ imwrite(uint16(mean(Im1,3)),'Ref_Im.tif');
 caBMI_refPlot(ROI,Im1)
 
 
+%% BMI EXPERIMENT
+
+% stim test
+
+
 % Run experiment
 max_time = 30; %seconds
 [data] = caBMI_feedback(pl,s,ROI,max_time)
 
 
-
-% figure();
-% imagesc(std(Im1,[],3)); colormap(bone);
-% colorbar
-%
-%
-%
-%
-% % to do: function that computes running baseline and
-% [baseline] caBMI_GetBase(rois)
-
-
-
-
-
-%% This will be for the actual BMI
-% kk = pl.ReadRawDataStream(1);
-
-% for i = 1:100000
-% tic;
-
-% H(i) = toc;
-% end
-
-
-
-
-% Read the raw data stream
-% ReadRawDataStream()
+%% Analize Data

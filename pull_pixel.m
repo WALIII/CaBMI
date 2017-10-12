@@ -1,6 +1,14 @@
 
 function [Im1] = pull_pixel(pl,s,max_frame)
-% Initialize
+% pull_pixel.m
+
+% Pull basic time series from the 2P.
+% Use this to select ROIs, or play wtih data
+
+% d10.12.2017
+% WAL3
+
+
 clear Im1
 % get dims
 X = pl.PixelsPerLine();

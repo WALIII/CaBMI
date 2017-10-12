@@ -12,11 +12,13 @@ cells = 4; % number of cells for BMI ( hard-wired for 4 currently)
 
 
 if nargin < 5
-v = 1;
+v = 1; % this will choses which BMI to run
 end
 
 % switch between BMI types
 switch v
+
+%%% Basic Test Flight- 
   case 1
 % standard BMI
 dsample_fact = 1;

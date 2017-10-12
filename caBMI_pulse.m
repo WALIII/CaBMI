@@ -1,11 +1,20 @@
 function caBMI_pulse(s)
+% caBMI_pulse.m
+
+% Send TTL pulse to trigger aquisition for latency tests
+
+% d10.12.2017
+% WAL3
 
 
-% start session: 
+%% PreFlight
+% start session:
 %  devices = daq.getDevices
 %  s = daq.createSession('ni')
 %  s.Rate = 8000
 %  addDigitalChannel(s,'Dev5','port0/line0','OutputOnly')
+
+%% Send TTL
 tic
 
 for step = 1:50

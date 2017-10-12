@@ -1,7 +1,10 @@
 function caBMI_refPlot(ROI,Im1)
-% caBMI_refPlot
+% caBMI_refPlot.m
 
 % Plot the ROIs, for reference
+
+% d10.12.2017
+% WAL3
 
 
 
