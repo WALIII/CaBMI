@@ -61,6 +61,9 @@ caBMI_refPlot(ROI,Im1)
 ```
 
 ROIs are color coded:
+
 ![ScreenShot](images/ROIs_1.jpg)
+
 The resulting Time-series for each ROI, with color matching the ROI Map above:
+
 ![ScreenShot](images/ROIs_2.jpg)
