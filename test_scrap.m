@@ -7,10 +7,11 @@ arduino=serial('/dev/tty.usbmodem1421','BaudRate',9600); % create serial communi
 fopen(arduino); % initiate arduino communication
  counter = 1;
  try
-for i = 1:10
+while answer
+    
+    answer=input('Enter led value 1 or 2 (1=ON, 2=OFF, 0=EXIT PROGRAM): '); % ask user to enter value for variable answer
     fprintf(arduino,'%c', counter); % send answer variable content to arduino
 counter = counter+1;
-pause(0.1);
 end
 
  catch
