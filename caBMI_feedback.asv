@@ -8,7 +8,7 @@ function [data] = caBMI_feedback(pl,arduino,ROI,max_time)
 % User Input
 wait_time = 0.01;% This is how long (in s) to calculate baseline before starting BMI
 BufferT = 0.2;
-cb = 1; %cursor counter;
+cb = 1;%cursor counter;
 
 X = pl.PixelsPerLine(); % get x dim of the image
 Y = pl.LinesPerFrame(); % get y dim of the image
@@ -16,9 +16,9 @@ Im1(:,:,1) =  pl.GetImage_2(1,X,Y); % Build the image
 counter = 2;
 
 % Start Pulling data
-tStart = tic;
-cursorTic = tic;
-while toc(tStart) <  max_time % this querrys the buffer every ~10ms.
+tStart=tic
+cursorTic = tic
+while toc(tStart) <  max_time; % this querrys the buffer every ~10ms.
 Im = pl.GetImage_2(1,X,Y);
 
 % TO DO caclulate baseline..
@@ -34,7 +34,7 @@ cb = cb+1;
 % Auditory Cursor:
 if toc(cursorTic) > BufferT; % smooth cursor
  cursorTic = tic;
-
+disp(ROI_data.cursor)
 fdbk = 1;
 
 %take mean of cursor in buffer
@@ -44,8 +44,6 @@ while fdbk
     fprintf(arduino,'%c',MM); % send answer variable content to arduino
 fdbk = 0;
 end
-
-disp(abs(round(3-mean(CursBuff)))); %display mean cursor value
 
 % Clear cursor Buffer
 clear CursBuff

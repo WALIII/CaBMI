@@ -23,7 +23,7 @@ switch v
 % standard BMI
 dsample_fact = 1;
 Im = imresize(single(round(Im)),1/dsample_fact); % convert from 16bit
-Im_1= Im1(:,:,frame_idx);
+Im_1= Im1(:,:,1);
 %baseline(i) = mean(mean(squeeze(mean(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),1)),1));
 ROI_val(1) = mean(mean(Im(round(ROI.coordinates{1}(:,1)/dsample_fact),round(ROI.coordinates{1}(:,2)/dsample_fact)),1));
 ROI_val(2) = mean(mean(Im(round(ROI.coordinates{2}(:,1)/dsample_fact),round(ROI.coordinates{2}(:,2)/dsample_fact)),1));

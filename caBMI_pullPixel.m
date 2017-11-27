@@ -1,5 +1,5 @@
 
-function [Im1] = caBMI_pullPixel(pl,s,max_frame)
+function [Im1] = caBMI_pullPixel(pl,max_frame)
 % pull_pixel.m
 
 % Pull basic time series from the 2P.
@@ -20,12 +20,12 @@ while counter <  max_frame;
 Im = pl.GetImage_2(1,X,Y);
 if Im1(X,Y,counter-1) ~= Im(X,Y); % if this is true, there is a new frame
 
-  if((max(max(Im,[],1),[],1)-max(max(Im1(:,:,counter-1),[],1),[],1))>1000);
-      outputSingleScan(s,[1]);
-      pause(0.01);
-      outputSingleScan(s,[0]);
-      disp('HIT')
-  end
+%   if((max(max(Im,[],1),[],1)-max(max(Im1(:,:,counter-1),[],1),[],1))>1000);
+%       outputSingleScan(s,[1]);
+%       pause(0.01);
+%       outputSingleScan(s,[0]);
+%       disp('HIT')
+%   end
 
     Im1(:,:,counter) = Im;   % log the frame to RAM
   counter = counter+1;

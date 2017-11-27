@@ -12,10 +12,9 @@ pl = actxserver('PrairieLink.Application');
 pl.Connect();
 pl.SendScriptCommands('-lbs true 5')
 
-% conncet to NiDaq
-s = daq.createSession('ni');
-s.Rate = 8000; % up the sampling rate
-addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
+% conncet to Arduino Through Serial
+arduino=serial('COM12','BaudRate',9600); % create serial communication object on port COM4
+fopen(arduino); % initiate arduino communication
 
 
 %% GET ROI DATA
@@ -40,7 +39,7 @@ caBMI_refPlot(ROI,Im1)
 
 % Run experiment
 max_time = 30; %seconds
-[data] = caBMI_feedback(pl,s,ROI,max_time)
+[data] = caBMI_feedback(pl,ROI,max_time)
 
 
 %% Analize Data
