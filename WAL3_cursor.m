@@ -27,8 +27,8 @@ Im_1= Im1(:,:,1);
 %baseline(i) = mean(mean(squeeze(mean(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),1)),1));
 ROI_val(1) = mean(mean(Im(round(ROI.coordinates{1}(:,1)/dsample_fact),round(ROI.coordinates{1}(:,2)/dsample_fact)),1));
 ROI_val(2) = mean(mean(Im(round(ROI.coordinates{2}(:,1)/dsample_fact),round(ROI.coordinates{2}(:,2)/dsample_fact)),1));
-ROI_val(3) = mean(mean(Im_1(round(ROI.coordinates{3}(:,1)/dsample_fact),round(ROI.coordinates{3}(:,2)/dsample_fact)),1));
-ROI_val(4) = mean(mean(Im_1(round(ROI.coordinates{4}(:,1)/dsample_fact),round(ROI.coordinates{4}(:,2)/dsample_fact)),1));
+ROI_val(3) = mean(mean(Im(round(ROI.coordinates{3}(:,1)/dsample_fact),round(ROI.coordinates{3}(:,2)/dsample_fact)),1));
+ROI_val(4) = mean(mean(Im(round(ROI.coordinates{4}(:,1)/dsample_fact),round(ROI.coordinates{4}(:,2)/dsample_fact)),1));
 
 
 %create the cursor as the difference btw the 2 groups of ROIs

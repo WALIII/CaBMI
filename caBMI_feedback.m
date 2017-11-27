@@ -9,6 +9,7 @@ function [data] = caBMI_feedback(pl,arduino,ROI,max_time)
 wait_time = 0.01;% This is how long (in s) to calculate baseline before starting BMI
 BufferT = 0.2;
 cb = 1; %cursor counter;
+hf = figure();
 
 X = pl.PixelsPerLine(); % get x dim of the image
 Y = pl.LinesPerFrame(); % get y dim of the image
@@ -45,7 +46,10 @@ while fdbk
 fdbk = 0;
 end
 
-disp(abs(round(3-mean(CursBuff)))); %display mean cursor value
+
+MMx = abs(round(3-mean(CursBuff)));
+
+disp(MMx); %display mean cursor value
 
 % Clear cursor Buffer
 clear CursBuff
@@ -60,6 +64,7 @@ cb = 1;
 data.cursor(counter) = ROI_data.cursor;
 data.ROI_val(:,counter) = ROI_data.ROI_val;
 data.Im1(:,:,counter) = Im;   % log the frame to RAM
+caBMI_LivePlot(MMx,data,counter,hf)
 
 % advance counter
   counter = counter+1;
