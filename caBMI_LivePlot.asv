@@ -1,12 +1,9 @@
 function  caBMI_LivePlot(MM,data,counter,hf)
+ % Plot Cursor data. Adds latency.
+ 
+ % TO
+
 counter = counter-1;
-
-if counter ==1;
-hf = figure();
-grid on; grid minor;
-whitebg;
-end
-
 
 t = counter ;
 cursor = 0;
@@ -22,28 +19,32 @@ step = 1 ; % lowering step has a number of cycles and then acquire more data
     
     livecursor = MM; % time averaged cursor
     
-    cursor = data.cursor;
+   
   
-    if counter == 10;
+
         
-        for i = 1:4;
-            baseline = prctile(data.ROI_val(i,2:end),5)
+
+  if counter> 10;
+          for i = 1:4
+            baseline{i} = prctile(data.ROI_val(i,2:end),5);
         end
-        trace = (cell{i}-baseline{i})./prctile(trace,5)*100;
         
     for i = 1:4;
-        cell{i} = zscore(data.ROI_val(i,2:end)./mean(data.ROI_val(i,2:end)))+i*2;
+        cell{i} = (data.ROI_val(i,2:end)-baseline{i})./baseline{i}*100  +  i*2;
     end
- 
+  cursor = data.cursor(2:end)+ i*3;
     
   
-    ax1 = subplot(10,1,1:3);
-    plot(cursor,'r','LineWidth',3);
-    ax2 = subplot(10,1,4:10);
-    for i = 1:4;  
+
+   plot(cursor,'r','LineWidth',3);
+
+    
         hold on;
-    plot(cell{i},'g','LineWidth',1); 
-    end
+for i = 1:4
+    plot(cell{i},'g','LineWidth',1);
+end
+    
+   
 
     
 grid on; 
@@ -57,19 +58,19 @@ set(get(hf,'CurrentAxes'),'GridAlpha',0.4,'MinorGridAlpha',0.7);
       axis([ startSpot, (t/step+50), 0 , 15 ]);
       
       t = t + step;
+
       drawnow; 
-      linkaxes([ax1,ax2], 'x');
-      
-      % Save
-%            % Capture the plot as an image 
+
+%       Save
+%            Capture the plot as an image 
 %       frame = getframe(hf); 
 %       im = frame2im(frame); 
 %       [imind,cm] = rgb2ind(im,256); 
-%       % Write to the GIF File 
+%       Write to the GIF File 
 %       if t == 0
 %           imwrite(imind,cm,'filename','tif', 'Loopcount',inf); 
 %       else 
 %           imwrite(imind,cm,'filename','tif','WriteMode','append'); 
 %       end 
 
-%   end
+ end
