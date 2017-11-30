@@ -7,13 +7,18 @@ function [data] = caBMI_feedback(pl,arduino,ROI,max_time)
 
 % User Input
 wait_time = 0.01;% This is how long (in s) to calculate baseline before starting BMI
-BufferT = 0.1;
+BufferT = 0.2;
 cb = 1; %cursor counter;
 % Plot figure
-hf = figure();
+% hf = figure();
 grid on; grid minor;
 %whitebg;
 
+
+
+tt = tcpip('0.0.0.0', 30000, 'NetworkRole', 'server');
+
+fopen(tt)
 
 X = pl.PixelsPerLine(); % get x dim of the image
 Y = pl.LinesPerFrame(); % get y dim of the image
@@ -72,7 +77,12 @@ data.cursor(counter) = ROI_data.cursor;
 data.ROI_val(:,counter) = ROI_data.ROI_val;
 data.Im1(:,:,counter) = Im;   % log the frame to RAM
 
-caBMI_LivePlot(MMx,data,counter,hf)
+send.MMx;
+send.data;
+send.counter;
+fwrite(tt,send)
+
+% caBMI_LivePlot(MMx,data,counter,hf)
 
 
 % advance counter
@@ -80,4 +90,5 @@ caBMI_LivePlot(MMx,data,counter,hf)
  pause(0.01) % should be a bit less than the frame rate- to stabilize aquisition.
 
 end
+fclose(t);
 end
