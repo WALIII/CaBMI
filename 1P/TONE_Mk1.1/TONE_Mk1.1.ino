@@ -13,10 +13,14 @@ d11.21.17
 int sensorPin = 0;
 long count = 0; //how many itterations over thresh
 int counter = 0; // total Timeouts
+unsigned long previousMillis = 0;        // will store last time LED was updated
+const long interval = 1000;  
+
 // Setup
 void setup() {
  // Init serial
-//  pinMode(ledPin,OUTPUT);
+pinMode(12,OUTPUT);
+pinMode(7,OUTPUT);
   Serial.begin(9600);
 
 }
@@ -31,10 +35,23 @@ void loop() {
    if(Serial.available()>0) // if there is data to read
    {
    int  melody=Serial.read(); // read data
+   
+   
+   // send Reward TTL
+   if (melody == 99){
+   int currentMillis = millis();
+    digitalWrite(12, HIGH);
+delay(100);
+    digitalWrite(12, LOW);
+   }
+
+   
    melody = melody*1000;
-tone(8, melody, 1000);
-delay(200);
-noTone(8);
+tone(10, melody, 1000);
+digitalWrite(7, HIGH); //TTL sync
+delay(100);
+noTone(10);
+digitalWrite(7, LOW);
    }
 }
     

@@ -1,4 +1,4 @@
-function caBMI_refPlot(ROI,Im1)
+function T = caBMI_refPlot(ROI,Im1)
 % caBMI_refPlot.m
 
 % Plot the ROIs, for reference
@@ -23,10 +23,16 @@ function caBMI_refPlot(ROI,Im1)
   hold on;
   for i = 1:size(ROI.coordinates,2);
   trace = mean(squeeze(mean(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),1)),1); % average pixels in mask
-  trace = (trace-prctile(trace,5))./prctile(trace,5)*100;
+  trace = (trace-prctile(trace,1))./prctile(trace,1)*100;
+  T(:,i) = trace;
   plot(trace,'Color',color(i,:));
   clear trace;
   end
   title('ROI Baseline activity')
   xlabel('frames')
   ylabel('df/f')
+  
+
+  
+  
+  
