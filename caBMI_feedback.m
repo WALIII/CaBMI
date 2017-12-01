@@ -10,26 +10,20 @@ wait_time = 0.01;% This is how long (in s) to calculate baseline before starting
 BufferT = 0.2;
 cb = 1; %cursor counter;
 % Plot figure
-% hf = figure();
+hf = figure();
 grid on; grid minor;
 %whitebg;
 
-
-
-tt = tcpip('0.0.0.0', 30000, 'NetworkRole', 'server');
-
-fopen(tt)
-
 X = pl.PixelsPerLine(); % get x dim of the image
 Y = pl.LinesPerFrame(); % get y dim of the image
-Im1(:,:,1) =  pl.GetImage_2(1,X,Y); % Build the image
+Im1(:,:,1) =  pl.GetImage_2(2,X,Y); % Build the image
 counter = 2;
 
 % Start Pulling data
 tStart = tic;
 cursorTic = tic;
 while toc(tStart) <  max_time % this querrys the buffer every ~10ms.
-Im = pl.GetImage_2(1,X,Y);
+Im = pl.GetImage_2(2,X,Y);
 
 % TO DO caclulate baseline..
 
@@ -53,15 +47,26 @@ fdbk = 1;
 %take mean of cursor in buffer
 MM = char(abs(round(3-mean(CursBuff)))); % take out abs
 
+% Save data to RAM for export
+data.cursor(counter) = ROI_data.cursor;
+data.ROI_val(:,counter) = ROI_data.ROI_val;
+data.Im1(:,:,counter) = Im;   % log the frame to RAM
+
+
+
+cursorOUT =  caBMI_LivePlot(MM,data,counter,hf);
+
+
+
 while fdbk
-    fprintf(arduino,'%c',MM); % send answer variable content to arduino
+    fprintf(arduino,'%c',char(cursorOUT)); % send answer variable content to arduino
 fdbk = 0;
 end
 
 
 MMx = abs(round(3-mean(CursBuff)));
 
-%disp(MMx); %display mean cursor value
+disp(cursorOUT); %display mean cursor value
 
 % Clear cursor Buffer
 clear CursBuff
@@ -72,17 +77,7 @@ cb = 1;
             disp('HIT')
     end
 
-% Save data to RAM for export
-data.cursor(counter) = ROI_data.cursor;
-data.ROI_val(:,counter) = ROI_data.ROI_val;
-data.Im1(:,:,counter) = Im;   % log the frame to RAM
 
-send.MMx;
-send.data;
-send.counter;
-fwrite(tt,send)
-
-% caBMI_LivePlot(MMx,data,counter,hf)
 
 
 % advance counter
@@ -90,5 +85,5 @@ fwrite(tt,send)
  pause(0.01) % should be a bit less than the frame rate- to stabilize aquisition.
 
 end
-fclose(t);
+
 end
