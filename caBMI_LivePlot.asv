@@ -1,4 +1,4 @@
-function cursorOUT =  caBMI_LivePlot(MM,data,counter,hf)
+function  caBMI_LivePlot(MM,data,counter,hf)
  % Plot Cursor data. Adds latency.
  
  % TO DO: Decrease liveplot latency, or ship out values to another program
@@ -18,7 +18,7 @@ step = 1 ; % lowering step has a number of cycles and then acquire more data
 
 livecursor = MM; % time averaged cursor
     
-    cursorOUT = 0; 
+
   if counter> 10;
     for i = 1:4
         baseline{i} = prctile(data.ROI_val(i,2:end),5);
@@ -29,7 +29,7 @@ livecursor = MM; % time averaged cursor
     end
     
  cursor = data.cursor(2:end)+ i*3;
-
+    
   
 %% Plot Data
 
@@ -39,8 +39,8 @@ livecursor = MM; % time averaged cursor
      plot(cell{i},'g','LineWidth',1);
   end
   
-  cursorOUT = abs((cell{1}(end)+ cell{i}(end)) - (cell{3}(end) + cell{4}(end)));
-  plot(cursorOUT,'r','LineWidth',3);
+  cursorOUT = (cell{1}(:,end)+ cell{i}(:,end)) - (cell{3} + cell{4});
+  plot(cursor,'r','LineWidth',3);
   
  grid on; 
  set(get(hf,'CurrentAxes'),'GridAlpha',0.4,'MinorGridAlpha',0.7);

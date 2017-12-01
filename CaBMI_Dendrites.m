@@ -77,7 +77,7 @@ M.mmY = quantile(Y(:),0.995);
 
 
 [M.cM2,M.mM2,M.vM2] = motion_metrics(M2,10);
-T = length(M.cY);
+
 
 clear I;
 I = M2;
