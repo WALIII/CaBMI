@@ -1,4 +1,4 @@
-CarmenaDailyGrind_P01
+function CarmenaDailyGrind_P01
 
 
 % CarmenaDailyGrind.m  Run all subroutenes
