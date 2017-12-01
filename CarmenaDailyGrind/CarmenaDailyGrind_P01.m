@@ -60,6 +60,7 @@ disp('Processing Data...');
 % fprintf(1,['Progress:  ' blanks(nblanks)]);
 
 for i=1:2;
+    STATUS(i) = 1;
   if STATUS(i) == 1 | STATUS(i) == 2;% if status is set to 1. 'extract' or 2. 'extract and process'
     if i<4 % For the first 3 boxes ( from argo)
       START_DIR_ROOT = START_DIR_ROOT;
