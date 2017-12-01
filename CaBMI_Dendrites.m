@@ -1,7 +1,7 @@
 function [I, M, ROI] = CaBMI_Dendrites(I);
-% For Dendrite imaging, rough, manual ROI selection. 
+% For Dendrite imaging, rough, manual ROI selection.
 
-% WAL3 
+% WAL3
 
 % d11.29.2017
 
@@ -63,7 +63,7 @@ if str == 'y'
 C = size(I,3);
 prompt = ['there are ', num2str(C), 'total frames. How many do you want?'];
 ToT = input(prompt);
-Y = single(I(:,:,1:ToT));% convert to single precision 
+Y = single(I(:,:,1:ToT));% convert to single precision
 T = size(Y,ndims(Y));
 
 % Motion Correction Params:
@@ -78,11 +78,7 @@ M.mmY = quantile(Y(:),0.995);
 
 
 [M.cM2,M.mM2,M.vM2] = motion_metrics(M2,10);
-<<<<<<< HEAD
 %T = length(M.cY);
-=======
-
->>>>>>> origin/master
 
 clear I;
 I = M2;
@@ -91,7 +87,7 @@ I = M2;
 mov_data =  convn(I(:,:,1:ToT), single(reshape([1 1 1] / 5, 1, 1, [])), 'same'); % Smooth data:
 
 
-figure();% Display movie: 
+figure();% Display movie:
 for i = 1:size(mov_data,3)
 imagesc(mov_data(:,:,i));
 pause(0.01);
@@ -111,6 +107,3 @@ disp('Performing Local Cross-correlation...')
 
 %% Get Freehand ROIs
 [ROI] = CaBMI_ROI_freehand(ccimage);
-
-    
-
