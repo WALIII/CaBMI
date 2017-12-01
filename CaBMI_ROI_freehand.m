@@ -11,7 +11,7 @@ cla('reset');
 disp('Make a selection...')
 
 for i = 1:4;
-    if i == 1;               
+    if i == 1;
 h_im = imshow(im);
 title('Choose ROI from the figure');
     else
@@ -48,7 +48,7 @@ hold on;
 title('Choose ROI from the figure');
 for ii = 1:i
 plot(ROI.coordinates{ii}(:,1),ROI.coordinates{ii}(:,2),'*');
-end  
+end
 
 ROI.type = 'image';
 ROI.reference_image = im;
@@ -58,4 +58,3 @@ ROI.reference_image = im;
 save_dir='image_roi';
 mkdir(save_dir);
 save(fullfile(save_dir,'Freehand_ROI.mat'),'ROI');
-

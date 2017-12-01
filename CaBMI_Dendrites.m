@@ -1,7 +1,8 @@
 function [I, M, ROI] = CaBMI_Dendrites(I);
 % For Dendrite imaging, rough, manual ROI selection. 
 
-% WAL3
+% WAL3 
+
 % d11.29.2017
 
 
@@ -77,7 +78,7 @@ M.mmY = quantile(Y(:),0.995);
 
 
 [M.cM2,M.mM2,M.vM2] = motion_metrics(M2,10);
-T = length(M.cY);
+%T = length(M.cY);
 
 clear I;
 I = M2;
