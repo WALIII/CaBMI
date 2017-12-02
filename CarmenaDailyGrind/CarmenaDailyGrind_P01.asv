@@ -100,10 +100,10 @@ end
 
 here = cd;
 disp('Moving Files...');
-
+for k = 3 : length(subFolders);
     copyfile([here],local_copy_path)
     cmd_rmdir(here);
- mkdir(here);
+end
 
 
  % mov_listing=dir(fullfile(pwd,'*.mov')); % Get all .mov files in directory
