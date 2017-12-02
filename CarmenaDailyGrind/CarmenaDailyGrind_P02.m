@@ -41,18 +41,18 @@ files = dir(DIR)
 for i = 3:size(subFolders)
 
   % index into folder
-  cd(DIR)
-  cd(subFolders(i).name)
+  cd(DIR);
+  cd(subFolders(i).name);
 
   % motion correction;
-  mov_listing=dir(fullfile(DIR,'*.tif'));
+  mov_listing=dir('*.tif');
   mov_listing={mov_listing(:).name};
 
   num_frames = (numel(mov_listing));
 
 
   for ii = 1:num_frames;
-  I(:,:,ii) = imread(fullfile(pathName, mov_listing{ii}));
+  I(:,:,ii) = imread(mov_listing{ii});
   end
 
 
