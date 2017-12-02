@@ -1,4 +1,6 @@
-function CarmenaDailyGrind_P02
+function CarmenaDailyGrind_P02(DIR)
+
+
 
 
   % CarmenaDailyGrind.m  Run all subroutenes
@@ -28,5 +30,65 @@ function CarmenaDailyGrind_P02
   %    3. Triggers matrix ( frame triggers, )
   %    4. ...
 
+% Get all folders
+cd(DIR)
+files = dir(DIR)
+  dirFlags = [files.isdir]
+  % Extract only those that are directories.
+  subFolders = files(dirFlags)
 
-  
+
+for i = 3:size(subFolders)
+
+  % index into folder
+  cd(DIR)
+  cd(subFolders(i).name)
+
+  % motion correction;
+  mov_listing=dir(fullfile(DIR,'*.tif'));
+  mov_listing={mov_listing(:).name};
+
+  num_frames = (numel(mov_listing));
+
+
+  for ii = 1:num_frames;
+  I(:,:,ii) = imread(fullfile(pathName, mov_listing{ii}));
+  end
+
+
+
+%% Perform Motion Correction on all frames
+Y = single(I(:,:,:));% convert to single precision
+T = size(Y,ndims(Y));
+
+% Motion Correction Params:
+options_nonrigid = NoRMCorreSetParms('d1',size(Y,1),'d2',size(Y,2),'grid_size',[32,32],'mot_uf',4,'bin_width',200,'max_shift',15,'max_dev',3,'us_fac',50,'init_batch',200);
+
+% perform motion correction
+tic; [M2,shifts2,template2,options_nonrigid] = normcorre_batch(Y,options_nonrigid); toc
+
+% compute metrics
+M.nnY = quantile(Y(:),0.005);
+M.mmY = quantile(Y(:),0.995);
+[M.cM2,M.mM2,M.vM2] = motion_metrics(M2,10);
+
+clear I;
+I = M2;
+
+mov_data =  convn(I(:,:,1:end), single(reshape([1 1 1] / 5, 1, 1, [])), 'same'); % Smooth data:
+
+
+figure();% Display movie:
+for i = 1:size(mov_data,3)
+imagesc(mov_data(:,:,i));
+pause(0.01);
+end
+
+
+
+[M.cY,M.mY,M.vY] = motion_metrics(I,10);
+
+%% Take local cross-corr
+disp('Performing Local Cross-correlation...')
+[ccimage]=CrossCorrImage(mov_data(:,:,10:end));
+end

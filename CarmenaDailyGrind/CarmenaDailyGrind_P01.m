@@ -128,8 +128,7 @@ disp('Parsing Data...');
                   % Automated template matching, and potentially ROI % extraction...
                  try
                    disp('Processing data');
-                  % AR_Check_Directed(pwd,BOX_ID{i},BIRD_ID{i})
-
+                  CarmenaDailyGrind_P02(destined_path);
                 catch
                   send_text_message('617-529-0762','Verizon', ...
                            'Dir/Undir','An error occured in parsing Dir/UnDir data in ARGO')
