@@ -16,12 +16,12 @@ pl.SendScriptCommands('-lbs true 5')
 arduino=serial('COM12','BaudRate',9600); % create serial communication object on port COM4
 fopen(arduino); % initiate arduino communication
 
-
+whitebg;
 %% GET ROI DATA
 
 % Collect Baseline Data
 max_frame = 100;
-[Im1] = caBMI_pullPixel(pl,s,max_frame)
+[Im1] = caBMI_pullPixel(pl,max_frame);
 
 % Selec ROIs & Save reference image
 Ref_Im = uint16(mean(Im1,3));
@@ -29,7 +29,7 @@ imwrite(uint16(mean(Im1,3)),'Ref_Im.tif');
 [ROI] = caBMI_annotate_image('Ref_Im.tif');
 
 % make a figure qith the ROIs
-caBMI_refPlot(ROI,Im1)
+caBMI_refPlot(ROI,Im1);
 
 
 %% BMI EXPERIMENT
@@ -39,7 +39,7 @@ caBMI_refPlot(ROI,Im1)
 
 % Run experiment
 max_time = 30; %seconds
-[data] = caBMI_feedback(pl,ROI,max_time)
+[data] = caBMI_feedback(pl,arduino,ROI,max_time);
 
 
 %% Analize Data

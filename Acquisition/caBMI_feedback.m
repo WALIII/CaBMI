@@ -31,51 +31,53 @@ Im = pl.GetImage_2(2,X,Y);
 data.toc(counter) = toc(tStart); % how often are we waiting per frame. For timeing rconstruction
 
 % Cursor function
-tic
-[data.out_state(counter), ROI_data] = WAL3_cursor(Im1,Im,ROI,counter-1); % cursor
-toc;
+
+[Cursor, data] = WAL3_cursor_song(Im,ROI,data,counter-1); % cursor
 
 
-CursBuff(cb) = ROI_data.cursor;
-cb = cb+1;
+% buffer the outputted cursor
+
+
 % Auditory Cursor:
 if toc(cursorTic) > BufferT; % smooth cursor
  cursorTic = tic;
 
 fdbk = 1;
 
-%take mean of cursor in buffer
-MM = char(abs(round(3-mean(CursBuff)))); % take out abs
+
 
 % Save data to RAM for export
-data.cursor(counter) = ROI_data.cursor;
-data.ROI_val(:,counter) = ROI_data.ROI_val;
+
 data.Im1(:,:,counter) = Im;   % log the frame to RAM
 
 
+ caBMI_LivePlot(data,counter,hf);
 
-cursorOUT =  caBMI_LivePlot(MM,data,counter,hf);
+ %%%%%%%
+ 
+ Cursor = abs(Cursor);
+% WATER DELIVERY
+if Cursor>10;
+    Cursor = 99;
+    disp('HIT')
+end
 
 
-
+% Write cursor state to Speaker
 while fdbk
-    fprintf(arduino,'%c',char(cursorOUT)); % send answer variable content to arduino
+    fprintf(arduino,'%c',char(Cursor)); % send answer variable content to arduino
 fdbk = 0;
 end
 
 
-MMx = abs(round(3-mean(CursBuff)));
 
-disp(cursorOUT); %display mean cursor value
+disp(Cursor); %display mean cursor value
 
 % Clear cursor Buffer
 clear CursBuff
-cb = 1;
 
-% Feedback:
-    if data.out_state(counter) ==1;
-            disp('HIT')
-    end
+
+
 
 
 
