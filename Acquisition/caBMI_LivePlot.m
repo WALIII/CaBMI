@@ -24,11 +24,11 @@ step = 1 ; % lowering step has a number of cycles and then acquire more data
 
         hold on;
   for i = 1:4
-     plot(data.ROI_dff(i,:)+(i-1)*3,'g','LineWidth',1);
+     plot(data.ROI_dff(i,:)/5+(i-1)*3,'g','LineWidth',1);
   end
   
 
-  plot(data.cursor+12,'r','LineWidth',3);
+  plot(data.cursor/5+12,'r','LineWidth',3);
   
  grid on; 
  %set(get(hf,'CurrentAxes'),'GridAlpha',0.4,'MinorGridAlpha',0.7);

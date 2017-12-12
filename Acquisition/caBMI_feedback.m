@@ -7,7 +7,7 @@ function [data] = caBMI_feedback(pl,arduino,ROI,max_time)
 
 % User Input
 wait_time = 0.01;% This is how long (in s) to calculate baseline before starting BMI
-BufferT = 0.2;
+BufferT = 0.1;
 cb = 1; %cursor counter;
 % Plot figure
 hf = figure();
@@ -51,13 +51,13 @@ fdbk = 1;
 data.Im1(:,:,counter) = Im;   % log the frame to RAM
 
 
- caBMI_LivePlot(data,counter,hf);
+% caBMI_LivePlot(data,counter,hf);
 
  %%%%%%%
  
- Cursor = abs(Cursor);
+ Cursor = (Cursor);
 % WATER DELIVERY
-if Cursor>10;
+if Cursor>9;
     Cursor = 99;
     disp('HIT')
 end
@@ -69,6 +69,9 @@ while fdbk
 fdbk = 0;
 end
 
+if Cursor==99;
+pause(2);
+end
 
 
 disp(Cursor); %display mean cursor value
@@ -84,7 +87,7 @@ clear CursBuff
 
 % advance counter
   counter = counter+1;
- pause(0.01) % should be a bit less than the frame rate- to stabilize aquisition.
+ pause(0.001) % should be a bit less than the frame rate- to stabilize aquisition.
 
 end
 

@@ -23,11 +23,9 @@ if nargin < 5
 v = 1; % this will choses which BMI to run
 end
 
-% switch between BMI types
-% switch v
+
 
 %%% Basic Test Flight- 
-%   case 1
 % standard BMI
 dsample_fact = 1;
 Im = imresize(single(round(Im)),1/dsample_fact); % convert from 16bit
@@ -51,13 +49,43 @@ if frame_idx>10;
 
 %create the cursor as the difference btw the 2 groups of ROIs
 frame_idx = frame_idx-1;
+
+% switch between BMI types
+switch v
+
+%% Normal BMI
+case  1
 data.cursor(:,frame_idx) = ROI_dff(1,frame_idx)+ROI_dff(2,frame_idx) - (ROI_dff(3,frame_idx)+ROI_dff(4,frame_idx));
+% OPTIONAL: Smooth cursor
+rn = 3; % running average...
+CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/15);
+
+%% Song BMI
+case 2
+    
+    for i = 1:4
+        ID(i) = ROI_dff(i,end);
+            end
+    
+     [M,I] = max(ID);
+     
+     if M>1;
+     CURSOR = I;
+     data.cursor(:,frame_idx) = CURSOR;
+     else 
+         CURSOR =0;
+         data.cursor(:,frame_idx) = CURSOR;
+    end
+
+     
+    
+
+end
+
 data.ROI_val = data.ROI_val;
 data.ROI_dff = ROI_dff;
 
-% OPTIONAL: Smooth cursor
-rn = 3; % running average...
-CURSOR = mean(data.cursor(:,frame_idx-rn:frame_idx));
+
 
 else
 data.cursor = zeros(1,10);
@@ -66,3 +94,6 @@ data.ROI_dff = zeros(4,10); % cant computer df/f
     CURSOR = 0;
 
 end
+
+
+
