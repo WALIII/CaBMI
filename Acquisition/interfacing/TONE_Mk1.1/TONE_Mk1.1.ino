@@ -40,9 +40,9 @@ void loop() {
    // send Reward TTL
    if (melody == 99){
    int currentMillis = millis();
-    digitalWrite(12, HIGH);
+    digitalWrite(9, HIGH);
 delay(100);
-    digitalWrite(12, LOW);
+    digitalWrite(9, LOW);
    }
 
    
