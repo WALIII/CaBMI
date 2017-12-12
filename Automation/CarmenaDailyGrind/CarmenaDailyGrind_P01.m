@@ -127,8 +127,9 @@ disp('Parsing Data...');
               if STATUS(i) == 1;
                   % Automated template matching, and potentially ROI % extraction...
                  try
-                   disp('Processing data');
-                  CarmenaDailyGrind_P02(destined_path);
+                   disp('NOT Processing data');
+                   CaBMI_mptif;
+                %  CarmenaDailyGrind_P02(destined_path);
                 catch
                   send_text_message('617-529-0762','Verizon', ...
                            'Dir/Undir','An error occured in parsing Dir/UnDir data in ARGO')
@@ -147,5 +148,5 @@ disp('Parsing Data...');
 end
 end
 send_text_message('617-529-0762','Verizon', ...
-         'Batch Complete ','ARGO has successfully transfered all files')
+         'Batch Complete ','MINOS has successfully transfered all files')
 end
