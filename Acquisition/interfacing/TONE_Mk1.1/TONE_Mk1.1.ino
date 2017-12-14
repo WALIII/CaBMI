@@ -19,8 +19,11 @@ const long interval = 1000;
 // Setup
 void setup() {
  // Init serial
-pinMode(12,OUTPUT);
+pinMode(10,OUTPUT);
 pinMode(7,OUTPUT);
+pinMode(5,OUTPUT);
+pinMode(9,OUTPUT);
+
   Serial.begin(9600);
 
 }
@@ -43,6 +46,14 @@ void loop() {
     digitalWrite(9, HIGH);
 delay(100);
     digitalWrite(9, LOW);
+   }
+
+   // Aquisition Begin!
+      if (melody == 98){
+   int currentMillis = millis();
+    digitalWrite(5, HIGH);
+delay(100);
+    digitalWrite(5, LOW);
    }
 
    
