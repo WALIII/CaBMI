@@ -6,7 +6,7 @@ clear all
 clc
  
 answer=1; % this is where we'll store the user's answer
-arduino=serial('COM12','BaudRate',9600); % create serial communication object on port COM4
+arduino=serial('COM13','BaudRate',9600); % create serial communication object on port COM4
  
 fopen(arduino); % initiate arduino communication
  counter = 1;
