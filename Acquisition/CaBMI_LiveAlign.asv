@@ -13,11 +13,11 @@ check = 1;
 L= 1;
 fdbk = 1;
 
-trials = 11;
-P1 = 15; % Pause in the begining
-P2 = 15; % pause in the end
-P3 = 30; % Interval between trials
-max_time = 60; % BMI time
+trials = 5;
+P1 = 10; % Pause in the begining
+P2 = 10; % pause in the end
+P3 = 6; % INterval between trials
+max_time = 30; % BMI time
 
 %% Start Aquisition (trigger start with TTL) ( also trigger video monitor)
 

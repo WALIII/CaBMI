@@ -48,7 +48,7 @@ fdbk = 1;
 
 % Save data to RAM for export
 
-data.Im1(:,:,counter) = Im;   % log the frame to RAM
+% data.Im1(:,:,counter) = Im;   % log the frame to RAM
 
 
 % caBMI_LivePlot(data,counter,hf);

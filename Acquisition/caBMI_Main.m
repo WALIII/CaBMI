@@ -13,7 +13,7 @@ pl.Connect();
 pl.SendScriptCommands('-lbs true 5')
 
 % conncet to Arduino Through Serial
-arduino=serial('COM12','BaudRate',9600); % create serial communication object on port COM4
+arduino=serial('COM13','BaudRate',9600); % create serial communication object on port COM4
 fopen(arduino); % initiate arduino communication
 
 whitebg;
