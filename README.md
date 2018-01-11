@@ -13,7 +13,7 @@ which by current design is not 'real time', and is highly susceptible to delays
 like OS scheduling, etc. that increase jitter in the on-line analysis
 and feedback deployment. Most software prototyping is in MATLAB.
 
- ATM the hardware output is an NI 3009 usb device.
+ ATM the hardware output is an arduino usb device.
 
 
 
@@ -30,12 +30,12 @@ pl.Connect();
 pl.SendScriptCommands('-lbs true 5')
 ```
 
-Connect to NiDaq via the session interface in MATLAB
+Connect to Arduino through a serial interface in MATLAB
 
 ```
-s = daq.createSession('ni');
-s.Rate = 8000; % up the sampling rate
-addDigitalChannel(s,'Dev5','port0/line1','OutputOnly')
+arduino=serial('COM13','BaudRate',9600); % create serial communication object on port COM4
+fopen(arduino); % initiate arduino communication
+
 ```
 ### Baseline Data Acquisition
 
@@ -84,6 +84,3 @@ max_time = 30; %seconds
 ```
 
 BMI contingency will be set in a separate function. Currently this function is called ```WAL3_cursor```.
-
-
- 
