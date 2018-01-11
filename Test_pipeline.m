@@ -11,7 +11,7 @@ numFiles = length(files);
 
 %% motion correct (and save registered h5 files as 2d matrices (to be used in the end)..)
 % register files one by one. use template obtained from file n to
-% initialize template of file n + 1; 
+% initialize template of file n + 1;
 
 motion_correct = false;                                         % perform motion correction
 non_rigid = false;                                               % flag for non-rigid motion correction
@@ -24,11 +24,11 @@ template = [];
 col_shift = [];
 for i = 1:numFiles
     fullname = files(i).name;
-    [folder_name,file_name,ext] = fileparts(fullname);    
+    [folder_name,file_name,ext] = fileparts(fullname);
     options_mc.h5_filename = fullfile(folder_name,[file_name,append,'.h5']);
-    if motion_correct    
+    if motion_correct
         [M,shifts,template,options_mc,col_shift] = normcorre_batch(fullname,options_mc,template);
-        save(fullfile(folder_name,[file_name,'_shifts',append,'.mat']),'shifts','-v7.3');           % save shifts of each file at the respective folder        
+        save(fullfile(folder_name,[file_name,'_shifts',append,'.mat']),'shifts','-v7.3');           % save shifts of each file at the respective folder
     else    % if files are already motion corrected convert them to h5
         convert_file(fullname,'h5',fullfile(folder_name,[file_name,'_mc.h5']));
     end
@@ -41,9 +41,9 @@ if motion_correct
 else
     h5_files = subdir(fullfile(foldername,'*_mc.h5'));
 end
-    
+
 fr = 30;                                         % frame rate
-tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+tsub = 10;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
 ds_filename = [foldername,'/ds_data.mat'];
 data_type = class(read_file(h5_files(1).name,1,1));
 data = matfile(ds_filename,'Writable',true);
@@ -67,8 +67,8 @@ for i = 1:numFiles
     data.Yr(prod(FOV),sum(floor(Ts/tsub))) = zeros(1,data_type);
     cnt_sub = 0;
     for t = 1:batch_size:Ts(i)
-        Y = bigread2(name,t,min(batch_size,Ts(i)-t+1)); 
-       
+        Y = bigread2(name,t,min(batch_size,Ts(i)-t+1));
+
         F_dark = min(nanmin(Y(:)),F_dark);
         ln = size(Y,ndimsY);
         Y = reshape(Y,[FOV,ln]);
@@ -94,7 +94,7 @@ overlap = [8,8];                        % amount of overlap in each dimension (o
 
 patches = construct_patches(sizY(1:end-1),patch_size,overlap);
 K = 7;                                            % number of components to be found
-tau = 8;                                          % std of gaussian kernel (half size of neuron) 
+tau = 16;      %8                                    % std of gaussian kernel (half size of neuron)
 p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
 merge_thr = 0.8;                                  % merging threshold
 sizY = data.sizY;
@@ -102,14 +102,14 @@ sizY = data.sizY;
 options = CNMFSetParms(...
     'd1',sizY(1),'d2',sizY(2),...
     'deconv_method','constrained_foopsi',...    % neural activity deconvolution method
-    'temporal_iter',2,...                       % number of block-coordinate descent steps 
+    'temporal_iter',2,...                       % number of block-coordinate descent steps
     'ssub',2,...                                % spatial downsampling when processing
     'tsub',4,...                                % further temporal downsampling when processing
     'merge_thr',merge_thr,...                   % merging threshold
-    'gSig',tau,... 
+    'gSig',tau,...
     'max_size_thr',300,'min_size_thr',10,...    % max/min acceptable size for each component
     'spatial_method','regularized',...          % method for updating spatial components
-    'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence 
+    'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence
     'fr',fr/tsub,...                            % downsamples
     'space_thresh',0.5,...                      % space correlation acceptance threshold
     'min_SNR',3.0,...                           % trace SNR acceptance threshold
@@ -123,7 +123,7 @@ options = CNMFSetParms(...
 
 [A,b,C,f,S,P,RESULTS,YrA] = run_CNMF_patches(data,K,patches,tau,0,options);  % do not perform deconvolution here since
                                                                              % we are operating on downsampled data
-%% compute correlation image on a small sample of the data (optional - for visualization purposes) 
+%% compute correlation image on a small sample of the data (optional - for visualization purposes)
 Cn = correlation_image_max(data.Y,8);
 
 %% classify components
@@ -131,14 +131,14 @@ Cn = correlation_image_max(data.Y,8);
 rval_space = classify_comp_corr(data,A,C,b,f,options);
 ind_corr = rval_space > options.space_thresh;           % components that pass the correlation test
                                         % this test will keep processes
-                                        
+
 %% further classification with cnn_classifier
 try  % matlab 2017b or later is needed
     [ind_cnn,value] = cnn_classifier(A,FOV,'cnn_model',options.cnn_thr);
 catch
     ind_cnn = true(size(A,2),1);                        % components that pass the CNN classifier
-end     
-                            
+end
+
 %% event exceptionality
 
 fitness = compute_event_exceptionality(C+YrA,options.N_samples_exc,options.robust_std);
@@ -152,9 +152,9 @@ keep = (ind_corr | ind_cnn) & ind_exc;
 % run_GUI = false;
 % if run_GUI
 %     Coor = plot_contours(A,Cn,options,1); close;
-%     GUIout = ROI_GUI(A,options,Cn,Coor,keep,ROIvars);   
+%     GUIout = ROI_GUI(A,options,Cn,Coor,keep,ROIvars);
 %     options = GUIout{2};
-%     keep = GUIout{3};    
+%     keep = GUIout{3};
 % end
 
 %% view contour plots of selected and rejected components (optional)
@@ -165,8 +165,8 @@ figure;
     ax1 = subplot(121); plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
     ax2 = subplot(122); plot_contours(A(:,throw),Cn,options,0,[],Coor_t,'m',find(throw));title('Rejected components','fontweight','bold','fontsize',14);
     linkaxes([ax1,ax2],'xy')
-    
-    %% keep only the active components    
+
+    %% keep only the active components
 A_keep = A(:,keep);
 C_keep = C(keep,:);
 
@@ -175,10 +175,10 @@ C_keep = C(keep,:);
 % tic;
 % [C_keep,f_keep,Pk,Sk,YrAk] = update_temporal_components_fast(data,A_keep,b,C_keep,f,P,options);
 % toc
-% 
+%
 % plot_components_GUI(data,A_keep,C_keep,b,f,Cn,options)
 if exist('YrAk','var'); R_keep = YrAk; else; R_keep = YrA(keep,:); end
-    
+
 %% extract fluorescence on native temporal resolution
 
 options.fr = options.fr*tsub;                   % revert to origingal frame rate
