@@ -13,8 +13,8 @@ numFiles = length(files);
 % register files one by one. use template obtained from file n to
 % initialize template of file n + 1; 
 
-motion_correct = true;                                         % perform motion correction
-non_rigid = true;                                               % flag for non-rigid motion correction
+motion_correct = false;                                         % perform motion correction
+non_rigid = false;                                               % flag for non-rigid motion correction
 if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
 options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
                 'overlap_pre',64,'mot_uf',4,'bin_width',200,'max_shift',24,'max_dev',8,'us_fac',50,...
