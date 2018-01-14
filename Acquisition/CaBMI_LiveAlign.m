@@ -49,7 +49,7 @@ disp('triggering...');
 
 
 
-      fprintf(arduino,'%c',char(98)); % START trigger
+      fprintf(arduino,'%c',char(98)); % STOP trigger
 
   TData{L} = data;
   clear data;
