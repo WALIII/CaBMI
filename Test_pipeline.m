@@ -13,7 +13,7 @@ numFiles = length(files);
 % register files one by one. use template obtained from file n to
 % initialize template of file n + 1;
 
-motion_correct = false;                                         % perform motion correction
+motion_correct = true;                                         % perform motion correction
 non_rigid = false;                                               % flag for non-rigid motion correction
 if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
 options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
@@ -93,8 +93,8 @@ patch_size = [40,40];                   % size of each patch along each dimensio
 overlap = [8,8];                        % amount of overlap in each dimension (optional, default: [4,4])
 
 patches = construct_patches(sizY(1:end-1),patch_size,overlap);
-K = 7;                                            % number of components to be found
-tau = 16;      %8                                    % std of gaussian kernel (half size of neuron)
+K = 100;                                            % number of components to be found
+tau = 20;      %8                                    % std of gaussian kernel (half size of neuron)
 p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
 merge_thr = 0.8;                                  % merging threshold
 sizY = data.sizY;
