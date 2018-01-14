@@ -88,8 +88,12 @@ end
 
 com_idx=repmat(com_idx,[rows columns 1]);
 
-mass=sum(dff,3);
-com_dff=sum((dff.*com_idx),3)./mass;
+vars = std(dff,[],3);
+com_dff=std((dff.*com_idx),[],3)./vars;
+
+
+% mass=sum(dff,3);
+% com_dff=sum((dff.*com_idx),3)./mass;
 
 
 
