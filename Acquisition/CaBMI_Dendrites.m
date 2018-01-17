@@ -19,6 +19,7 @@ function [I, M, ROI] = CaBMI_Dendrites(I);
 %
 %
 
+colormap(gray);
 
 %% Get Tifs.
 if nargin < 1

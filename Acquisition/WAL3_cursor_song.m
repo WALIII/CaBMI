@@ -58,7 +58,7 @@ case  1
 data.cursor(:,frame_idx) = ROI_dff(1,frame_idx)+ROI_dff(2,frame_idx) - (ROI_dff(3,frame_idx)+ROI_dff(4,frame_idx));
 % OPTIONAL: Smooth cursor
 rn = 3; % running average...
-CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/10);
+CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/2);
 
 %% Song BMI
 case 2

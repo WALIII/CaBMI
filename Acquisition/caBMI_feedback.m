@@ -18,11 +18,14 @@ X = pl.PixelsPerLine(); % get x dim of the image
 Y = pl.LinesPerFrame(); % get y dim of the image
 Im1(:,:,1) =  pl.GetImage_2(2,X,Y); % Build the image
 counter = 2;
-
+pauseTime = tic;
 % Start Pulling data
 tStart = tic;
 cursorTic = tic;
-while toc(tStart) <  max_time % this querrys the buffer every ~10ms.
+while toc(tStart) <  max_time  % this querrys the buffer every ~10ms.
+    if toc(pauseTime)<2
+    else
+    
 Im = pl.GetImage_2(2,X,Y);
 
 % TO DO caclulate baseline..
@@ -70,7 +73,7 @@ fdbk = 0;
 end
 
 if Cursor==99;
-pause(2);
+pauseTime = tic;
 end
 
 
@@ -90,5 +93,5 @@ clear CursBuff
  pause(0.001) % should be a bit less than the frame rate- to stabilize aquisition.
 
 end
-
+    end
 end
