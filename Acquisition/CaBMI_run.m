@@ -33,9 +33,9 @@ pause(P3); % aquire baseline...
 
 for i = 1:trials
 
-disp('Starting...');
-% Start:
-disp('triggering...');
+  disp('Starting...');
+  % Start:
+  disp('triggering...');
 
 
   pause(P1);
@@ -50,18 +50,18 @@ disp('triggering...');
 
   TData{L} = data;
   clear data;
-Tz = tic;
-check = check+1;
-L = L+1;
+  Tz = tic;
+  check = check+1;
+  L = L+1;
 
 
-if check >5
-  % Periodic alignment check- move ROI masks if need be...
-    disp('Running Alignment Check..');
+    if check >5
+      % Periodic alignment check- move ROI masks if need be...
+      disp('Running Alignment Check..');
 
-    disp('Adjusting ROIs..');
-    disp('ROIs are OK..');
-  check = 1;
+      disp('Adjusting ROIs..');
+      disp('ROIs are OK..');
+      check = 1;
 
 end
 
