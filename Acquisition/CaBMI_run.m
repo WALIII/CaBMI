@@ -9,34 +9,26 @@ function TData = CaBMI_run(ROI,pl,arduino)
 
 
 % Vars
-check = 1;
-L= 1;
-fdbk = 1;
+max_time = 60*30; % BMI time ( 30 min, total )
 
-trials = 20;
-P1 = 15; % Pause in the begining
-P2 = 15; % pause in the end
-P3 = 30; % Interval between trials
-max_time = 60; % BMI time
+
+
+disp( '----------------------------------------------------');
+disp( ['total time is ', num2str(max_time/60), ' minutes']);
+disp([ 'total frames is ', num2str(max_time*30)]);
+%% Do BMI periodically;
+disp( '----------------------------------------------------');
+
+
 
 %% Start Aquisition (trigger start with TTL) ( also trigger video monitor)
 
 % Trigger to start
-Tm = trials*(P1+max_time+P2)+P3;
-Tf = Tm*30;
-disp( '----------------------------------------------------');
-disp([ 'total number of trials: ', num2str(trials)]);
-disp( ['total time is ', num2str(Tm/60), ' minutes']);
-disp([ 'total frames is ', num2str(Tf)]);
-%% Do BMI periodically;
-disp( '----------------------------------------------------');
-  disp('Aquireing Baseline....');
 fprintf(arduino,'%c',char(98)); % START trigger
 
 
 pause(P3); % aquire baseline...
 
-for i = 1:trials
 
   disp('Starting...');
   % Start:
@@ -46,34 +38,27 @@ for i = 1:trials
   pause(P1);
 
   % run BMI
-  disp(['Running BMI Script ',num2str(L), ' of ',num2str(trials)]);
+  % disp(['Running BMI Script ',num2str(L), ' of 30']);
   [data] = caBMI_feedback(pl,arduino,ROI,max_time)
   % TTL Start Aquisition
   % TTL
 
-  pause(P2)
-
-  TData{L} = data;
+  TData = data;
   clear data;
-  Tz = tic;
-  check = check+1;
-  L = L+1;
 
 
-    if check >5
-      % Periodic alignment check- move ROI masks if need be...
-      disp('Running Alignment Check..');
+%
+%     if check >5
+%       % Periodic alignment check- move ROI masks if need be...
+%       disp('Running Alignment Check..');
+%
+%       disp('Adjusting ROIs..');
+%       disp('ROIs are OK..');
+%       check = 1;
+%
+% end
 
-      disp('Adjusting ROIs..');
-      disp('ROIs are OK..');
-      check = 1;
 
-end
-
-
-
-end
-fprintf(arduino,'%c',char(98)); % START trigger
 
 
 

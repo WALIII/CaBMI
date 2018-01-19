@@ -9,6 +9,7 @@ function [data] = caBMI_feedback(pl,arduino,ROI,max_time)
 wait_time = 0.01;% This is how long (in s) to calculate baseline before starting BMI
 BufferT = 0.1;
 cb = 1; %cursor counter;
+condition = 1;
 % Plot figure
 hf = figure();
 grid on; grid minor;
@@ -23,9 +24,8 @@ pauseTime = tic;
 tStart = tic;
 cursorTic = tic;
 while toc(tStart) <  max_time  % this querrys the buffer every ~10ms.
-    if toc(pauseTime)<2
-    else
-    
+
+
 Im = pl.GetImage_2(2,X,Y);
 
 % TO DO caclulate baseline..
@@ -57,13 +57,26 @@ fdbk = 1;
 % caBMI_LivePlot(data,counter,hf);
 
  %%%%%%%
- 
+
  Cursor = (Cursor);
 % WATER DELIVERY
+
+
+if condition == 1;
 if Cursor>9;
     Cursor = 99;
     disp('HIT')
 end
+elseif condition == 2
+  disp(' Waiting to drop below threshold...')
+  if Cursor<9
+    disp ( 'Resetting Cursor')
+    condition = 1;
+  end
+end
+
+
+
 
 
 % Write cursor state to Speaker
@@ -72,9 +85,6 @@ while fdbk
 fdbk = 0;
 end
 
-if Cursor==99;
-pauseTime = tic;
-end
 
 
 disp(Cursor); %display mean cursor value
