@@ -73,6 +73,7 @@ end
 
 
 end
+fprintf(arduino,'%c',char(98)); % START trigger
 
 
 
