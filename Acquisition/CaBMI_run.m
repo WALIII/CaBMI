@@ -26,6 +26,7 @@ disp( '----------------------------------------------------');
 % Trigger to start
 fprintf(arduino,'%c',char(98)); % START trigger
 
+P3 = 30;
 
 pause(P3); % aquire baseline...
 
@@ -35,7 +36,7 @@ pause(P3); % aquire baseline...
   disp('triggering...');
 
 
-  pause(P1);
+
 
   % run BMI
   % disp(['Running BMI Script ',num2str(L), ' of 30']);
@@ -45,7 +46,8 @@ pause(P3); % aquire baseline...
 
   TData = data;
   clear data;
-
+  
+fprintf(arduino,'%c',char(98)); % STOP trigger
 
 %
 %     if check >5
