@@ -30,10 +30,10 @@ end
 dsample_fact = 1;
 Im = imresize(single(round(Im)),1/dsample_fact); % convert from 16bit
 %baseline(i) = mean(mean(squeeze(mean(Im1(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2),:),1)),1));
-data.ROI_val(1,frame_idx) = mean(mean(Im(round(ROI.coordinates{1}(:,1)/dsample_fact),round(ROI.coordinates{1}(:,2)/dsample_fact)),1));
-data.ROI_val(2,frame_idx) = mean(mean(Im(round(ROI.coordinates{2}(:,1)/dsample_fact),round(ROI.coordinates{2}(:,2)/dsample_fact)),1));
-data.ROI_val(3,frame_idx) = mean(mean(Im(round(ROI.coordinates{3}(:,1)/dsample_fact),round(ROI.coordinates{3}(:,2)/dsample_fact)),1));
-data.ROI_val(4,frame_idx) = mean(mean(Im(round(ROI.coordinates{4}(:,1)/dsample_fact),round(ROI.coordinates{4}(:,2)/dsample_fact)),1));
+data.ROI_val(1,frame_idx) = mean(mean(Im(round(ROI.coordinates{1}(:,2)/dsample_fact),round(ROI.coordinates{1}(:,1)/dsample_fact)),1));
+data.ROI_val(2,frame_idx) = mean(mean(Im(round(ROI.coordinates{2}(:,2)/dsample_fact),round(ROI.coordinates{2}(:,1)/dsample_fact)),1));
+data.ROI_val(3,frame_idx) = mean(mean(Im(round(ROI.coordinates{3}(:,2)/dsample_fact),round(ROI.coordinates{3}(:,1)/dsample_fact)),1));
+data.ROI_val(4,frame_idx) = mean(mean(Im(round(ROI.coordinates{4}(:,2)/dsample_fact),round(ROI.coordinates{4}(:,1)/dsample_fact)),1));
 
 
 % Get Df/f values
@@ -58,7 +58,8 @@ case  1
 data.cursor(:,frame_idx) = ROI_dff(1,frame_idx)+ROI_dff(2,frame_idx) - (ROI_dff(3,frame_idx)+ROI_dff(4,frame_idx));
 % OPTIONAL: Smooth cursor
 rn = 3; % running average...
-CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/4);
+CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/10);
+data.cursor_actual = CURSOR;
 
 %% Song BMI
 case 2
