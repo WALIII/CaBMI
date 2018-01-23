@@ -15,12 +15,10 @@ for i = 1:(size(G,2)-1) % number of Tiffs
 
   counter = 1;
 
-  tic
   for ii = G(i):(G(i+1)-1)
   I(:,:,counter) = loadtiff(mov_listing{ii});
   counter = counter+1;
   end
-  toc
 
   filename = ['Mtiff_folder\Data_',num2str(i),'.tif'];
   disp('Saving data...');
