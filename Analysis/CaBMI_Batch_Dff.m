@@ -18,7 +18,7 @@ function dff2 = CaBMI_Batch_Dff
 
   outlier_flag=0;
   if nargin<1 | isempty(DIR), DIR=pwd; end
-  mov_listing=dir(fullfile(DIR,'*.mat'));
+  mov_listing=dir(fullfile(DIR,'*.tif'));
   mov_listing={mov_listing(:).name};
   filenames=mov_listing;
 
@@ -43,14 +43,9 @@ function dff2 = CaBMI_Batch_Dff
 
 
 
-  load(fullfile(DIR,mov_listing{i}),'video');
-counter = 1;
+    disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
+  	mov_data = loadtiff(fullfile(pwd,mov_listing{i}));
 
-  for frameIter = 5:(size(video.frames,2))-5;
-
-     mov_data(:,:,counter) = uint16(video.frames(counter).cdata);
-     counter = counter+1;
-  end
 
 
 mov_data = convn(mov_data, single(reshape([1 1 1] / 3, 1, 1, [])), 'same'); % smooth data
