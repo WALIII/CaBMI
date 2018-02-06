@@ -36,6 +36,7 @@ for i=1:2:nparams
 			baseline=varargin{i+1};
 		case 'filt_rad'
 			filt_rad=varargin{i+1};
+            filt_alpha=filt_rad;
 		case 'trim_per'
 			trim_per=varargin{i+1};
 		case 'filt_alpha'

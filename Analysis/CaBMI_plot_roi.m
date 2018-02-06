@@ -25,6 +25,7 @@ t_scale=.5;
 resize=1;
 detrend_traces=0;
 crop_correct=0;
+ting = 1;
 
 nparams=length(varargin);
 
@@ -62,6 +63,10 @@ for i=1:2:nparams
 			detrend_traces=varargin{i+1};
 		case 'crop_correct'
 			crop_correct=varargin{i+1};
+		case 'ring'
+			ring = varargin{i+1};
+		case 'type'
+			format = varargin{i+1}; % if tiff, mov, mat, etc
 	end
 end
 
@@ -82,7 +87,7 @@ mkdir(save_dir);
 % first convert ROIS to row and column indices, then average ROI and plot
 % the time course
 
-% TODO save image with ROIs (using color scheme that's used for time plots)
+% TODO check to see what is in the directery- or ask. what format to use, if more than one....
 
 mov_listing=dir(fullfile(pwd,'*.tif'));
 mov_listing={mov_listing(:).name};
@@ -175,7 +180,15 @@ frame_idx = 0:size(mov_data,3)-1;
 
 		for k=1:frames
 			tmp=mov_data(ROIS.coordinates{j}(:,2),ROIS.coordinates{j}(:,1),k);
+
+				if ring == 1;
+
+						[yCoordinates, xCoordinates] = Get_ring(ROIS.coordinates{j})
+						annul=mov_data(yCoordinates,xCoordinates,k);
+						roi_t(j,k)=mean(tmp(:))-mean(annul(:));
+else
 			roi_t(j,k)=mean(tmp(:));
+
 		end
 	end
 
