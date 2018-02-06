@@ -19,11 +19,15 @@ for i = 1:(size(G,2)-1) % number of Tiffs
   I(:,:,counter) = loadtiff(mov_listing{ii});
   counter = counter+1;
   end
-
-  filename = ['Mtiff_folder\Data_',num2str(i),'.tif'];
+try
+  filename = ['Mtiff_folder\Data_',num2str(i.','%03d'),'.tif'];
   disp('Saving data...');
 
-
 saveastiff(I,filename);
+catch
+    disp('file already exists')
+end
+
+
 clear I
 end

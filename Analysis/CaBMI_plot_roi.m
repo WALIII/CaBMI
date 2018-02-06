@@ -115,6 +115,8 @@ disp('Generating single trial figures...');
 clear mov_data
 
 for i=1:length(mov_listing)
+    
+clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
 
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
 	mov_data = loadtiff(fullfile(pwd,mov_listing{i}));
@@ -172,7 +174,6 @@ frame_idx = 0:size(mov_data,3)-1;
 		fprintf(1,formatstring,round((j/roi_n)*100));
 
 		for k=1:frames
-
 			tmp=mov_data(ROIS.coordinates{j}(:,2),ROIS.coordinates{j}(:,1),k);
 			roi_t(j,k)=mean(tmp(:));
 		end
@@ -186,7 +187,7 @@ frame_idx = 0:size(mov_data,3)-1;
 	% interpolate ROIs to a common timeframe
 
 	for j=1:roi_n
-
+clear tmp; clear dff; clear yy2; clear yy;
 		tmp=roi_t(j,:);
 
 
@@ -204,11 +205,11 @@ frame_idx = 0:size(mov_data,3)-1;
 		dff(j,:)=((tmp-norm_fact)./norm_fact).*100;
 
 
-		yy=interp1(timevec,dff(j,:),ave_time,'spline');
-		yy2=interp1(timevec,tmp,ave_time,'spline');
+		%yy=interp1(timevec,dff(j,:),ave_time,'spline');
+		%yy2=interp1(timevec,tmp,ave_time,'spline');
 
-		temp.interp_dff(j,:)=yy;
-		temp.interp_raw(j,:)=yy2;
+		temp.interp_dff(j,:)=dff(j,:);
+		temp.interp_raw(j,:)=tmp;
 
     end
 
@@ -236,7 +237,7 @@ frame_idx = 0:size(mov_data,3)-1;
 
 end
 
-roi_ave.t=ave_time;
+%roi_ave.t=ave_time;
 save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
 disp('Generating average ROI figure...');
 
