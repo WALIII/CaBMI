@@ -15,7 +15,7 @@ ave_fs=30;
 save_dir='roi';
 template=[];
 fs=48000;
-per=2;
+per=8;
 max_row=5;
 min_f=0;
 max_f=9e3;
@@ -25,7 +25,7 @@ t_scale=.5;
 resize=1;
 detrend_traces=0;
 crop_correct=0;
-ting = 1;
+ring = 1;
 
 nparams=length(varargin);
 
@@ -89,45 +89,57 @@ mkdir(save_dir);
 
 % TODO check to see what is in the directery- or ask. what format to use, if more than one....
 
-mov_listing=dir(fullfile(pwd,'*.tif'));
+% mov_listing=dir(fullfile(pwd,'*.tif'));
+mov_listing=dir(fullfile(pwd,'*.mat'));
 mov_listing={mov_listing(:).name};
 
+
 to_del=[];
-for i=1:length(mov_listing)
+ for i=1:length(mov_listing)
 	if strcmp(mov_listing{i},'dff_data.mat')
 		to_del=i;
-	end
-end
+ 	end
+ end
 
 
-mov_listing(to_del)=[];
+
+% mov_listing(to_del)=[];
 
 roi_n=length(ROIS.coordinates);
 
-mov_data = loadtiff(fullfile(pwd,mov_listing{1}));
+% mov_data = loadtiff(fullfile(pwd,mov_listing{1}));
 
 
-[rows,columns,frames]=size(mov_data);
-
-ave_time=0:1/ave_fs:(size(mov_data,3)-1)/30;
-
-% need to interpolate the average onto a new time bases
-
-roi_ave.raw={};
-roi_ave.interp_dff=zeros(roi_n,length(ave_time),length(mov_listing));
-roi_ave.interp_raw=zeros(roi_n,length(ave_time),length(mov_listing));
+% [rows,columns,frames]=size(mov_data);
+% 
+% ave_time=0:1/ave_fs:(size(mov_data,3)-1)/30;
+% 
+% % need to interpolate the average onto a new time bases
+% 
+% roi_ave.raw={};
+% roi_ave.interp_dff=zeros(roi_n,length(ave_time),length(mov_listing));
+% roi_ave.interp_raw=zeros(roi_n,length(ave_time),length(mov_listing));
 disp('Generating single trial figures...');
 clear mov_data
 
 for i=1:length(mov_listing)
-    
+
 clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
 
-	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
-	mov_data = loadtiff(fullfile(pwd,mov_listing{i}));
-	%load(fullfile(pwd,mov_listing{i}),'video')%,'mic_data','fs','vid_times');
+	% disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
+	% mov_data = loadtiff(fullfile(pwd,mov_listing{i}));
+	% %load(fullfile(pwd,mov_listing{i}),'video')%,'mic_data','fs','vid_times');
+
+	warning('off','all')
+		disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
+		load(fullfile(pwd,mov_listing{i}),'video');
+	warning('on','all')
 
 
+	mov_data2 = video.frames;
+	[mov_data, n] = FS_Format(mov_data2,1);
+	clear mov_data2;
+    clear video;
 	% resize if we want
 
 	if resize~=1
@@ -183,7 +195,7 @@ frame_idx = 0:size(mov_data,3)-1;
 
 				if ring == 1;
 
-						[yCoordinates, xCoordinates] = Get_ring(ROIS.coordinates{j})
+						[yCoordinates, xCoordinates] = GetRing(ROIS.coordinates{j},rows,columns);
 						annul=mov_data(yCoordinates,xCoordinates,k);
 						roi_t(j,k)=mean(tmp(:))-mean(annul(:));
 else
@@ -248,6 +260,7 @@ clear tmp; clear dff; clear yy2; clear yy;
 	roi_ave.raw{i}=roi_t; % store for average
 	roi_ave.filename{i}=mov_listing{i};
 
+    end
 end
 
 %roi_ave.t=ave_time;
