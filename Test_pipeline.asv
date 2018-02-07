@@ -42,8 +42,8 @@ else
     h5_files = subdir(fullfile(foldername,'*_mc.h5'));
 end
 
-fr = 20;                                         % frame rate
-tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+fr = 30;                                         % frame rate
+tsub = 2;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
 ds_filename = [foldername,'/ds_data.mat'];
 data_type = class(read_file(h5_files(1).name,1,1));
 data = matfile(ds_filename,'Writable',true);
@@ -93,8 +93,8 @@ patch_size = [40,40];                   % size of each patch along each dimensio
 overlap = [8,8];                        % amount of overlap in each dimension (optional, default: [4,4])
 
 patches = construct_patches(sizY(1:end-1),patch_size,overlap);
-K = 30;                                            % number of components to be found
-tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
+K = 7;                                            % number of components to be found
+tau = 8;      %8                                    % std of gaussian kernel (half size of neuron)
 p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
 merge_thr = 0.8;                                  % merging threshold
 sizY = data.sizY;
@@ -112,7 +112,7 @@ options = CNMFSetParms(...
     'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence
     'fr',fr/tsub,...                            % downsamples
     'space_thresh',0.5,...                      % space correlation acceptance threshold
-    'min_SNR',2.0,...                           % trace SNR acceptance threshold
+    'min_SNR',3.0,...                           % trace SNR acceptance threshold
     'cnn_thr',0.2,...                           % cnn classifier acceptance threshold
     'nb',1,...                                  % number of background components per patch
     'gnb',3,...                                 % number of global background components
