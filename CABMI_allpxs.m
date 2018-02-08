@@ -17,14 +17,14 @@ nparams=length(varargin);
 
 filt_rad=20; % gauss filter radius
 filt_alpha=30; % gauss filter alpha
-lims=4; % contrast prctile limits (i.e. clipping limits lims 1-lims)
+lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap= colormap(jet);%  cubehelix(200,[0.9,-1,7,1]));
 per=3; % baseline percentile (0 for min)
 bgcolor=[ .75 .75 .75 ]; % rgb values for axis background
 time_select=0;
 startT = 1;
 stopT = size(MOV_DATA,3);
-
+exp = 2;
 
 if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
@@ -75,7 +75,7 @@ disp(['Converting to df/f using the ' num2str(per) ' percentile for the baseline
 
 baseline=repmat(prctile(MOV_DATA,per,3),[1 1 frames]);
 
-dff=((MOV_DATA.^2-baseline.^2)./(baseline)).*100;
+dff=((MOV_DATA.^exp-baseline.^exp)./(baseline)).*100;
 dff = dff;
 
 % take the center of mass across dim 3 (time) for each point in space

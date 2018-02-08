@@ -1,17 +1,17 @@
-function CaBMI_mov2tif
+function CaBMI_mov2tif_eyeCandy
 
   % load in .mov from 1P ram, convert to seperate tif stacks
-  %TO TO replace tiff loader with this..  to save memory...
+  %TO DO replace tiff loader with this..  to save memory...
 
 
-% INCOMPLETE
 
 
 
 % Params
 
-max_size = 1000;
-downsamp = 0.5;
+max_size = 3000;
+downsamp = 0.33;
+b =10;
 
 % find all movs
 if nargin<1 | isempty(DIR), DIR=pwd; end
@@ -43,6 +43,23 @@ while hasFrame(v1)
  k = k+1;
  if k>max_size
      filename = ['Data_',num2str(i.','%03d'),'.tif'];
+     disp('Smoothing data...');
+     % Smooth data by 'b'
+            vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
+     if i ==1;
+                 
+          % Tke the filtered mean
+          disp('filtering the mean');
+            X = mean(vK(:,:,100),3);
+            X = imgaussfilt(X,40);
+     else
+     end
+     
+            for ii = 1:size(vK,3); vK(:,:,ii) = (((vK(:,:,ii)+10)-X)*9); end;
+% Play the result
+
+     
+     
    FS_tiff(vK,'fname',filename);
    i = i+1;
    k = 1;
@@ -51,3 +68,6 @@ while hasFrame(v1)
  end
 end
 end
+
+
+
