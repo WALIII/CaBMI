@@ -7,7 +7,7 @@ function [ROI,roi_ave] = CaBMI_1P_Process(varargin)
 ExpType = 1% 1, 2, 3
 
 
-if ExpType = 1% for 1P data
+if ExpType == 1% for 1P data
 
   fr = 20;                                         % frame rate
   tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
