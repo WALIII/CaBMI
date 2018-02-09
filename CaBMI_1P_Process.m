@@ -4,7 +4,11 @@ function [ROI,roi_ave] = CaBMI_1P_Process(varargin)
 
 % Params
 
-ExpType = 1% 1, 2, 3
+ExpType = 1% how many P? 1, 2, 3
+  save_dir='roi';
+
+  % TO DO
+  % Add parent directory for 'filename'
 
 
 if ExpType == 1% for 1P data
@@ -16,6 +20,22 @@ if ExpType == 1% for 1P data
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
 
+% TO DO
+  % indexing should be out of 1000
+end
+
+
+if ExpType == 2% for 2P data
+
+  fr = 20;                                         % frame rate
+  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+  K = 30;                                            % number of components to be found
+  tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
+  p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+  merge_thr = 0.8;                                  % merging threshold
+
+% TO DO
+  % indexing should be out of 2000
 end
 
 
@@ -277,6 +297,11 @@ for i = 1:N
 end
 
 
+
+% Save data
+%roi_ave.t=ave_time;
+save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
+disp('Generating average ROI figure...');
 
 
 
