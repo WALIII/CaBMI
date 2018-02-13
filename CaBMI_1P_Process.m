@@ -209,7 +209,7 @@ try
         ROI.coordinates{i}(:,1) = xCoordinates;
         ROI.coordinates{i}(:,2) = yCoordinates;
     end
-    
+
 
     for i = 1: size(ROI.coordinates,2)
     	ROI.stats(i).Centroid=mean(ROI.coordinates{i});
@@ -287,12 +287,17 @@ end
 
 
 catch
-    
+
 end
 
     roi_ave.C_dec = C_dec;
     roi_ave.S_dec = S_dec;
     roi_ave.neuron_sn = S_dec;
-    
-    
+
+
+    save_dir='roi';
+    mkdir(save_dir);
+
+
+    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI');
 %save('ROI_data',
