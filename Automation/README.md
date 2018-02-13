@@ -3,9 +3,12 @@
 
 MINOS runs a MATLAB script once per day. This script can be run manually, in Matlab:
 
+
+
 ```
 >> AR_DataTransfer
 ```
+
 
 This script will gather data from acquisition computers, pre-process the incoming .mov files (seperate audio/video) and distribute them to a host RAID for future analysis.
 
