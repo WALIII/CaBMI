@@ -1,6 +1,9 @@
 function CaBMI_mptif
 
-mkdir('Mtiff_folder');
+
+
+final_folder = 'Processed\Mtiff_folder';
+mkdir(final_folder);
   % motion correction;
   mov_listing=dir('*.tif');
   mov_listing={mov_listing(:).name};
@@ -20,7 +23,7 @@ for i = 1:(size(G,2)-1) % number of Tiffs
   counter = counter+1;
   end
 try
-  filename = ['Mtiff_folder\Data_',num2str(i.','%03d'),'.tif'];
+  filename = [final_folder,'\Data_',num2str(i.','%03d'),'.tif'];
   disp('Saving data...');
 
 saveastiff(I,filename);
