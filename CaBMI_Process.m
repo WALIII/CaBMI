@@ -1,5 +1,52 @@
+function [ROI,roi_ave] = CaBMI_Process(varargin)
+% CaBMI_Process
+
+
+% Params
+
+ExpType = 1% 1, 2, 3
+
+
+if ExpType == 1% for 1P data
+
+  fr = 20;                                         % frame rate
+  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+  K = 30;                                            % number of components to be found
+  tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
+  p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+  merge_thr = 0.8;                                  % merging threshold
+
+end
+
+
+if ExpType == 2% for 2P data
+
+  fr = 30;                                         % frame rate
+  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+  K = 10;                                            % number of components to be found
+  tau = 8;      %8                                    % std of gaussian kernel (half size of neuron)
+  p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+  merge_thr = 0.8;                                  % merging threshold
+
+end
+
+nparams=length(varargin);
+
+if mod(nparams,2)>0
+	error('Parameters must be specified as parameter/value pairs');
+end
+
+for i=1:2:nparams
+end
+
+
+
+
+
+
+
 % complete pipeline for calcium imaging data pre-processing
-clear;
+
 addpath(genpath('../NoRMCorre'));               % add the NoRMCorre motion correction package to MATLAB path
 gcp;                                            % start a parallel engine
 foldername = cd;
@@ -42,8 +89,8 @@ else
     h5_files = subdir(fullfile(foldername,'*_mc.h5'));
 end
 
-fr = 20;                                         % frame rate
-tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+
+
 ds_filename = [foldername,'/ds_data.mat'];
 data_type = class(read_file(h5_files(1).name,1,1));
 data = matfile(ds_filename,'Writable',true);
@@ -93,10 +140,6 @@ patch_size = [40,40];                   % size of each patch along each dimensio
 overlap = [8,8];                        % amount of overlap in each dimension (optional, default: [4,4])
 
 patches = construct_patches(sizY(1:end-1),patch_size,overlap);
-K = 30;                                            % number of components to be found
-tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
-p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
-merge_thr = 0.8;                                  % merging threshold
 sizY = data.sizY;
 
 options = CNMFSetParms(...
@@ -124,7 +167,7 @@ options = CNMFSetParms(...
 [A,b,C,f,S,P,RESULTS,YrA] = run_CNMF_patches(data,K,patches,tau,0,options);  % do not perform deconvolution here since
                                                                              % we are operating on downsampled data
 %% compute correlation image on a small sample of the data (optional - for visualization purposes)
-Cn = correlation_image_max(data.Y,8);
+%Cn = correlation_image_max(data.Y,8);
 
 %% classify components
 
@@ -161,10 +204,33 @@ keep = (ind_corr | ind_cnn) & ind_exc;
 throw = ~keep;
 Coor_k = [];
 Coor_t = [];
+Cn = Y(:,:,1);
 figure;
-    ax1 = subplot(121);[CC,jsf,im] =  plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
+    ax1 = subplot(121);
+    [CC,jsf] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
     ax2 = subplot(122); plot_contours(A(:,throw),Cn,options,0,[],Coor_t,'m',find(throw));title('Rejected components','fontweight','bold','fontsize',14);
     linkaxes([ax1,ax2],'xy')
+
+
+%% Save ROI coordinates for later...
+
+    for i = 1:size(CC,1)
+        BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
+        [yCoordinates, xCoordinates] = find(BW);
+        ROI.coordinates{i}(:,1) = xCoordinates;
+        ROI.coordinates{i}(:,2) = yCoordinates;
+    end
+
+
+    for i = 1: size(ROI.coordinates,2)
+    	ROI.stats(i).Centroid=mean(ROI.coordinates{i});
+    	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
+    	k=convhull(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2));
+    	ROI.stats(i).ConvexHull=ROI.coordinates{i}(k,:);
+    end
+
+    ROI.type = 'Image';
+
 
     %% keep only the active components
 A_keep = A(:,keep);
@@ -212,6 +278,7 @@ C_dec = zeros(N,T);         % deconvolved DF/F traces
 S_dec = zeros(N,T);         % deconvolved neural activity
 bl = zeros(N,1);            % baseline for each trace (should be close to zero since traces are DF/F)
 neuron_sn = zeros(N,1);     % noise level at each trace
+
 g = cell(N,1);              % discrete time constants for each trace
 if p == 1; model_ar = 'ar1'; elseif p == 2; model_ar = 'ar2'; else; error('This order of dynamics is not supported'); end
 
@@ -230,4 +297,21 @@ end
 
 
 
+
+
+
+    roi_ave.C_dec = C_dec;
+    roi_ave.S_dec = S_dec;
+    roi_ave.neuron_sn = S_dec;
+    roi_ave.F_dff = F_dff;
+    roi_ave.F_full = F_full;
+    roi_ave.neuron_sn = S_dec;
+
+
+
+    save_dir='roi';
+    mkdir(save_dir);
+
+
+    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI');
 %save('ROI_data',

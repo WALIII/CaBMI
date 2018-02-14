@@ -32,7 +32,7 @@ end
 
 
 % Edge Detection
-
+cell = 2; 
 figure(); 
 hold on; 
 for i = 1: trials
