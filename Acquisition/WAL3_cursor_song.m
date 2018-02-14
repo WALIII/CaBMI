@@ -61,6 +61,7 @@ rn = 3; % running average...
 CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/15);
 data.cursor_actual(:,frame_idx) = CURSOR;
 
+
 %% Song BMI
 case 2
     

@@ -61,17 +61,19 @@ fdbk = 1;
  Cursor = (Cursor);
 % WATER DELIVERY
 
-
+ data.hit(counter) =0;
 if condition == 1;
 if Cursor>9;
     Cursor = 99;
     disp('HIT')
     condition = 2;
+    data.hit(counter) =1;
 end
 elseif condition == 2
   disp(' Waiting to drop below threshold...')
   if Cursor<9
     disp ( 'Resetting Cursor')
+        data.hit(counter) =-1;
     condition = 1;
   end
 end

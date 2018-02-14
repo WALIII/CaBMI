@@ -32,7 +32,7 @@ fileNames = {filelist.name}';
 num_frames = (numel(filelist));
 
 
-for i = 1:num_frames;
+for i = 1:2000%num_frames;
 I(:,:,i) = imread(fullfile(pathName, fileNames{i}));
 end
 
