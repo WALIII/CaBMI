@@ -19,6 +19,17 @@ if ExpType == 1% for 1P data
 end
 
 
+if ExpType == 2% for 2P data
+
+  fr = 30;                                         % frame rate
+  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+  K = 10;                                            % number of components to be found
+  tau = 8;      %8                                    % std of gaussian kernel (half size of neuron)
+  p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+  merge_thr = 0.8;                                  % merging threshold
+
+end
+
 nparams=length(varargin);
 
 if mod(nparams,2)>0
@@ -202,7 +213,7 @@ figure;
 
 
 %% Save ROI coordinates for later...
-try
+
     for i = 1:size(CC,1)
         BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
         [yCoordinates, xCoordinates] = find(BW);
@@ -286,9 +297,8 @@ end
 
 
 
-catch
 
-end
+
 
     roi_ave.C_dec = C_dec;
     roi_ave.S_dec = S_dec;
