@@ -1,10 +1,36 @@
 function [ROI,roi_ave] = CaBMI_Process(varargin)
 % CaBMI_Process
 
+% WAL3
+% 02.14.2018
 
 % Params
-
 ExpType = 1% 1, 2, 3
+
+nparams=length(varargin);
+
+if mod(nparams,2)>0
+	error('Parameters must be specified as parameter/value pairs');
+end
+
+
+for i=1:2:nparams
+	switch lower(varargin{i})
+		case 'filt_rad'
+			filt_rad=varargin{i+1};
+		case 'filt_alpha'
+			filt_alpha=varargin{i+1};
+		case 'lims'
+			lims=varargin{i+1};
+		case 'baseline'
+			per=varargin{i+1};
+        case 'start'
+            sT=varargin{i+1};
+        case 'resize'
+
+	end
+end
+
 
 
 if ExpType == 1% for 1P data
@@ -15,7 +41,9 @@ if ExpType == 1% for 1P data
   tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
-
+  minSNR = 2.0;
+  sSub = 2;                                % spatial downsampling when processing
+  tSub = 4;                                % Temporal downsampling
 end
 
 
@@ -23,23 +51,14 @@ if ExpType == 2% for 2P data
 
   fr = 30;                                         % frame rate
   tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-  K = 10;                                            % number of components to be found
+  K = 7;                                            % number of components to be found
   tau = 8;      %8                                    % std of gaussian kernel (half size of neuron)
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
-
+  minSNR = 3.0;                                     % minimum SNR for trace
+  sSub = 2;                                % spatial downsampling when processing
+  tSub = 4;                                % Temporal downsampling
 end
-
-nparams=length(varargin);
-
-if mod(nparams,2)>0
-	error('Parameters must be specified as parameter/value pairs');
-end
-
-for i=1:2:nparams
-end
-
-
 
 
 
@@ -146,8 +165,8 @@ options = CNMFSetParms(...
     'd1',sizY(1),'d2',sizY(2),...
     'deconv_method','constrained_foopsi',...    % neural activity deconvolution method
     'temporal_iter',2,...                       % number of block-coordinate descent steps
-    'ssub',2,...                                % spatial downsampling when processing
-    'tsub',4,...                                % further temporal downsampling when processing
+    'ssub',sSub,...                                % spatial downsampling when processing
+    'tsub',tSub...                                % further temporal downsampling when processing
     'merge_thr',merge_thr,...                   % merging threshold
     'gSig',tau,...
     'max_size_thr',300,'min_size_thr',10,...    % max/min acceptable size for each component
@@ -155,7 +174,7 @@ options = CNMFSetParms(...
     'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence
     'fr',fr/tsub,...                            % downsamples
     'space_thresh',0.5,...                      % space correlation acceptance threshold
-    'min_SNR',2.0,...                           % trace SNR acceptance threshold
+    'min_SNR',minSNR,...                           % trace SNR acceptance threshold
     'cnn_thr',0.2,...                           % cnn classifier acceptance threshold
     'nb',1,...                                  % number of background components per patch
     'gnb',3,...                                 % number of global background components

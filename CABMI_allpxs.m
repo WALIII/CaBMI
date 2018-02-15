@@ -1,4 +1,4 @@
-function [im1_rgb norm_max_proj] = CABMI_allpxs(MOV_DATA,varargin)
+function [im1_rgb norm_max_proj,I] = CABMI_allpxs(MOV_DATA,varargin)
 %FS_plot_allpxs uses the center of mass (df/f here) (COM) across time to define
 
 
@@ -89,10 +89,11 @@ end
 
 com_idx=repmat(com_idx,[rows columns 1]);
 
-% vars = std(dff,[],3);
-% com_dff=std((dff.*com_idx),[],3)./vars;
+%%% Variability
+%  vars = std(dff,[],3);
+%  com_dff=std((dff.*com_idx),[],3)./vars;
 
-
+%%% Center of mass in time
 mass=sum(dff,3);
 com_dff=sum((dff.*com_idx),3)./mass;
 
@@ -137,6 +138,7 @@ im1_rgb=ind2rgb(idx_img,cmap);
 % Single Use Plotting, make alpha mask
  imwrite(im1_rgb,'Filename.png','Alpha',norm_max_proj);
  I = imread('Filename.png', 'BackgroundColor',[0 0 0]);
- close(1);
-figure(1);  imshow(I);
- imwrite(I, 'NewFilename.jpg');
+ disp('another one');
+%  close(1);
+% figure(1);  imshow(I);
+%  imwrite(I, 'NewFilename.jpg');

@@ -5,7 +5,7 @@ function [I, M, ROI] = CaBMI_Dendrites(I);
 
 % d11.29.2017
 
-% To read in stacks, use  
+% To read in stacks, use
 % >> I = loadtiff('Data_8.tif');
 %
 
@@ -31,13 +31,16 @@ filelist = dir([fileparts(dname) filesep '*.tif']);
 fileNames = {filelist.name}';
 num_frames = (numel(filelist));
 
-
+if num_frames>30;
 for i = 1:2000%num_frames;
 I(:,:,i) = imread(fullfile(pathName, fileNames{i}));
 end
-
+else
+    I = loadtiff(fileName);
 end
 
+
+end
 
 %% Display smoothed movie:
 disp('smoothing data...');
@@ -98,9 +101,11 @@ imagesc(mov_data(:,:,i));
 pause(0.01);
 end
 
-end
 
 [M.cY,M.mY,M.vY] = motion_metrics(I,10);
+end
+
+
 
 
 
