@@ -1,11 +1,32 @@
 function [ROI,roi_ave] = CaBMI_Process(varargin)
-% CaBMI_Process
+  % CaBMI_Process
 
-% WAL3
-% 02.14.2018
+  % WAL3
+  % d02.14.2018
 
-% Params
+  % Processing pipeline for Carmena Lab.
+
+
+  % Dependencies:
+
+  %   NoRMCorre, which can be found here:
+  %       https://github.com/flatironinstitute/NoRMCorre
+  %
+  %   NoRMCorre, which can be found here:
+  %       https://github.com/flatironinstitute/NoRMCorre
+  %
+  %   NoRMCorre, which can be found here:
+  %       https://github.com/flatironinstitute/NoRMCorre
+
+
+
+% Initial Params
 ExpType = 1% 1, 2, 3
+sSub = 2;                                % spatial downsampling when processing
+tSub = 4;                                % Temporal downsampling
+motion_correct = false;                                         % perform motion correction
+non_rigid = false;
+
 
 nparams=length(varargin);
 
@@ -13,28 +34,27 @@ if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
 end
 
-
+% User input
 for i=1:2:nparams
 	switch lower(varargin{i})
-		case 'filt_rad'
-			filt_rad=varargin{i+1};
+		case 'type'
+			ExpType=varargin{i+1};
 		case 'filt_alpha'
 			filt_alpha=varargin{i+1};
 		case 'lims'
 			lims=varargin{i+1};
 		case 'baseline'
 			per=varargin{i+1};
-        case 'start'
-            sT=varargin{i+1};
-        case 'resize'
-
+    case 'sSub'
+      sSub=varargin{i+1};
+    case 'tSub'
+      tSub=varargin{i+1};
 	end
 end
 
 
 
 if ExpType == 1% for 1P data
-
   fr = 20;                                         % frame rate
   tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
   K = 30;                                            % number of components to be found
@@ -42,13 +62,10 @@ if ExpType == 1% for 1P data
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
   minSNR = 2.0;
-  sSub = 2;                                % spatial downsampling when processing
-  tSub = 4;                                % Temporal downsampling
 end
 
 
 if ExpType == 2% for 2P data
-
   fr = 30;                                         % frame rate
   tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
   K = 7;                                            % number of components to be found
@@ -56,15 +73,13 @@ if ExpType == 2% for 2P data
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
   minSNR = 3.0;                                     % minimum SNR for trace
-  sSub = 2;                                % spatial downsampling when processing
-  tSub = 4;                                % Temporal downsampling
 end
 
 
 
 
 
-% complete pipeline for calcium imaging data pre-processing
+% Start complete pipeline for calcium imaging data pre-processing
 
 addpath(genpath('../NoRMCorre'));               % add the NoRMCorre motion correction package to MATLAB path
 gcp;                                            % start a parallel engine
@@ -79,8 +94,7 @@ numFiles = length(files);
 % register files one by one. use template obtained from file n to
 % initialize template of file n + 1;
 
-motion_correct = false;                                         % perform motion correction
-non_rigid = false;                                               % flag for non-rigid motion correction
+                                            % flag for non-rigid motion correction
 if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
 options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
                 'overlap_pre',64,'mot_uf',4,'bin_width',200,'max_shift',24,'max_dev',8,'us_fac',50,...
@@ -100,8 +114,8 @@ for i = 1:numFiles
     end
 end
 
-%% downsample h5 files and save into a single memory mapped matlab file
 
+%% downsample h5 files and save into a single memory mapped matlab file
 if motion_correct
     h5_files = subdir(fullfile(foldername,['*',append,'.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
 else
@@ -152,6 +166,7 @@ for i = 1:numFiles
     data.sizY(1,3) = cnt;
 end
 data.F_dark = F_dark;
+
 %% now run CNMF on patches on the downsampled file, set parameters first
 
 sizY = data.sizY;                       % size of data matrix
@@ -231,7 +246,7 @@ figure;
     linkaxes([ax1,ax2],'xy')
 
 
-%% Save ROI coordinates for later...
+%% Save ROI coordinates for later, and include for manual selection.
 
     for i = 1:size(CC,1)
         BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
@@ -260,8 +275,8 @@ C_keep = C(keep,:);
 % tic;
 % [C_keep,f_keep,Pk,Sk,YrAk] = update_temporal_components_fast(data,A_keep,b,C_keep,f,P,options);
 % toc
-%
 % plot_components_GUI(data,A_keep,C_keep,b,f,Cn,options)
+
 if exist('YrAk','var'); R_keep = YrAk; else; R_keep = YrA(keep,:); end
 
 %% extract fluorescence on native temporal resolution
@@ -317,7 +332,7 @@ end
 
 
 
-
+%% Consolidate ROI Data for saving. 
 
     roi_ave.C_dec = C_dec;
     roi_ave.S_dec = S_dec;
@@ -327,10 +342,8 @@ end
     roi_ave.neuron_sn = S_dec;
 
 
-
     save_dir='roi';
     mkdir(save_dir);
 
-
+disp('Saving ROI data');
     save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI');
-%save('ROI_data',

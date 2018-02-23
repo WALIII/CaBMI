@@ -1,9 +1,28 @@
 function [ROI,roi_ave] = CaBMI_1P_Process(varargin)
 % CaBMI_Process
 
+% WAL3
 
-% Params
+% d03.14.2018
 
+% Processing pipeline for Carmena Lab.
+
+
+% Dependencies:
+
+%   NoRMCorre, which can be found here:
+%       https://github.com/flatironinstitute/NoRMCorre
+%
+%   NoRMCorre, which can be found here:
+%       https://github.com/flatironinstitute/NoRMCorre
+%
+%   NoRMCorre, which can be found here:
+%       https://github.com/flatironinstitute/NoRMCorre
+
+
+
+
+% What type of experiment? 2P, 1P?
 ExpType = 1% 1, 2, 3
 
 

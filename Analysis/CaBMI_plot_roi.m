@@ -101,8 +101,6 @@ to_del=[];
  	end
  end
 
-
-
 % mov_listing(to_del)=[];
 
 roi_n=length(ROIS.coordinates);
@@ -111,11 +109,11 @@ roi_n=length(ROIS.coordinates);
 
 
 % [rows,columns,frames]=size(mov_data);
-% 
+%
 % ave_time=0:1/ave_fs:(size(mov_data,3)-1)/30;
-% 
+%
 % % need to interpolate the average onto a new time bases
-% 
+%
 % roi_ave.raw={};
 % roi_ave.interp_dff=zeros(roi_n,length(ave_time),length(mov_listing));
 % roi_ave.interp_raw=zeros(roi_n,length(ave_time),length(mov_listing));
