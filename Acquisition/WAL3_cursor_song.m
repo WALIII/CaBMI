@@ -68,6 +68,7 @@ data.cursor_actual(:,frame_idx) = CURSOR;
 case 2
 data.cursor(:,frame_idx) = ROI_norm(1,frame_idx)+ROI_norm(2,frame_idx) - (ROI_norm(3,frame_idx)+ROI_norm(4,frame_idx));
 % OPTIONAL: Smooth cursor
+
 rn = 3; % running average...
 CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/1);
 data.cursor_actual(:,frame_idx) = CURSOR;
@@ -75,11 +76,9 @@ data.cursor_actual(:,frame_idx) = CURSOR;
 
 %% Song BMI
 case 3
-
     for i = 1:4
         ID(i) = ROI_dff(i,end);
             end
-
      [M,I] = max(ID);
 
      if M>1;
@@ -89,8 +88,6 @@ case 3
          CURSOR =0;
          data.cursor(:,frame_idx) = CURSOR;
     end
-
-
 
 
 end
