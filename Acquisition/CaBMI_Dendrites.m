@@ -65,6 +65,7 @@ str = input(prompt,'s');
 
 if isempty(str)
     str = 'N';
+    M = 'N/A';
 end
 
 if str == 'y'
@@ -103,6 +104,9 @@ end
 
 
 [M.cY,M.mY,M.vY] = motion_metrics(I,10);
+
+else
+        M = 'N/A';
 end
 
 
