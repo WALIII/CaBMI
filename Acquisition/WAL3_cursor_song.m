@@ -20,12 +20,12 @@ cells = 4; % number of cells for BMI ( hard-wired for 4 currently)
 
 
 if nargin < 5
-v = 1; % this will choses which BMI to run
+v = 2; % this will choses which BMI to run
 end
 
 
 
-%%% Basic Test Flight- 
+%%% Basic Test Flight-
 % standard BMI
 dsample_fact = 1;
 Im = imresize(single(round(Im)),1/dsample_fact); % convert from 16bit
@@ -41,11 +41,13 @@ if frame_idx>10;
     for i = 1:4
         baseline(i,:) = prctile(data.ROI_val(i,2:end),5); % if addaptive, change 99 to 'end'
     end
-        
+
     for i = 1:4;
         ROI_dff(i,:) = (data.ROI_val(i,2:end)-baseline(i,:))./baseline(i,:)*100;
+        % normalize
+        ROI_norm(i,:) = (ROI_dff(i,:) - mean(ROI_dff(i,:)))/std(ROI_dff(i,:));
     end
-    
+
 
 %create the cursor as the difference btw the 2 groups of ROIs
 frame_idx = frame_idx-1;
@@ -58,29 +60,38 @@ case  1
 data.cursor(:,frame_idx) = ROI_dff(1,frame_idx)+ROI_dff(2,frame_idx) - (ROI_dff(3,frame_idx)+ROI_dff(4,frame_idx));
 % OPTIONAL: Smooth cursor
 rn = 3; % running average...
-CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/35);
+NormFactor = 35;
+CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/NormFactor);
+data.cursor_actual(:,frame_idx) = CURSOR;
+
+% Normalized BMI
+case 2
+data.cursor(:,frame_idx) = ROI_norm(1,frame_idx)+ROI_norm(2,frame_idx) - (ROI_norm(3,frame_idx)+ROI_norm(4,frame_idx));
+% OPTIONAL: Smooth cursor
+rn = 3; % running average...
+CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/1);
 data.cursor_actual(:,frame_idx) = CURSOR;
 
 
 %% Song BMI
-case 2
-    
+case 3
+
     for i = 1:4
         ID(i) = ROI_dff(i,end);
             end
-    
+
      [M,I] = max(ID);
-     
+
      if M>1;
      CURSOR = I;
      data.cursor(:,frame_idx) = CURSOR;
-     else 
+     else
          CURSOR =0;
          data.cursor(:,frame_idx) = CURSOR;
     end
 
-     
-    
+
+
 
 end
 
@@ -96,6 +107,3 @@ data.ROI_dff = zeros(4,10); % cant computer df/f
     CURSOR = 0;
 
 end
-
-
-
