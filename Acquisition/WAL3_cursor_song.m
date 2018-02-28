@@ -92,10 +92,60 @@ case 3
 
 end
 
+%% Sequential BMI
+case 4
+
+S_level = 0;
+max_hold = 3;
+wt_time = 25;
+tempT = 0;
+cursor = 1;
+
+if ROI_norm(1,frame_idx) > 3 && ROI_norm(2,frame_idx) < 3;
+  cursor = 4;
+   S_level = 1;
+ end
+
+ % Step one
+ if S_level == 1;
+   if ROI_norm(2,frame_idx) > 3 && ROI_norm(1,frame_idx) < 3 && ROI_norm(3,frame_idx) < 3;
+     cursor = 6;
+      S_level = 2;
+    elseif ROI_norm(1,frame_idx) > 3 && ROI_norm(2,frame_idx) < 3;
+    end
+  end
+
+ % Step two
+  if S_level == 2;
+    if ROI_norm(3,frame_idx) > 3 && ROI_norm(2,frame_idx) < 3 && ROI_norm(4,frame_idx) < 3;
+      cursor = 6;
+       S_level = 3;
+     elseif ROI_norm(2,frame_idx) > 3 && ROI_norm(3,frame_idx) < 3;
+     end
+   end
+
+   % Step three
+    if S_level == 3;
+      if ROI_norm(3,frame_idx) > 3 && ROI_norm(2,frame_idx) < 3 && ROI_norm(4,frame_idx) < 3;
+        cursor = 8;
+         S_level = 4;
+       elseif ROI_norm(3,frame_idx) > 3 && ROI_norm(4,frame_idx) < 3;
+       end
+     end
+
+     % Step four
+      if S_level == 4;
+        if ROI_norm(4,frame_idx) > 3 && ROI_norm(3,frame_idx) < 3;
+          cursor = 10;
+           S_level = 0;
+         elseif ROI_norm(3,frame_idx) > 3 && ROI_norm(4,frame_idx) < 3;
+         end
+       end
+
+
+
 data.ROI_val = data.ROI_val;
 data.ROI_dff = ROI_dff;
-
-
 
 
 else
