@@ -95,64 +95,75 @@ case 3
 %% Sequential BMI
 case 4
 
-S_level = 0;
+S_level = 1;
 max_hold = 3;
 wt_time = 25;
 tempT = 0;
 cursor = 1;
 Ht = 2;
- if S_level == 0;
-if ROI_norm(1,frame_idx) > Ht && ROI_norm(2,frame_idx) < Ht;
-   S_level = 1;
+
+
+cursor = S_level*2;
+if ROI_norm(S_level,frame_idx) > Ht && ROI_norm(S_level+1,frame_idx) < Ht;
+S_level = S_level+1;
+disp('UPGRADE')
 end
- end
+if ROI_norm(S_level+1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
+   S_level = S_level-1;
+   disp('DOWNGRADE')
+end
+if S_level == 5;
+  S_level =1;
+  disp('RESET')
+end
 
- % Step one
- if S_level == 1;
-
-   if ROI_norm(2,frame_idx) > Ht && ROI_norm(1,frame_idx) < Ht && ROI_norm(3,frame_idx) < Ht;
-             S_level = 2;
-   elseif ROI_norm(1,frame_idx) > Ht && ROI_norm(2,frame_idx) < Ht;
-              S_level = 0;
-              disp('** DOWNGRADE***');
-   else
-       disp('cont');
-             cursor = 2;
-   end
-  end
-
- % Step two
-  if S_level == 2;
-       cursor = 4;
-
-    if ROI_norm(3,frame_idx) > Ht && ROI_norm(2,frame_idx) < H2 && ROI_norm(4,frame_idx) < Ht;
-               S_level = 3;
-     elseif ROI_norm(2,frame_idx) > Ht && ROI_norm(3,frame_idx) < Ht;
-                S_level = 1;
-     end
-   end
-
-   % Step three
-    if S_level == 3;
-         cursor = 6;
-      if ROI_norm(3,frame_idx) > Ht && ROI_norm(2,frame_idx) < Ht && ROI_norm(4,frame_idx) < Ht;
-          S_level = 4;
-       elseif ROI_norm(3,frame_idx) > Ht && ROI_norm(4,frame_idx) < Ht;
-          S_level = 2;
-       end
-     end
-
-     % Step four
-      if S_level == 4;
-           cursor = 8;
-
-        if ROI_norm(4,frame_idx) > Ht && ROI_norm(3,frame_idx) < Ht;
-           S_level = 0;
-           cursor = 10;
-         elseif ROI_norm(3,frame_idx) > Ht && ROI_norm(4,frame_idx) < Ht;
-                S_level = 3;
-        end
-      end
+ %
+ % % Step one
+ % if S_level == 1;
+ %
+ %   if ROI_norm(2,frame_idx) > Ht && ROI_norm(1,frame_idx) < Ht && ROI_norm(3,frame_idx) < Ht;
+ %             S_level = 2;
+ %   elseif ROI_norm(1,frame_idx) > Ht && ROI_norm(2,frame_idx) < Ht;
+ %              S_level = 0;
+ %              disp('** DOWNGRADE***');
+ %   else
+ %       disp('cont');
+ %             cursor = 2;
+ %   end
+ %  end
+ %
+ % % Step two
+ %  if S_level == 2;
+ %       cursor = 4;
+ %
+ %    if ROI_norm(3,frame_idx) > Ht && ROI_norm(2,frame_idx) < H2 && ROI_norm(4,frame_idx) < Ht;
+ %               S_level = 3;
+ %     elseif ROI_norm(2,frame_idx) > Ht && ROI_norm(3,frame_idx) < Ht;
+ %                S_level = 1;
+ %     end
+ %   end
+ %
+ %   % Step three
+ %    if S_level == 3;
+ %         cursor = 6;
+ %      if ROI_norm(3,frame_idx) > Ht && ROI_norm(2,frame_idx) < Ht && ROI_norm(4,frame_idx) < Ht;
+ %          S_level = 4;
+ %       elseif ROI_norm(3,frame_idx) > Ht && ROI_norm(4,frame_idx) < Ht;
+ %          S_level = 2;
+ %       end
+ %     end
+ %
+ %     % Step four
+ %      if S_level == 4;
+ %           cursor = 8;
+ %
+ %        if ROI_norm(4,frame_idx) > Ht && ROI_norm(3,frame_idx) < Ht;
+ %           S_level = 0;
+ %           cursor = 10;
+ %         elseif ROI_norm(3,frame_idx) > Ht && ROI_norm(4,frame_idx) < Ht;
+ %                S_level = 3;
+ %        end
+ %      end
 
        data.cursor_actual(:,frame_idx) = cursor;
        CURSOR = cursor;
