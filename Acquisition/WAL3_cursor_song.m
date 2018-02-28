@@ -94,20 +94,21 @@ case 3
 
 %% Sequential BMI
 case 4
+if data.cursor(:,frame_idx-1)/2 == 0;
+    cursor =2;
+    S_level = 1;
+else
+S_level = data.cursor(:,frame_idx-1)/2;
+end
 
-S_level = 1;
-max_hold = 3;
-wt_time = 25;
-tempT = 0;
-cursor = 1;
 Ht = 2;
 
 
-cursor = S_level*2;
 if ROI_norm(S_level,frame_idx) > Ht && ROI_norm(S_level+1,frame_idx) < Ht;
 S_level = S_level+1;
 disp('UPGRADE')
 end
+
 if ROI_norm(S_level+1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
    S_level = S_level-1;
    disp('DOWNGRADE')
@@ -117,6 +118,7 @@ if S_level == 5;
   disp('RESET')
 end
 
+cursor = S_level*2;
  %
  % % Step one
  % if S_level == 1;
