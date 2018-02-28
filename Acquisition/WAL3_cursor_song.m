@@ -104,6 +104,9 @@ Ht = 2;
 
 
 cursor = S_level*2;
+
+if S_level == 1;
+
 if ROI_norm(S_level,frame_idx) > Ht && ROI_norm(S_level+1,frame_idx) < Ht;
 S_level = S_level+1;
 disp('UPGRADE')
@@ -112,7 +115,36 @@ if ROI_norm(S_level+1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
    S_level = S_level-1;
    disp('DOWNGRADE')
 end
-if S_level == 5;
+
+elseif S_level > 1 && S_level < 4
+
+  if ROI_norm(S_level,frame_idx) > Ht && ROI_norm(S_level+1,frame_idx) < Ht && ROI_norm(S_level-1,frame_idx) < Ht;
+  S_level = S_level+1;
+  disp('UPGRADE')
+  end
+  if ROI_norm(S_level+1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
+     S_level = S_level-1;
+     disp('DOWNGRADE')
+  end
+  if ROI_norm(S_level-1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
+     S_level = S_level-1;
+     disp('DOWNGRADE')
+  end
+
+
+elseif S_level == 4;
+
+  if ROI_norm(S_level,frame_idx) > Ht && ROI_norm(S_level-1,frame_idx) < Ht;
+  S_level = S_level+1;
+  disp('UPGRADE')
+  end
+  if ROI_norm(S_level-1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
+     S_level = S_level-1;
+     disp('DOWNGRADE')
+  end
+
+
+elseif S_level == 5;
   S_level =1;
   disp('RESET')
 end
