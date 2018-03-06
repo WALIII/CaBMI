@@ -128,10 +128,10 @@ elseif S_level > 1 && S_level < 4
      S_level = S_level-1;
      disp('DOWNGRADE')
   end
-  if ROI_norm(S_level-1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
-     S_level = S_level-1;
-     disp('DOWNGRADE')
-  end
+%   if ROI_norm(S_level-1,frame_idx) > Ht && ROI_norm(S_level,frame_idx) < Ht;
+%      S_level = S_level-1;
+%      disp('DOWNGRADE')
+%   end
 
 
 elseif S_level == 4;
