@@ -1,6 +1,10 @@
 function CaBMI_DataParse(C_dec,S_dec,Input0,Input1,Timems);
 % Basic parsing and plitting funciton
 
+
+% DO NOT USE
+
+
 % params
 SampRate = 9800;
 trials = 19;

@@ -5,7 +5,7 @@ function [ROI,roi_ave] = CaBMI_Process(varargin)
   % d02.14.2018
 
   % Processing pipeline for Carmena Lab.
-
+	% example: [ROI,roi_ave] = CaBMI_Process('type',2);
 
   % Dependencies:
 
@@ -181,7 +181,7 @@ options = CNMFSetParms(...
     'deconv_method','constrained_foopsi',...    % neural activity deconvolution method
     'temporal_iter',2,...                       % number of block-coordinate descent steps
     'ssub',sSub,...                                % spatial downsampling when processing
-    'tsub',tSub...                                % further temporal downsampling when processing
+    'tsub',tSub,...                                % further temporal downsampling when processing
     'merge_thr',merge_thr,...                   % merging threshold
     'gSig',tau,...
     'max_size_thr',300,'min_size_thr',10,...    % max/min acceptable size for each component
@@ -332,7 +332,7 @@ end
 
 
 
-%% Consolidate ROI Data for saving. 
+%% Consolidate ROI Data for saving.
 
     roi_ave.C_dec = C_dec;
     roi_ave.S_dec = S_dec;
