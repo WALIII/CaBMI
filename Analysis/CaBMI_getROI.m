@@ -1,4 +1,8 @@
 function [ROIhits, ROIhits_d, ROIhits_s]= CaBMI_getROI(roi_ave,roi_hits);
+% CaBMI_getROI.m
+
+% wal3
+% d03.19.18
 
 
   for i = 1:size(roi_hits)
