@@ -247,14 +247,13 @@ figure;
 
 
 %% Save ROI coordinates for later, and include for manual selection.
-counter = 1;
+
     for i = 1:size(CC,1)
         try
         BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
         [yCoordinates, xCoordinates] = find(BW);
-        ROI.coordinates{counter}(:,1) = xCoordinates;
-        ROI.coordinates{counter}(:,2) = yCoordinates;
-        counter= counter+1;
+        ROI.coordinates{i}(:,1) = xCoordinates;
+        ROI.coordinates{i}(:,2) = yCoordinates;
         catch
             disp('ROI missing, skipping over it.')
         end
@@ -262,18 +261,14 @@ counter = 1;
 
 
     for i = 1: size(ROI.coordinates,2)
-        try
     	ROI.stats(i).Centroid=mean(ROI.coordinates{i});
     	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
     	k=convhull(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2));
     	ROI.stats(i).ConvexHull=ROI.coordinates{i}(k,:);
-        catch
-        ROI.stats(i).Centroid=mean(ROI.coordinates{i});
-    	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
-    	k = [];
-    	ROI.stats(i).ConvexHull= [];
-        end
     end
+
+    disp('dd');
+end
 
     ROI.type = 'Image';
 
