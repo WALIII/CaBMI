@@ -2,7 +2,7 @@ function CaBMI_mptif
 
 
 
-final_folder = 'Processed\Mtiff_folder';
+final_folder = 'Processed\Mtiff_folder2';
 mkdir(final_folder);
   % motion correction;
   mov_listing=dir('*.tif');

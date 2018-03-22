@@ -21,7 +21,7 @@ function [ROI,roi_ave] = CaBMI_Process(varargin)
 
 
 % Initial Params
-ExpType = 1% 1, 2, 3
+ExpType = 1;% 1, 2, 3
 sSub = 2;                                % spatial downsampling when processing
 tSub = 4;                                % Temporal downsampling
 motion_correct = false;                                         % perform motion correction
@@ -247,7 +247,7 @@ figure;
 
 
 %% Save ROI coordinates for later, and include for manual selection.
-
+try
     for i = 1:size(CC,1)
         BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
         [yCoordinates, xCoordinates] = find(BW);
@@ -262,6 +262,9 @@ figure;
     	k=convhull(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2));
     	ROI.stats(i).ConvexHull=ROI.coordinates{i}(k,:);
     end
+catch
+    disp('dd');
+end
 
     ROI.type = 'Image';
 

@@ -12,5 +12,5 @@ mov_listing={mov_listing(:).name};
 filenames=mov_listing;
 
 
-data = csvread(filenames{1},0,0);
+data = csvread(filenames{1},1,0);
 data = data(:,1:3);
