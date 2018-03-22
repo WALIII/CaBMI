@@ -4,7 +4,7 @@ function [VidHits, I]= CaBMI_getvid(ds_data,ds_hits);
 
 
 for i = 1:size(ds_hits)
-VidHits(:,:,:,i) = (ds_data(:,:,ds_hits(i)-7:ds_hits(i)+7));
+VidHits(:,:,:,i) = (ds_data(:,:,ds_hits(i)-30:ds_hits(i)+30));
 end
 
 disp('making time movies')
