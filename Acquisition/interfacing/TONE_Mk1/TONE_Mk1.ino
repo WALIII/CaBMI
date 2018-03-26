@@ -49,7 +49,7 @@ else if (melody < 3500 && count > 0){
   Serial.print(",");
   Serial.print(melody);
    Serial.print(",");
-   Serial.println(counter);
+   Serial.println(analogRead(sensorPin));
 
 
 // Timeout
