@@ -55,13 +55,13 @@ end
 
 
 if ExpType == 1% for 1P data
-  fr = 20;                                         % frame rate
-  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-  K = 30;                                            % number of components to be found
-  tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
+  fr = 30;                                         % frame rate
+  tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+  K = 20;      %30                                      % number of components to be found
+  tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
-  minSNR = 2.0;
+  minSNR = 1.0;
 end
 
 
@@ -238,7 +238,7 @@ keep = (ind_corr | ind_cnn) & ind_exc;
 throw = ~keep;
 Coor_k = [];
 Coor_t = [];
-Cn = Y(:,:,1);
+Cn = Y(:,:,10);
 figure;
     ax1 = subplot(121);
     [CC,jsf] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
@@ -358,4 +358,4 @@ end
     mkdir(save_dir);
 
 disp('Saving ROI data');
-    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI');
+    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI','-v7.3');

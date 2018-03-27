@@ -14,10 +14,12 @@ function Automation_overview
 
 % Initialize:
 START_DIR_ROOT = cd; % or a scheduled folder...
-if exist('Processed_Data','files'
-mkdir('Processed_Data');
+if exist('Processed','file') >=0;;
+ mkdir('Processed');
+end
+% 
 
-
+csv_ext = 0;
 
 
 % Run through everything
@@ -39,7 +41,7 @@ end
 
 
 % Run through all folder...
-for i = 1:length(subFolders)
+for i = 1:length(subFolders)-1;
 disp(['entering folder', char(subFolders(i).name)])
 cd(subFolders(i).name)
 
@@ -77,9 +79,22 @@ disp('extracting tifs...')
 end
 
 
+% Extracting CSV
+if csv_ext ==1;
+disp('Saving CSV extraction...');
+try
+[csv_data] = CaBMI_csvExtract;
+mkdir([START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
+save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','csv_data'],'csv_data','-v7.3');
+catch
+    disp('NO CSV file, skipping...')
+end
+end
+
+
   if exist('Processed/roi','file') >= 1 %
         disp( ' Folder already extracted!');
-        continue;
+        
   else
         disp(' mptiffs extracted, getting ROIs...')
     
@@ -95,8 +110,9 @@ end
         end
   end
 
-
-
+% copy data over
+disp('copying data...');
+copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
 % TO DO: Go back, and extract ROIs on the 'MAP' files.
 % TO DO: Send warnings via text
  end
