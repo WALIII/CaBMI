@@ -15,7 +15,7 @@ int sensorPin = 0;
 long count = 0; //how many itterations over thresh
 int counter = 0; // total Timeouts
 int counter1 = 0;
-int status = 0;
+int swtch = 1;
 // Setup
 
 // Smoothing factor
@@ -110,7 +110,7 @@ if (OUT > 10000) {
   int swtch = 1;
   int status =1;
 }}
-elseif (swtch == 1){
+else if (swtch == 1){
   if (OUT < 6000){
   int  swtch = 0;
   int status = 0;
@@ -118,7 +118,7 @@ elseif (swtch == 1){
   else{
     int status = -1;
     // Do nothing.. need to reset
-  }
+  }}
 
 
 // Timeout
@@ -140,12 +140,12 @@ counter1 = counter1 + 1;
       Serial.print(",");
       Serial.print(OUT);
       Serial.print(",");
-      Serial.print(average);
+      Serial.print(test235
+      yyy);
       Serial.print(",");
       Serial.print(average2-average);
-      Serial.print(",");
-      Serial.print(status);
       Serial.println(",");
+
 
 
 

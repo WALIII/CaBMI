@@ -16,39 +16,39 @@ function FS_tiff(videodata,varargin)
   %
   %
 
-  
 
-  
+
+
   nparams=length(varargin);
 
 % if mod(nparams,2)>0
 % 	error('Parameters must be specified as parameter/value pairs');
 % end
-filename = 'G.tiff';
+filename = 'G.tif';
 
 [files, n] = FS_Format(videodata,1);
 for i=1:2:nparams
 	switch lower(varargin{i})
 		case 'colors'
 			colors=varargin{i+1};
-            
+
         case 's_smooth'
             a=varargin{i+1};
 			for i = 1: size(files,3)
                 files(:,:,i) = wiener2(files(:,:,i),[a a]);
             end
-            
+
         case 't_smooth'
 			b=varargin{i+1};
                 files = convn(files, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
         case 'fname'
             filename=varargin{i+1};
-                
-            
-	
+
+
+
     end
 end
-  
+
 
 
 % d = files2;
@@ -65,7 +65,7 @@ end
 
 
 for i=2:size(files,3) %number of images to be read
-    
+
     K = files(:,:,i);
 %     K = wiener2(K,[5 5]);
 if size(size(videodata),2) ==4
