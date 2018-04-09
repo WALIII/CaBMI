@@ -6,9 +6,13 @@ function [ROIhits, ROIhits_d, ROIhits_s]= CaBMI_getROI(roi_ave,roi_hits);
 
 
   for i = 1:size(roi_hits)
+      try
 ROIhits(i,:,:) = (roi_ave.F_dff(:,roi_hits(i)-200:roi_hits(i)+200))';
 ROIhits_d(i,:,:) = (roi_ave.C_dec(:,roi_hits(i)-200:roi_hits(i)+200))';
 ROIhits_s(i,:,:) = (roi_ave.S_dec(:,roi_hits(i)-200:roi_hits(i)+200))';
+      catch
+          disp(' one hit is too close to the end...');
+      end
   end
 
   
@@ -19,7 +23,5 @@ end
   end
 
   
-data3.undirected = G1(20:80,185:235,:);
-data3.directed = G1(40:70,185:235,:);
-[indX,B,C] = CaBMI_schnitz(data3);
+
   

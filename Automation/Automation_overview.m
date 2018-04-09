@@ -19,7 +19,8 @@ if exist('Processed','file') >=0;;
 end
 % 
 
-csv_ext = 0;
+csv_ext = 0; % extract .csv file? 1 = yes.
+mov_ext = 1; % extract downsampled video? 1 = yes
 
 
 % Run through everything
@@ -78,17 +79,21 @@ CaBMI_mptif; % add a delete term to the raw tifs....
 disp('extracting tifs...')
 end
 
-
+mkdir([START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
 % Extracting CSV
 if csv_ext ==1;
 disp('Saving CSV extraction...');
 try
 [csv_data] = CaBMI_csvExtract;
-mkdir([START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
 save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','csv_data'],'csv_data','-v7.3');
 catch
     disp('NO CSV file, skipping...')
 end
+end
+
+if mov_ext ==1;
+load('Processed\ds_data','Y')
+save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','Y.mat'],'Y','-v7.3');
 end
 
 

@@ -45,7 +45,8 @@ while hasFrame(v1)
      filename = ['Data_',num2str(i.','%03d'),'.tif'];
      disp('Smoothing data...');
      % Smooth data by 'b'
-            vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
+            %vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
+            vK = single(medfilt3(Xx,[1 1 9]));
      if i ==1;
                  
           % Tke the filtered mean

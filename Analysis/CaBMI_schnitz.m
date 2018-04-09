@@ -12,15 +12,22 @@ clear G;
 clear G2
 for i = 1:Cel;
     G(i,:) = zscore((mean(data.directed(:,:,i),1)));
+    
+    Gp(i,:) = smooth(G(i,:),10);
+
     G_std(i,:) = ((var(data.directed(:,:,i),[],1)));
 end
 
 for i = 1:Cel;
     G2(i,:) = zscore((mean(data.undirected(:,:,i),1)));
+
+    Gp2(i,:) = smooth(G2(i,:),10);
+
     G2_std(i,:) = ((var(data.undirected(:,:,i),[],1)));
 end
 
-
+G = Gp;
+G2= Gp2;
 
 [maxA, Ind] = max(G, [], 2);
 [dummy, index] = sort(Ind);
@@ -31,11 +38,11 @@ B_2  = (G_std(index, :));
 C_2  = (G2_std(index, :));
 % D =  (R(index, :));
 indX = index;
-figure();
+
 
 subplot(1,2,1)
 imagesc((B), [0, 3]);
-title('Directed Trials');
+title('Sorted Trials');
 ylabel('ROIs');
 xlabel('Frames');
 hold on;
@@ -44,7 +51,7 @@ subplot(1,2,2)
 
 imagesc((C), [0, 3] );
 
-title('UnDirected Trials');
+title('Usorted Trials');
 ylabel('ROIs');
 xlabel('Frames');
  colormap(hot);
@@ -53,26 +60,25 @@ xlabel('Frames');
 
 
 
-
- figure();
-
-subplot(1,2,1)
-imagesc((B_2) );
-title('Directed Trials');
-ylabel('ROIs');
-xlabel('Frames');
-hold on;
-subplot(1,2,2)
-
-
-imagesc((C_2) );
-
-title('UnDirected Trials');
-ylabel('ROIs');
-xlabel('Frames');
- colormap(hot);
-
- colorbar
+% 
+% 
+% subplot(1,2,1)
+% imagesc((B_2) );
+% title('Sorted Trials');
+% ylabel('ROIs');
+% xlabel('Frames');
+% hold on;
+% subplot(1,2,2)
+% 
+% 
+% imagesc((C_2) );
+% 
+% title('Sorted by the Left Panel');
+% ylabel('ROIs');
+% xlabel('Frames');
+%  colormap(hot);
+% 
+%  colorbar
  
  % figure();
 %

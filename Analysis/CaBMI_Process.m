@@ -55,7 +55,7 @@ end
 
 
 if ExpType == 1% for 1P data
-  fr = 30;                                         % frame rate
+  fr = 20;                                         % frame rate
   tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
   K = 20;      %30                                      % number of components to be found
   tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)

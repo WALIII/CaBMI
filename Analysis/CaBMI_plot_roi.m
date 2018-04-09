@@ -90,7 +90,7 @@ mkdir(save_dir);
 % TODO check to see what is in the directery- or ask. what format to use, if more than one....
 
 % mov_listing=dir(fullfile(pwd,'*.tif'));
-mov_listing=dir(fullfile(pwd,'*.mat'));
+mov_listing=dir(fullfile(pwd,'*.tif'));
 mov_listing={mov_listing(:).name};
 
 
@@ -130,12 +130,15 @@ clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear o
 
 	warning('off','all')
 		disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
-		load(fullfile(pwd,mov_listing{i}),'video');
+        
+		
+        %load(fullfile(pwd,mov_listing{i}),'video');
+        mov_data = loadtiff((fullfile(pwd,mov_listing{i})));
 	warning('on','all')
 
 
-	mov_data2 = video.frames;
-	[mov_data, n] = FS_Format(mov_data2,1);
+	
+	%[mov_data, n] = FS_Format(mov_data2,1);
 	clear mov_data2;
     clear video;
 	% resize if we want
