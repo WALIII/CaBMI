@@ -20,7 +20,7 @@ cells = 4; % number of cells for BMI ( hard-wired for 4 currently)
 
 
 if nargin < 5
-v = 4; % this will choses which BMI to run
+v = 2; % this will choses which BMI to run
 end
 
 
@@ -66,11 +66,12 @@ data.cursor_actual(:,frame_idx) = CURSOR;
 
 % Normalized BMI
 case 2
+    mult_fact = 2;
 data.cursor(:,frame_idx) = ROI_norm(1,frame_idx)+ROI_norm(2,frame_idx) - (ROI_norm(3,frame_idx)+ROI_norm(4,frame_idx));
 % OPTIONAL: Smooth cursor
 
 rn = 3; % running average...
-CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))/1);
+CURSOR = round(5+(mean(data.cursor(:,frame_idx-rn:frame_idx)))*mult_fact);
 data.cursor_actual(:,frame_idx) = CURSOR;
 
 
