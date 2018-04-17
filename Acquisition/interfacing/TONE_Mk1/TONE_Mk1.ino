@@ -30,7 +30,7 @@ void loop() {
 tone(8, melody, 100);
 
 // Track cursor
-if (melody > 3500){
+if (melody > 5500){
   digitalWrite(3, HIGH);
 count = count+1;}
 else if (melody < 3500 && count > 0){
@@ -49,7 +49,7 @@ else if (melody < 3500 && count > 0){
   Serial.print(",");
   Serial.print(melody);
    Serial.print(",");
-   Serial.println(counter);
+   Serial.println(analogRead(sensorPin));
 
 
 // Timeout
@@ -60,7 +60,7 @@ else if (melody < 3500 && count > 0){
       count = 0;
       counter = counter+1;
     }
-    delay(50);
+    delay(5);
   }
 
 

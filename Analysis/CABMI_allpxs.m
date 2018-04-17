@@ -15,8 +15,8 @@ MOV_DATA = abs(double((MOV_DATA2)));
 nparams=length(varargin);
 
 
-filt_rad=20; % gauss filter radius
-filt_alpha=30; % gauss filter alpha
+filt_rad=10; % gauss filter radius
+filt_alpha=10; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap= colormap(jet);%  cubehelix(200,[0.9,-1,7,1]));
 per=3; % baseline percentile (0 for min)
@@ -90,12 +90,12 @@ end
 com_idx=repmat(com_idx,[rows columns 1]);
 
 %%% Variability
-%  vars = std(dff,[],3);
-%  com_dff=std((dff.*com_idx),[],3)./vars;
+%   vars = std(dff,[],3);
+%   com_dff=std((dff.*com_idx),[],3)./vars;
 
 %%% Center of mass in time
-mass=sum(dff,3);
-com_dff=sum((dff.*com_idx),3)./mass;
+ mass=sum(dff,3);
+ com_dff=sum((dff.*com_idx),3)./mass;
 
 
 
@@ -140,5 +140,5 @@ im1_rgb=ind2rgb(idx_img,cmap);
  I = imread('Filename.png', 'BackgroundColor',[0 0 0]);
  disp('another one');
 %  close(1);
-% figure(1);  imshow(I);
+figure(1);  imshow(I);
 %  imwrite(I, 'NewFilename.jpg');

@@ -5,7 +5,7 @@ function [ROI,roi_ave] = CaBMI_Process(varargin)
   % d02.14.2018
 
   % Processing pipeline for Carmena Lab.
-
+	% example: [ROI,roi_ave] = CaBMI_Process('type',2);
 
   % Dependencies:
 
@@ -21,7 +21,7 @@ function [ROI,roi_ave] = CaBMI_Process(varargin)
 
 
 % Initial Params
-ExpType = 1% 1, 2, 3
+ExpType = 1;% 1, 2, 3
 sSub = 2;                                % spatial downsampling when processing
 tSub = 4;                                % Temporal downsampling
 motion_correct = false;                                         % perform motion correction
@@ -56,12 +56,12 @@ end
 
 if ExpType == 1% for 1P data
   fr = 20;                                         % frame rate
-  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-  K = 30;                                            % number of components to be found
-  tau = 4;      %8                                    % std of gaussian kernel (half size of neuron)
+  tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+  K = 20;      %30                                      % number of components to be found
+  tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
-  minSNR = 2.0;
+  minSNR = 1.0;
 end
 
 
@@ -181,7 +181,7 @@ options = CNMFSetParms(...
     'deconv_method','constrained_foopsi',...    % neural activity deconvolution method
     'temporal_iter',2,...                       % number of block-coordinate descent steps
     'ssub',sSub,...                                % spatial downsampling when processing
-    'tsub',tSub...                                % further temporal downsampling when processing
+    'tsub',tSub,...                                % further temporal downsampling when processing
     'merge_thr',merge_thr,...                   % merging threshold
     'gSig',tau,...
     'max_size_thr',300,'min_size_thr',10,...    % max/min acceptable size for each component
@@ -238,7 +238,7 @@ keep = (ind_corr | ind_cnn) & ind_exc;
 throw = ~keep;
 Coor_k = [];
 Coor_t = [];
-Cn = Y(:,:,1);
+Cn = Y(:,:,10);
 figure;
     ax1 = subplot(121);
     [CC,jsf] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
@@ -247,20 +247,32 @@ figure;
 
 
 %% Save ROI coordinates for later, and include for manual selection.
-
+counter = 1;
     for i = 1:size(CC,1)
+        try
         BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
         [yCoordinates, xCoordinates] = find(BW);
-        ROI.coordinates{i}(:,1) = xCoordinates;
-        ROI.coordinates{i}(:,2) = yCoordinates;
+        ROI.coordinates{counter}(:,1) = xCoordinates;
+        ROI.coordinates{counter}(:,2) = yCoordinates;
+        counter= counter+1;
+        catch
+            disp('ROI missing, skipping over it.')
+        end
     end
 
 
     for i = 1: size(ROI.coordinates,2)
+        try
     	ROI.stats(i).Centroid=mean(ROI.coordinates{i});
     	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
     	k=convhull(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2));
     	ROI.stats(i).ConvexHull=ROI.coordinates{i}(k,:);
+        catch
+        ROI.stats(i).Centroid=mean(ROI.coordinates{i});
+    	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
+    	k = [];
+    	ROI.stats(i).ConvexHull= [];
+        end
     end
 
     ROI.type = 'Image';
@@ -332,7 +344,7 @@ end
 
 
 
-%% Consolidate ROI Data for saving. 
+%% Consolidate ROI Data for saving.
 
     roi_ave.C_dec = C_dec;
     roi_ave.S_dec = S_dec;
@@ -346,4 +358,4 @@ end
     mkdir(save_dir);
 
 disp('Saving ROI data');
-    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI');
+    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI','-v7.3');
