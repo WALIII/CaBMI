@@ -1,13 +1,18 @@
-function [score] = CaBMI_Align_AcrossDays(ref, current)
+function [score] = CaBMI_Align_AcrossDays(ref, pl)
 
 
 % Pull in a frame
-Frame1 = ref;
-average = 3;
+Frame1 = double(ref);
+average = 2;
 i= 1;
 clear figure(1);
 
 counter = 1;
+
+% gram frame
+X = pl.PixelsPerLine(); % get x dim of the image
+Y = pl.LinesPerFrame(); % get y dim of the image
+
 
 
 global KEY_IS_PRESSED
@@ -15,11 +20,11 @@ KEY_IS_PRESSED = 0;
 gcf
 set(gcf, 'KeyPressFcn', @myKeyPressFcn)
 while ~KEY_IS_PRESSED
-cF = current(:,:,counter);
+current(:,:) = double( pl.GetImage_2(2,X,Y)); % Build the image
 
 if i<average;
-Frame2(:,:,i) = cF;
-pause(0.03);
+Frame2(:,:,i) = current;
+pause(0.01);
 i = i+1;
 else
 
@@ -32,8 +37,8 @@ score.absDiffImage(:,:,counter) = imabsdiff(mean(Frame2,3),Frame1);
 figure(1);
 RGB1 = CaBMI_XMASS(Frame1,mean(Frame2,3),Frame1);
 image(squeeze(RGB1(:,:,1,:)));
-title(num2str(score.ssimval(:,counter)))
-disp(['score =  ', num2str(score.err(:,counter)) ]);
+title(['score =  ', num2str(score.ssimval(:,counter)), ' ---- ', 'Best = ', num2str(max(score.ssimval))])
+disp(['score =  ', num2str(score.err(:,counter)), ' ---- ', 'Best = ', num2str(max(score.err))]);
 % calculate the score, and display it:
 
 i = 1;
