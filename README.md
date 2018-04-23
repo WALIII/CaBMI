@@ -9,11 +9,11 @@ mice Brain Machine Interface (BMI) experiments.
 ## Hardware Prerequisites
 
 These functions are dependent on the proprietary Bruker 2P (Ultima) Microscope interface,
-which by current design is not 'real time', and is highly susceptible to delays
+which by current design is not 'real time', and is susceptible to delays
 like OS scheduling, etc. that increase jitter in the on-line analysis
 and feedback deployment. Most software prototyping is in MATLAB.
 
- ATM the hardware output is an arduino usb device.
+The hardware output interface is an arduino usb device, controlled with MATLAB software.
 
 
 
@@ -37,24 +37,16 @@ arduino=serial('COM13','BaudRate',9600); % create serial communication object on
 fopen(arduino); % initiate arduino communication
 
 ```
-### Baseline Data Acquisition
 
-Collect 100 frames of data for a baseline:
 
-```
-% Collect Baseline Data
-max_frame = 100;
-[Im1] = caBMI_pullPixel(pl,s,max_frame)
-```
-
-### Manual ROI selection
+###  ROI selection
 Create a Reference Image, and Manually select Regions of Interest:
+
+
 ```
-% Selec ROIs & Save reference image
-Ref_Im = uint16(mean(Im1,3));
-imwrite(uint16(mean(Im1,3)),'Ref_Im.tif');
-[ROI] = caBMI_annotate_image('Ref_Im.tif');
+>> [I, M, ROI] = CaBMI_Dendrites(I); % input 'I' if you preloaded data
 ```
+
 This function will also save ROI data to the local directory.
 
 
