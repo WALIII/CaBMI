@@ -12,7 +12,10 @@ end
  
 figure(); plot(ROIhits(:,:,(index(1)))');
  
-figure(); 
+
+fig12=figure(12); fig12.Renderer='Painters';
+figure(12);
+ 
 hold on;
 
 counter = 1;
@@ -33,6 +36,8 @@ plot(mn,'Color',col(i,:));
 counter = counter+1;
 end
 
+
+% sort from first to last...
 xG = index(1:cells);
 [dummy, index2] = sort(b,'descend');
 xG2 = xG(index2);
@@ -42,7 +47,10 @@ xG2 = xG(index2);
 
 %% Plot sorted
 
-figure();
+
+fig14=figure(14); fig14.Renderer='Painters';
+figure(14);
+
 
 % first 20
 counter = 1;
@@ -74,13 +82,14 @@ title('Sorted by time');
 %% PLOT OVERLAY
 shift = 0.95;
 
-figure();
+fig10=figure(10); fig10.Renderer='Painters';
+figure(10);
 
 % first 20
 counter = 1;
 for i = 1:cells
     hold on;
-adata = (squeeze(ROIhits(1:30,:,xG2(i))));
+adata = (squeeze(ROIhits(2:2:110,:,xG2(i))));
    
 L = size(adata,2);
 se = std(adata)./sqrt(length(adata));
@@ -90,8 +99,8 @@ mn = mean(adata)-mean(mean(adata))+counter*shift;
 % end
 %     
  
-h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],'r'); alpha(0.5);
-plot(mn,'Color','r');
+h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],'b'); alpha(1);
+plot(mn,'Color','b');
 counter = counter+1;
     
    
@@ -104,7 +113,7 @@ try
 counter = 1;
 for i = 1:cells
     hold on;
-adata = (squeeze(ROIhits(30:60,:,xG2(i))));
+adata = (squeeze(ROIhits(1:2:110,:,xG2(i))));
    
 L = size(adata,2);
 se = std(adata)./sqrt(length(adata));
@@ -114,7 +123,7 @@ mn = mean(adata)-mean(mean(adata))+counter*shift;
 % end
 %     
  
-h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],'g'); alpha(0.5);
+h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],'g'); alpha(1);
 plot(mn,'Color','g');
 counter = counter+1;
     
@@ -122,31 +131,31 @@ counter = counter+1;
 end
 title('sorted trials');
 
-
-
+% 
+% 
 % last 20
-counter = 1;
-for i = 1:cells
-    hold on;
-adata = (squeeze(ROIhits(60:100,:,xG2(i))));
-
-
-L = size(adata,2);
-se = std(adata)./sqrt(length(adata));
-mn = mean(adata)-mean(mean(adata))+counter*shift;
+% counter = 1;
+% for i = 1:cells
+%     hold on;
+% adata = (squeeze(ROIhits(60:100,:,xG2(i))));
+% 
+% 
+% L = size(adata,2);
+% se = std(adata)./sqrt(length(adata));
+% mn = mean(adata)-mean(mean(adata))+counter*shift;
 % if (max (mn(1,150:300)-min(mn(1,150:300)) ))<0.34
 %     continue
 % end
-    
- 
-h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],'b'); alpha(0.5);
-plot(mn,'Color','b');
-counter = counter+1;
-    
-   
-end
-catch;
-end
+%     
+%  
+% h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],'b'); alpha(0.5);
+% plot(mn,'Color','b');
+% counter = counter+1;
+%     
+%    
+% end
+% catch;
+ end
 title('sorted trials');
 
 
@@ -156,7 +165,10 @@ Xc = mean(squeeze(ROIhits(:,:,xG2(:))),3);
 X2c = mean(squeeze(ROIhits(:,:,:)),3);
 
 
-figure();
+
+fig11=figure(11); fig11.Renderer='Painters';
+figure(11);
+
 subplot(141);
 hold on;
 plot((mean(Xc)-min(mean(Xc))),'b');

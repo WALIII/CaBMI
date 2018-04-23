@@ -19,7 +19,7 @@ if exist('Processed','file') >=0;;
 end
 % 
 
-csv_ext = 0; % extract .csv file? 1 = yes.
+csv_ext = 1; % extract .csv file? 1 = yes.
 mov_ext = 1; % extract downsampled video? 1 = yes
 
 

@@ -1,4 +1,4 @@
-function [ds_hits, roi_hits] = CaBMI_csvAlign(Input0,Input1)
+function [ds_hits, roi_hits] = CaBMI_csvAlign(Input0,Input1,roi_ave)
 % CaBMI_csvAlign
 
 
@@ -28,7 +28,7 @@ ds = 5; % ds_data temporal downsampling rate;
       % Plot TONE result:
            figure(); hold on; plot(A); plot(locs1,pks1,'*');
 q = max(locs1); % end of recording
-fr = 1/((q/fs)/(10910*ds));
+fr = 1/((q/fs)/(size(roi_ave.C_dec,2)));
 
   % Make a time vector ( units of seconds)
     % time_vec = 1:length
