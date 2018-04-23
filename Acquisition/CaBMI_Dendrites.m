@@ -121,3 +121,9 @@ disp('Performing Local Cross-correlation...')
 
 %% Get Freehand ROIs
 [ROI] = CaBMI_ROI_freehand(ccimage);
+
+
+% Save Data with a unique filename
+filename = ['ROI_Backup-', datestr(datetime)]
+disp('Saving Data...')
+save(filename,ROI);

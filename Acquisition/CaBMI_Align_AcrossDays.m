@@ -1,4 +1,8 @@
 function [score] = CaBMI_Align_AcrossDays(ref, pl)
+% CaBMI_Align_AcrossDays
+
+% Align data using PrarieView's format...
+
 
 
 % Pull in a frame
@@ -28,7 +32,7 @@ pause(0.01);
 i = i+1;
 else
 
-score.ssimval(:,counter) = ssim(mean(Frame2,3),Frame1);
+score.ssimval(:,counter) = ssim(mean( Frame2,3),Frame1);
 score.peaksnr(:,counter) = psnr(mean(Frame2,3),Frame1);
 score.err(:,counter) = immse(mean(Frame2,3),Frame1);
 score.absDiffImage(:,:,counter) = imabsdiff(mean(Frame2,3),Frame1);
@@ -51,3 +55,9 @@ function myKeyPressFcn(hObject, event)
 global KEY_IS_PRESSED
 KEY_IS_PRESSED  = 1;
 disp('key is pressed')
+
+
+% Save Data with a unique filename
+filename = ['scores-', datestr(datetime)]
+disp('Saving Data...')
+save(filename,scores);
