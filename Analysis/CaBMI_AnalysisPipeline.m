@@ -15,7 +15,7 @@
 %   1.Load in ROI  data
 load('csv_data.mat'); load('ave_roi.mat');  load('Y.mat');
  %   1. Extract 'Hits' from .CSV file
-[ds_hits, roi_hits] = CaBMI_csvAlign(csv_data(:,2),csv_data(:,3)); %   1. Load in Y ( temporally downsampled movie) from ds_data
+[ds_hits, roi_hits] = CaBMI_csvAlign(csv_data(:,2),csv_data(:,3),roi_ave); %   1. Load in Y ( temporally downsampled movie) from ds_data
 
 
 
