@@ -1,4 +1,4 @@
-function [I, M, ROI] = CaBMI_Dendrites(I);
+function [I, M, ROI, ccimage] = CaBMI_Dendrites(I);
 % For Dendrite imaging, rough, manual ROI selection.
 
 % WAL3

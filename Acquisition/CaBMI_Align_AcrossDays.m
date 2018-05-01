@@ -3,7 +3,7 @@ function [score] = CaBMI_Align_AcrossDays(ref, pl)
 
 % Pull in a frame
 Frame1 = double(ref);
-average = 2;
+average = 4;
 i= 1;
 clear figure(1);
 
@@ -35,7 +35,7 @@ score.absDiffImage(:,:,counter) = imabsdiff(mean(Frame2,3),Frame1);
 
 
 figure(1);
-RGB1 = CaBMI_XMASS(Frame1,mean(Frame2,3),Frame1);
+RGB1 = CaBMI_XMASS(Frame1,mean(Frame2,3),mean(Frame2,3));
 image(squeeze(RGB1(:,:,1,:)));
 title(['score =  ', num2str(score.ssimval(:,counter)), ' ---- ', 'Best = ', num2str(max(score.ssimval))])
 disp(['score =  ', num2str(score.err(:,counter)), ' ---- ', 'Best = ', num2str(max(score.err))]);
