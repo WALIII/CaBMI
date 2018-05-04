@@ -69,6 +69,9 @@ The resulting Time-series for each ROI, with color matching the ROI Map above:
 Experiment will be run for the amount of time listed in ```max_time``` which must be specified.
 
 
+
+
+
 ```
 % Run experiment
 max_time = 30; %seconds

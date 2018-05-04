@@ -21,6 +21,8 @@ function [I, M, ROI, ccimage] = CaBMI_Dendrites(I);
 
 colormap(gray);
 
+
+
 %% Get Tifs.
 if nargin < 1
 disp('pick the first .tif');
@@ -108,8 +110,6 @@ end
 else
         M = 'N/A';
 end
-
-
 
 
 
