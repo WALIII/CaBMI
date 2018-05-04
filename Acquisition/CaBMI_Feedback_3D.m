@@ -63,8 +63,8 @@ fdbk = 1;
 
  data.hit(counter) =0;
 if condition == 1;
-if Cursor_A>500 && Cursor_B>500;
-    Cursor = 999;
+if Cursor_A>400 && Cursor_B<100;
+    Cursor_A = 999;
     disp('HIT')
     condition = 2;
     data.hit(counter) =1;
