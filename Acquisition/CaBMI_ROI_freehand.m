@@ -7,10 +7,11 @@ function [ROI] = CaBMI_ROI_freehand(im)
 
 % Take 4 Regions of Interest
 cla('reset');
+cells = 8;
 
 disp('Make a selection...')
 
-for i = 1:4;
+for i = 1:cells;
     if i == 1;
 h_im = imshow(im);
 title('Choose ROI from the figure');

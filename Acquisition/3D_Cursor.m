@@ -1,4 +1,4 @@
-function   [CURSOR, data] = 3D_Cursor(Im,ROI,data,frame_idx,vargin)
+function   [CURSOR_A,CURSOR_B, data] = c3D_Cursor(Im,ROI,data,frame_idx,vargin)
 % WAL3_cursor.m
 
 % WAL3's cursor for the BMI experiments
@@ -56,7 +56,8 @@ switch v
 
 %% Normalized BMI
 case 2
-    mult_fact = 1;
+    mult_fact = 2;
+    scale_fact = 50;
 
     % Tone Frequency
 data.cursorA(:,frame_idx) = ROI_norm(1,frame_idx)+ROI_norm(2,frame_idx) - (ROI_norm(3,frame_idx)+ROI_norm(4,frame_idx));
@@ -67,8 +68,12 @@ data.cursorB(:,frame_idx) = ROI_norm(5,frame_idx)+ROI_norm(6,frame_idx) - (ROI_n
 % OPTIONAL: Smooth cursor
 
 rn = 3; % running average...
-CURSOR_A = round(5+(mean(data.cursorA(:,frame_idx-rn:frame_idx)))*mult_fact);
-CURSOR_A = round(5+(mean(data.cursorB(:,frame_idx-rn:frame_idx)))*mult_fact);
+CURSOR_A = round((5+(mean(data.cursorA(:,frame_idx-rn:frame_idx)))*mult_fact)*scale_fact); % Tone
+CURSOR_B = round((5+(mean(data.cursorB(:,frame_idx-rn:frame_idx)))*mult_fact)*scale_fact); % Beat
+
+
+CURSOR_A(CURSOR_A<0) = 0; %Tone
+CURSOR_A(CURSOR_A<0) = 0; % Beat
 
 data.cursor_actual_A(:,frame_idx) = CURSOR_A;
 data.cursor_actual_B(:,frame_idx) = CURSOR_B;
@@ -204,7 +209,7 @@ cursor = S_level*2;
        data.cursor_actual(:,frame_idx) = cursor;
        CURSOR = cursor;
        data.cursor(:,frame_idx) = cursor;
-      
+
 end
 
 data.ROI_val = data.ROI_val;
@@ -212,9 +217,11 @@ data.ROI_dff = ROI_dff;
 
 
 else
+data.cursor_actual_A = zeros(1,10);
+data.cursor_actual_A = zeros(1,10);
 data.cursor = zeros(1,10);
 data.ROI_val = data.ROI_val;
-data.ROI_dff = zeros(4,10); % cant computer df/f
+data.ROI_dff = zeros(8,10); % cant computer df/f
     CURSOR = 0;
 
 end

@@ -76,7 +76,7 @@ int beat = n2;
 
 
    // send Reward TTL
-   if (melody == 99){
+   if (melody == 999){
    int currentMillis = millis();
     digitalWrite(9, HIGH);
 delay(100);
@@ -84,7 +84,7 @@ delay(100);
    }
 
    // Aquisition Begin!
-      if (melody == 98){
+      if (melody == 998){
    int currentMillis = millis();
     digitalWrite(5, HIGH);
 delay(100);

@@ -25,6 +25,7 @@ disp( '----------------------------------------------------');
 
 % Trigger to start
 fprintf(arduino,'%c',char(98)); % START trigger
+fprintf(arduino,'%c',char(998)); % START trigger
 
 P3 = 30;
 
@@ -46,8 +47,9 @@ pause(P3); % aquire baseline...
 
   TData = data;
   clear data;
-  
+
 fprintf(arduino,'%c',char(98)); % STOP trigger
+fprintf(arduino,'%c',char(998)); % START trigger
 
 %
 %     if check >5
