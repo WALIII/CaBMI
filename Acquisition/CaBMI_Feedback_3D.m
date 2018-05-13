@@ -23,47 +23,24 @@ pauseTime = tic;
 % Start Pulling data
 tStart = tic;
 cursorTic = tic;
+
 while toc(tStart) <  max_time  % this querrys the buffer every ~10ms.
 
-
-Im = pl.GetImage_2(2,X,Y);
-
-% TO DO caclulate baseline..
-
-%if toc(tFrame)> wait_time; % buffer time for baseline calculation
-data.toc(counter) = toc(tStart); % how often are we waiting per frame. For timeing rconstruction
-
-% Cursor function
-
-[Cursor_A,Cursor_B, data] = c3D_Cursor(Im,ROI,data,counter-1); % cursor
+    
+     Im = pl.GetImage_2(2,X,Y);
+     data.toc(counter) = toc(tStart); % how often are we waiting per frame. For timeing rconstruction
+% 
+    [Cursor_A,Cursor_B, data, STD] = c3D_Cursor(Im,ROI,data,counter-1); % cursor
+    
+    
+    
 
 
-% buffer the outputted cursor
-
-
-% Auditory Cursor:
-if toc(cursorTic) > BufferT; % smooth cursor
- cursorTic = tic;
-
-fdbk = 1;
-
-
-
-% Save data to RAM for export
-
-% data.Im1(:,:,counter) = Im;   % log the frame to RAM
-
-
-% caBMI_LivePlot(data,counter,hf);
-
- %%%%%%%
-
- Cursor_A = (Cursor_A);
-% WATER DELIVERY
+% % WATER DELIVERY
 
  data.hit(counter) =0;
 if condition == 1;
-if Cursor_A>400 && Cursor_B<100;
+if STD(:,1)>1.5 && STD(:,2)<-1.5;
     Cursor_A = 999;
     disp('HIT')
     condition = 2;
@@ -72,43 +49,22 @@ end
 elseif condition == 2
   disp(' Waiting to drop below threshold...')
   data.hit(counter) =-1;
-  if Cursor_A<250 && Cursor_B<250
+  if STD(:,1)<1 && STD(:,2)>-1;
     disp ( 'Resetting Cursor')
     condition = 1;
   end
 end
 
 
+% SEND DATA
+          a =  char(sprintfc('%03d',Cursor_A)); % TONE
+          b = char(sprintfc('%03d',Cursor_B)); % BEAT
+    
+    answer = [a,b];
+    disp(['raw = ', char(answer), '    ', 'STD1 = ', char(num2str(STD(:,1),3)), '  STD2 = ', char(num2str(STD(:,2),3)) ]);
+    fprintf(arduino,'%s',answer); % send answer variable content to arduino
+pause(0.03);
 
-
-
-% Write cursor state to Speaker
-while fdbk
-a =  char(sprintfc('%03d', Cursor_A)); % TONE
-b = char(sprintfc('%03d', Cursor_B); % BEAT
-
-answer = [a,b];
-disp(answer);
-fprintf(arduino,'%s',answer); % send answer variable content to arduino
-fdbk = 0;
+counter = counter+1;
 end
-
-
-
-
-% Clear cursor Buffer
-clear CursBuff
-
-
-
-
-
-
-
-% advance counter
-  counter = counter+1;
- pause(0.001) % should be a bit less than the frame rate- to stabilize aquisition.
-
-end
-    end
-end
+    

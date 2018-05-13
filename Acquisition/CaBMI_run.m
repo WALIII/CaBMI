@@ -9,7 +9,7 @@ function TData = CaBMI_run(ROI,pl,arduino)
 
 
 % Vars
-max_time = 60*30; % BMI time ( 30 min, total )
+max_time = 60*60; % BMI time ( 30 min, total )
 
 
 
@@ -24,8 +24,8 @@ disp( '----------------------------------------------------');
 %% Start Aquisition (trigger start with TTL) ( also trigger video monitor)
 
 % Trigger to start
-fprintf(arduino,'%c',char(98)); % START trigger
-fprintf(arduino,'%c',char(998)); % START trigger
+%fprintf(arduino,'%c',char(98)); % START trigger
+fprintf(arduino,'%c',char('998000')); % START trigger
 
 P3 = 30;
 
@@ -41,7 +41,8 @@ pause(P3); % aquire baseline...
 
   % run BMI
   % disp(['Running BMI Script ',num2str(L), ' of 30']);
-  [data] = caBMI_feedback(pl,arduino,ROI,max_time)
+  %[data] = caBMI_feedback(pl,arduino,ROI,max_time)
+  [data] = CaBMI_Feedback_3D(pl,arduino,ROI,max_time)
   % TTL Start Aquisition
   % TTL
 
@@ -49,8 +50,7 @@ pause(P3); % aquire baseline...
   clear data;
 
 
-fprintf(arduino,'%c',char(998)); % START trigger
-fprintf(arduino,'%c',char(98)); % STOP trigger
+fprintf(arduino,'%c',char('998000')); % START trigger%fprintf(arduino,'%c',char(98)); % STOP trigger
 
 %
 %     if check >5

@@ -1,16 +1,16 @@
-clear all
-clc
- 
+
+
 answer=1; % this is where we'll store the user's answer
-arduino=serial('/dev/cu.usbmodem1411','BaudRate',9600); % create serial communication object on port COM4
+arduino=serial('COM13','BaudRate',9600); % create serial communication object on port COM4
  
 fopen(arduino); % initiate arduino communication
  try
  counter = 1;
  n = 10; 
  pause(1);
- G1 = round(smooth(rand(1,2000)*500,10));
- G2 = round(smooth(rand(1,2000)*500,10));
+ 
+ G1 = round((rand(1,2000)*500));
+ G2 = round((rand(1,2000)*500));
   G1 = 1:1:1000;
  G2 = 1:1:1000;
  G2 = 500-G2;
@@ -18,9 +18,9 @@ G1(G1<0) = 0;
 G2(G2<0) = 0;
 
 answer= 1;
-     for i = 1:500;
-          a =  char(sprintfc('%03d', G1(i))); % TONE
-          b = char(sprintfc('%03d', G2(i))); % BEAT
+     for i = 1:100;
+          a =  char(sprintfc('%03d',50)); % TONE
+          b = char(sprintfc('%03d',10)); % BEAT
     
     answer = [a,b];
     disp(answer);
@@ -40,4 +40,4 @@ end
 fclose(arduino); % end communication with arduino
 
 
-figure(); plot(G1,G2);
+%figure(); plot(G1,G2);

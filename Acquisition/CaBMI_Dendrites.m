@@ -48,7 +48,7 @@ end
 disp('smoothing data...');
 tic
 try
-mov_data =  convn(I(:,:,1:200), single(reshape([1 1 1] / 4, 1, 1, [])), 'same');% smooth movie:
+mov_data =  convn(I(:,:,1:4:2000), single(reshape([1 1 1] / 4, 1, 1, [])), 'same');% smooth movie:
 catch
   mov_data =  convn(I(:,:,:), single(reshape([1 1 1] / 4, 1, 1, [])), 'same');% smooth movie:
 end
@@ -126,4 +126,4 @@ disp('Performing Local Cross-correlation...')
 % Save Data with a unique filename
 filename = ['ROI_Backup-', datestr(datetime)]
 disp('Saving Data...')
-save(filename,ROI);
+%save(filename,ROI);
