@@ -147,7 +147,7 @@ for i=1:length(mov_listing)
 
 clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
 
-if mov_case == 0;
+if mov_case == 1;
 
 	warning('off','all')
 		disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
@@ -155,11 +155,8 @@ if mov_case == 0;
         %load(fullfile(pwd,mov_listing{i}),'video');
         mov_data = loadtiff((fullfile(pwd,mov_listing{i})));
 	warning('on','all')
-else
-    mov_data = I;
-    clear I;
 end
-
+I
 
 
 	

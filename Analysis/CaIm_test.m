@@ -1,4 +1,4 @@
-function [B1 C1 D1 ] = CaIm_test(ROI,TData);
+function [B1 C1 D1 ] = CaIm_test_(ROI,TData);
 
 
  % Hits
