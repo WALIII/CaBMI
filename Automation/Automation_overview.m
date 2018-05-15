@@ -91,10 +91,7 @@ catch
 end
 end
 
-if mov_ext ==1;
-load('Processed\ds_data','Y')
-save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','Y.mat'],'Y','-v7.3');
-end
+
 
 
   if exist('Processed/roi','file') >= 1 %
@@ -114,7 +111,11 @@ end
               disp(' Folder does not exist');
         end
   end
-
+% Extract video...  
+if mov_ext ==1;
+load('Processed\ds_data','Y')
+save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','Y.mat'],'Y','-v7.3');
+end
 % copy data over
 disp('copying data...');
 copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);

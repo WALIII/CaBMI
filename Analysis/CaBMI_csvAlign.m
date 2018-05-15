@@ -36,7 +36,7 @@ fr = 1/((q/fs)/(size(roi_ave.C_dec,2)));
 
   % Extract Hit times
   B = diff(Input1);
-  [pks2, locs2] = findpeaks(double(B),'MinPeakDistance',10,'MinPeakHeight',std(B)*5);
+  [pks2, locs2] = findpeaks(double(B),'MinPeakDistance',100,'MinPeakHeight',std(B)*5);
       % Plot HIT result:
            figure(); hold on; plot(B); plot(locs2,pks2,'*');
   % downsample to nearest time vector for ds_data and ROI data

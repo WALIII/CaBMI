@@ -9,8 +9,8 @@ function CaBMI_mov2tif_eyeCandy
 
 % Params
 
-max_size = 3000;
-downsamp = 0.33;
+max_size = 1000;
+downsamp = .33;
 b =10;
 
 % find all movs
@@ -34,6 +34,10 @@ for i=1:length(mov_listing)
 
 v1 = VideoReader(FILE);
 
+if v1.NumberOfFrames < max_size
+    max_size = v1.NumberOfFrames-1;
+end
+v1 = VideoReader(FILE);
 
 k = 1;
 i = 1;
@@ -46,17 +50,17 @@ while hasFrame(v1)
      disp('Smoothing data...');
      % Smooth data by 'b'
             %vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
-            vK = single(medfilt3(Xx,[1 1 9]));
+            vK = single(medfilt3(vK,[1 1 9]));
      if i ==1;
                  
           % Tke the filtered mean
           disp('filtering the mean');
-            X = mean(vK(:,:,100),3);
-            X = imgaussfilt(X,40);
+            X = mean(vK(:,:,500),3);
+            X = imgaussfilt(X,121*downsamp)-5; %121
      else
      end
      
-            for ii = 1:size(vK,3); vK(:,:,ii) = (((vK(:,:,ii)+10)-X)*9); end;
+            for ii = 1:size(vK,3); vK(:,:,ii) = (((vK(:,:,ii)+10)-X)*5); end;
 % Play the result
 
      
