@@ -34,6 +34,10 @@ for i=1:length(mov_listing)
 
 v1 = VideoReader(FILE);
 
+if v1.NumberOfFrames < max_size
+    max_size = v1.NumberOfFrames-1;
+end
+v1 = VideoReader(FILE);
 
 k = 1;
 i = 1;
