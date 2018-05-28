@@ -241,7 +241,7 @@ Coor_t = [];
 Cn = Y(:,:,10);
 figure;
     ax1 = subplot(121);
-    [CC,jsf] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
+    [CC] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
     ax2 = subplot(122); plot_contours(A(:,throw),Cn,options,0,[],Coor_t,'m',find(throw));title('Rejected components','fontweight','bold','fontsize',14);
     linkaxes([ax1,ax2],'xy')
 
