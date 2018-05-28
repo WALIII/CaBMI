@@ -9,9 +9,9 @@ function CaBMI_mov2tif_eyeCandy
 
 % Params
 
-max_size = 1000;
-downsamp = .33;
-b =10;
+max_size = 1500;
+downsamp = .5;
+b =3;
 
 % find all movs
 if nargin<1 | isempty(DIR), DIR=pwd; end
@@ -49,20 +49,41 @@ while hasFrame(v1)
      filename = ['Data_',num2str(i.','%03d'),'.tif'];
      disp('Smoothing data...');
      % Smooth data by 'b'
-            %vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
-            vK = single(medfilt3(vK,[1 1 9]));
-     if i ==1;
-                 
-          % Tke the filtered mean
-          disp('filtering the mean');
-            X = mean(vK(:,:,500),3);
-            X = imgaussfilt(X,121*downsamp)-5; %121
-     else
-     end
      
-            for ii = 1:size(vK,3); vK(:,:,ii) = (((vK(:,:,ii)+10)-X)*5); end;
-% Play the result
+     % align data...
+     Y = vK;
+T = size(Y,ndims(Y));
 
+% Motion Correction Params:
+options_nonrigid = NoRMCorreSetParms('d1',size(Y,1),'d2',size(Y,2),'grid_size',[32,32],'mot_uf',4,'bin_width',200,'max_shift',15,'max_dev',3,'us_fac',50,'init_batch',200);
+
+% perform motion correction
+tic; [vK,shifts2,template2,options_nonrigid] = normcorre_batch(Y,options_nonrigid); toc
+
+     
+     
+            %vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
+            X = uint8(round(single(medfilt3(vK,[25 25 1]))));
+            
+%      if i ==1;
+%                  
+%           % Tke the filtered mean
+%           disp('filtering the mean');
+%             X = mean(vK(:,:,500),3);
+%             X = imgaussfilt(X,50*downsamp)-5; %121
+%      else
+%      end
+     
+            for ii = 1:size(vK,3); 
+                vK(:,:,ii) = (vK(:,:,ii)+10)-X(:,:,ii);
+                vK(:,:,ii) = vK(:,:,ii)*10;
+            end;
+            
+            
+            vK = vK-prctile(vK,1,3);
+            vK = convn(vK, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
+% Play the result
+            vK = uint8(255 * mat2gray(vK));
      
      
    FS_tiff(vK,'fname',filename);
