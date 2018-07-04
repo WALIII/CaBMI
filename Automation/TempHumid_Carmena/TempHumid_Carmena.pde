@@ -196,9 +196,9 @@ saveTable(table, filename); //Woo! save it to your computer.
 
 void draw()
 {
-//draw_ui();
+draw_ui();
 //  // Add Visualization here one day...
-//GetBoxInfo();
+GetBoxInfo();
 }
 
 void stop() {
