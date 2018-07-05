@@ -22,7 +22,7 @@
 // tweak the timings for faster processors.  This parameter is no longer needed
 // as the current DHT reading algorithm adjusts itself to work on faster procs.
 DHT dht(DHTPIN, DHTTYPE);
-
+ int l = 0;
 void setup() {
   Serial.begin(9600);
   //Serial.println("DHTxx test!");
@@ -52,13 +52,17 @@ void loop() {
   float hif = dht.computeHeatIndex(f, h);
   // Compute heat index in Celsius (isFahreheit = false)
   float hic = dht.computeHeatIndex(t, h, false);
+l = analogRead(A0);
 
 
 Serial.print(h);
   Serial.print(",");
   Serial.print(t);
     Serial.print(",");
-    Serial.println(f);
+    Serial.print(f);
+        Serial.print(",");
+    Serial.println(l);
+    
 
 //  Serial.print(hic);
  // Serial.print(" *C ");
