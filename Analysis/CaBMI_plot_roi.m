@@ -4,9 +4,6 @@ function roi_ave= CaBMI_plot_roi(ROIS,varargin)
 %
 
 
-% Run in MPtiff folder.
-
-
 
 colors=eval(['winter(' num2str(length(ROIS.coordinates)) ')']);
 sono_colormap='hot';
@@ -25,7 +22,7 @@ t_scale=.5;
 resize=1;
 detrend_traces=0;
 crop_correct=0;
-ring = 0;
+ring = 0; % subtract ring around ROI ( local backgrounds)
 mov_case = 0; % for many single tiffs....
 
 
@@ -74,7 +71,7 @@ for i=1:2:nparams
 end
 
 
-% Warnings 
+% Warnings
 if ring ==1;
     disp(' WARNING: subtracting perimiter of ROI...');
 end
@@ -90,15 +87,12 @@ end
 
 mkdir(save_dir);
 
-% ROIS is a cell array of image indices returned by fb_select_roi
-%
 
 % first convert ROIS to row and column indices, then average ROI and plot
 % the time course
 
 % TODO check to see what is in the directery- or ask. what format to use, if more than one....
 
-% mov_listing=dir(fullfile(pwd,'*.tif'));
 mov_listing=dir(fullfile(pwd,'*.tif'));
 mov_listing={mov_listing(:).name};
 
@@ -127,19 +121,6 @@ to_del=[];
 % mov_listing(to_del)=[];
 
 roi_n=length(ROIS.coordinates);
-
-% mov_data = loadtiff(fullfile(pwd,mov_listing{1}));
-
-
-% [rows,columns,frames]=size(mov_data);
-%
-% ave_time=0:1/ave_fs:(size(mov_data,3)-1)/30;
-%
-% % need to interpolate the average onto a new time bases
-%
-% roi_ave.raw={};
-% roi_ave.interp_dff=zeros(roi_n,length(ave_time),length(mov_listing));
-% roi_ave.interp_raw=zeros(roi_n,length(ave_time),length(mov_listing));
 disp('Generating single trial figures...');
 clear mov_data
 
@@ -151,7 +132,7 @@ if mov_case == 0;
 
 	warning('off','all')
 		disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
-       	
+
         %load(fullfile(pwd,mov_listing{i}),'video');
         mov_data = loadtiff((fullfile(pwd,mov_listing{i})));
 	warning('on','all')
@@ -162,7 +143,7 @@ end
 
 
 
-	
+
 	%[mov_data, n] = FS_Format(mov_data2,1);
 	clear mov_data2;
     clear video;
@@ -196,12 +177,8 @@ end
 
 	[rows,columns,frames]=size(mov_data);
 	roi_t=zeros(roi_n,frames);
-%
-% 	if length(frame_idx)~=frames
-% 		warning('Trial %i file %s may be corrupted, frame indices %g not equal to n movie frames %g',...
-% 			i,mov_listing{i},length(frame_idx),frames);
-% 		frame_idx=frame_idx(1:frames);
-% 	end
+
+
 frame_idx = 0:size(mov_data,3)-1;
 	timevec=(frame_idx./30); %movie_fs
 
@@ -280,8 +257,6 @@ clear tmp; clear dff; clear yy2; clear yy;
     clear temp; clear temp2;
 
 
-%save individual files
-%save(fullfile(save_dir,[save_file '.mat']),'roi_t','frame_idx','fs','timevec');
 
 	roi_ave.raw{i}=roi_t; % store for average
 	roi_ave.filename{i}=mov_listing{i};
@@ -290,23 +265,5 @@ clear tmp; clear dff; clear yy2; clear yy;
 end
 
 %roi_ave.t=ave_time;
-save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
+%save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
 disp('Generating average ROI figure...');
-
-% plot the averages with confidence intervals
-
-%timevec=ave_time;
-
-% if template is passed use the template mic trace, otherwise use the last song
-
-%roi_mu=mean(roi_ave.interp_dff,3);
-%roi_sem=std(roi_ave.interp_dff,[],3)./sqrt(size(roi_ave.interp_dff,3));
-
-%if ~isempty(template)
-%	[song_image,f,t]=fb_pretty_sonogram(double(template),fs,'low',1.5,'zeropad',1024,'N',2048,'overlap',2040);
-%end
-
-%fb_multi_fig_save(save_fig,save_dir,'ave_roi','eps,png,fig','res',100);
-
-%%%%%%%%%%%%% CELL MASK MATCHED TO ROI
-% plot cell masks color-matched to their ROIs
