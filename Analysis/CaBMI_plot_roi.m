@@ -206,7 +206,7 @@ else
 
 		end
 	end
-
+    end
 	fprintf(1,'\n');
 
 	dff=zeros(size(roi_t));
@@ -241,7 +241,7 @@ clear tmp; clear dff; clear yy2; clear yy;
 
     end
 
-    if i ==1;
+        if i ==1;
         roi_ave = temp;
 				roi_ave.indexing(1,:) = 1:size(mov_data,3); %frame index
 				roi_ave.indexing(2,:) = ones(size(mov_data,3),1); % which file
@@ -261,8 +261,9 @@ clear tmp; clear dff; clear yy2; clear yy;
 	roi_ave.raw{i}=roi_t; % store for average
 	roi_ave.filename{i}=mov_listing{i};
 
+
     end
-end
+
 
 %roi_ave.t=ave_time;
 %save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
