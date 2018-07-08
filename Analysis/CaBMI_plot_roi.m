@@ -109,7 +109,7 @@ num_frames = (numel(mov_listing));
 if num_frames>300;
     disp('Detected many individual tifs, concatonating...');
 for i = 1:num_frames%num_frames;
-I(:,:,i) = imread(fullfile(pathName, fileNames{i}));
+I(:,:,i) = imread(mov_listing{i});
 end
 mov_listing =1;
 mov_case = 1;
