@@ -3,8 +3,8 @@ function CaBMI_MakeHeatplot(TData);
 stdx = 1.0;
 
 
-x = TData.cursorA;
-y = TData.cursorB;
+y = smooth(TData.cursorA,5)';
+x = smooth(TData.cursorB,5)';
 
 
 figure(); 
@@ -62,7 +62,7 @@ y = TData.cursorB(1:end);
 h=fspecial('gaussian',3,3);
 
 
-[values, centers] = hist3([y(:) x(:)],[100 100]);
+[values, centers] = hist3([x(:) y(:)],[100 100]);
 values2=imfilter(values,h,'circular','replicate');
 
 

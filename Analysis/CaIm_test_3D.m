@@ -25,10 +25,17 @@ figure();
 hold on;
 plot(A);  
 for i = 1:8
-plot(neuron(i,:)); 
+plot(neuron(i,:)+ i*3);
+[c(i,:), s ] = deconvolveCa(neuron(i,:));
 end
 
 
+figure();
+hold on;
+plot(A);  
+for i = 1:8
+plot(c(i,:)+ i*3); 
+end
 
 
 plot(locs,pks,'*');
@@ -54,7 +61,7 @@ hold on;
 for i = 1:size(locs,1);
     try
     for ii = 1:8       
-        neuron_hit(i,:,ii) = neuron(ii,locs(i)-50:locs(i)+50);
+        neuron_hit(i,:,ii) = smooth(neuron(ii,locs(i)-50:locs(i)+50),3);
     end
             Cursor_hit(i,:,1) = Cursor(1,locs(i)-50:locs(i)+50);
         Cursor_hit(i,:,2) = Cursor(2,locs(i)-50:locs(i)+50);

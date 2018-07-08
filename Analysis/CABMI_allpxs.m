@@ -15,10 +15,10 @@ MOV_DATA = abs(double((MOV_DATA2)));
 nparams=length(varargin);
 
 
-filt_rad=1; % gauss filter radius
-filt_alpha=1; % gauss filter alpha
+filt_rad=5; % gauss filter radius
+filt_alpha=5; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
-cmap= colormap(jet);%  cubehelix(200,[0.9,-1,7,1]));
+cmap= colormap(hsv);%  cubehelix(200,[0.9,-1,7,1]));
 per=0; % baseline percentile (0 for min)
 bgcolor=[ .75 .75 .75 ]; % rgb values for axis background
 time_select=0;
