@@ -1,4 +1,4 @@
-function CaBMI_MakeHeatplot(TData);
+function [IM]= CaBMI_MakeHeatplot(TData);
 
 stdx = 1.0;
 
@@ -65,9 +65,12 @@ h=fspecial('gaussian',3,3);
 [values, centers] = hist3([x(:) y(:)],[100 100]);
 values2=imfilter(values,h,'circular','replicate');
 
+figure(); 
+indexa = -5:.1:5;
 
-
-imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
+h = imagesc(indexa,indexa,zeros(100,100));
+hold on; 
+h = imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
 hold on
 
 plot(zeros(11,1),-5:5,'k');
@@ -80,9 +83,25 @@ ylim([-5 5]);
 xlim([-5 5]);
 
 hold off
-% end
 
 
+
+figure();
+
+h = imagesc(indexa,indexa,zeros(100,100));
+hold on; 
+h = imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
+hold on
+
+ylim([-5 5]);
+xlim([-5 5]);
+colormap(gray);
+
+hold off
+
+
+IM2 = getframe(); % Get zoomed portion that is visible.
+IM = double(squeeze(IM2.cdata(:,:,1)));
 
 find hits
 

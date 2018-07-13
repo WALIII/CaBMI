@@ -1,4 +1,4 @@
-function [neuron_hit, Cursor_hit] = CaIm_test_3D(ROI,TData);
+function [neuron_hit, Cursor_hit] = CaIm_test_3D(TData);
 
 
  % Hits
@@ -152,5 +152,19 @@ GX = corr(squeeze(mean(neuron_hit(3:size(neuron_hit,1),30:60,:),1)));
 
  imagesc(GX); colorbar();
  title('correlation around the hit of all 8 cells');
+ 
+ 
+ figure(); 
+ myColorMap =[1 0 0
+    1 0 0
+    0 0 1
+    0 0 1
+    0 0 1
+    0 0 1
+    1 0 0
+    1 0 0];
+
+ circularGraph(GX.^2,'Colormap',myColorMap);
+ 
 
 
