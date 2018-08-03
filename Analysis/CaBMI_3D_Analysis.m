@@ -12,7 +12,7 @@
 
 
 
-% Get the 'baseline' direct neuron data by running the following in 
+% Get the 'baseline' direct neuron data by running the following in
 % The MAP folder:
 
 roi_aveB = CaBMI_plot_roi(ROI);
@@ -23,7 +23,7 @@ roi_aveB = CaBMI_plot_roi(ROI);
 TData2.cursorA = (zscore(roi_aveB.interp_dff(1,:)) + zscore(roi_aveB.interp_dff(3,:)))  - (zscore(roi_aveB.interp_dff(3,:)) + zscore(roi_aveB.interp_dff(4,:)));
 TData2.cursorB = (zscore(roi_aveB.interp_dff(5,:)) + zscore(roi_aveB.interp_dff(6,:)))  - (zscore(roi_aveB.interp_dff(7,:)) + zscore(roi_aveB.interp_dff(8,:)));
 
-   
+
 % run both to compare the Direct neurons before and after BMI:
 
 [IM2]= CaBMI_MakeHeatplot(TData2);
@@ -44,7 +44,7 @@ roi_ave2 = CaBMI_plot_roi(ROI); % run in 'MAIN' folder
 
 % Try it out on the first cell:
 cell = 1;
-CaBMI_occupany(roi_ave,roi_ave2,cell); 
+CaBMI_occupany(roi_ave,roi_ave2,cell);
 
 
 % Loop to check through a bunch of cells:
@@ -59,13 +59,14 @@ end
 % Loop to check through a bunch of cells:
 
 close all
-mkdir Im_diff
-for i = 219:300;
+mkdir Im_diff2
+for i = 1:30;
      CaBMI_occupany(roi_ave,roi_ave2,i);
      G = ['Cell ',num2str(i)];
      title(G);
-     saveas(gcf,['IM_diff/',G,'.png']);
+     saveas(gcf,['IM_diff2/',G,'.png']);
      clf('reset')
+     close
 end
 
 
@@ -87,14 +88,15 @@ scrap129(TData);
 
 
 close all
-mkdir Theta
+mkdir Theta2
 
-for i = 1: 300;
+for i = 1: 30;
      CaBMI2D_theta(roi_ave,roi_ave2,i);
      G = ['Cell  ',num2str(i)];
      title(G);
-     saveas(gcf,['Theta/',G,'.png']);
+     saveas(gcf,['Theta2/',G,'.png']);
      clf('reset')
+     close
 end
 
 %%% Ganguli ephys
@@ -109,9 +111,5 @@ GanguliCarmena2009_test(kin_data,neural_data,i);
      clf('reset')
     catch
     end
-    
+
 end
-
-
-
-

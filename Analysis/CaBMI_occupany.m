@@ -35,7 +35,7 @@ TData2.cursorB = (zscore(roi_ave2.interp_dff(5,:)) + zscore(roi_ave2.interp_dff(
 Rperm = randi(size(TData2.cursorA,2),1,size(locs,2)); % random timestamps
 for i = 1:size(locs,2)
 
-% Bin the location    
+% Bin the location
 BinR(1,i) = TData2.cursorA(:,locs(i));
 BinR(2,i) = -TData2.cursorB(:,locs(i));
 
@@ -53,7 +53,9 @@ end
 
 col = jet(round(max(pks)*100));
 %%% Make Scatter Plot
-figure(1); 
+figure(1);
+plot(TData2.cursorA,TData2.cursorB);
+hold on;
 for i = 1:size(locs,2)
 plot(BinR(1,i),BinR(2,i),'*','color',col(round(pks(i)*100),:));
 hold on;
@@ -68,19 +70,30 @@ plot(-5:5,ones(11,1)*-stdx,'--c','LineWidth',1.2);
 
 
 
-% Make heatplot
-figure(2);
-h=fspecial('gaussian',3,3);
-x = BinR(1,:);
-y = BinR(2,:);
 
-[values, centers] = hist3([x(:) y(:)],[50 50]);
+% Make heatplot
+Sz = 100;
+filt = 20;
+
+figure(2);
+h=fspecial('gaussian',filt,filt);
+x = BinR(2,:);
+y = BinR(1,:);
+
+[values, centers] = hist3([x(:) y(:)],[Sz Sz]);
 values2=imfilter(values,h,'circular','replicate');
+
+
+%filter artifacts
+filt2 = 2;
+h2=fspecial('gaussian',filt2,filt2);
+values2=imfilter(values2,h2,'circular','replicate');
+
 
 indexa = -5:.1:5;
 
 imagesc(indexa,indexa,zeros(100,100));
-hold on; 
+hold on;
 imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
 hold on
 
@@ -101,7 +114,7 @@ plot(-5:5,ones(11,1)*-stdx,'--c','LineWidth',1.2);
 % Image one
 figure(3);
 imagesc(indexa,indexa,zeros(100,100));
-hold on; 
+hold on;
 imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
 hold on
 
@@ -118,16 +131,19 @@ IM = double(squeeze(IMa.cdata(:,:,1)));
 
 
 % Make random Image
-x = rBinR(1,:);
-y = rBinR(2,:);
+x = rBinR(2,:);
+y = rBinR(1,:);
 
-[values, centers] = hist3([x(:) y(:)],[50 50]);
+[values, centers] = hist3([x(:) y(:)],[Sz Sz]);
 values2=imfilter(values,h,'circular','replicate');
 
-% Generage figure
-figure(4);
+%filter artifacts
+values2=imfilter(values2,h2,'circular','replicate');
+
+
+
 imagesc(indexa,indexa,zeros(100,100));
-hold on; 
+hold on;
 imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
 hold on
 
@@ -140,10 +156,13 @@ hold off
 IMa = getframe(); % Get zoomed portion that is visible.
 IM2 = double(squeeze(IMa.cdata(:,:,1)));
 
+
 CaBMI_3D_compare(IM,IM2);
 [h,p1] = kstest2(BinR(2,:),rBinR(2,:),'Alpha',0.01);
 [h,p2] = kstest2(BinR(1,:),rBinR(1,:),'Alpha',0.01);
 title(['p =   ', num2str(p1), '   p =   ', num2str(p2)]);
+ylim([-5 5]);
+xlim([-5 5]);
 
 % figure();
 % subplot(1,2,1);
@@ -163,8 +182,10 @@ title(['p =   ', num2str(p1), '   p =   ', num2str(p2)]);
 % h2.Normalization = 'probability';
 % h2.BinWidth = 0.5;
 
+% Generage figure
+
+
+
 
 % figure(5);
 % histogram(ThetaInDegrees);
-
-
