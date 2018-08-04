@@ -15,12 +15,14 @@ idx = 1:3:size(G,2);
 L = 30; %length of corr;
 
 
-parfor i = 1:500%(size(idx,2)-1)
+parfor i = 1:1000%(size(idx,2)-1)
   disp(['processing ' num2str(i), 'of ', num2str(size(idx,2)-1)])
 G1= G(:,idx(i):idx(i)+L);
 [dim_to_use1, result1] = findzdim(G1);
 pool1(:,i) = result1.line;
 dim(:,i) = dim_to_use1;
+
+mn(:,i) = mean(mean(G1),2);
 % % Randomize...
 % for ii = 1:size(G1,1)
 % g2 = randperm(size(G1,2));
@@ -49,6 +51,16 @@ h = plot(pool1,'g');
 
 %figure(); hold on; plot(pool1,'g'); plot(pool2,'m'); plot(pool3,'b');
 warning on
+
+
+for i = 1:1000%(size(idx,2)-1)
+G1= G(:,idx(i):idx(i)+L);
+mn(:,i) = mean(mean(G1,1));
+st(:,i) = mean(std(G1,[],2));
+end
+
+
+% Calculate the mean of the signal
 
 
 %
