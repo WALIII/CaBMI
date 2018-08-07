@@ -24,7 +24,7 @@ bgcolor=[ .75 .75 .75 ]; % rgb values for axis background
 time_select=0;
 startT = 1;
 stopT = size(MOV_DATA,3);
-exp = 3;
+exp = 2;
 
 if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
@@ -74,9 +74,11 @@ MOV_DATA=imfilter(MOV_DATA,h,'circular');
 disp(['Converting to df/f using the ' num2str(per) ' percentile for the baseline...']);
 
 baseline=repmat(prctile(MOV_DATA,per,3),[1 1 frames]);
+baseline(baseline<1) = 1;
 
 dff=((MOV_DATA.^exp-baseline.^exp)./(baseline)).*100;
 dff = dff;
+dff(dff<1) = 1;
 
 % take the center of mass across dim 3 (time) for each point in space
 disp('Computing the center of mass...');
@@ -114,7 +116,7 @@ norm_max_proj=norm_max_proj./(clims(2)-clims(1));
 
 % map to [0,1] for ind2rgb
 
-% Relative scaling between [0,1]: 
+% Relative scaling between [0,1]:
 clims(1)=min(com_dff(:));
 clims(2)=max(com_dff(:));
 
