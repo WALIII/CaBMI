@@ -1,4 +1,4 @@
-function [mn, st] = CaBMI_running_FA(roi_ave)
+function [pool1, dim] = CaBMI_running_FA(roi_ave)
 
 % Estimate the number of factors needed to explain BMI data on a rolling basis
 
@@ -9,41 +9,39 @@ function [mn, st] = CaBMI_running_FA(roi_ave)
 warning off
 % Get data in a matrix:
 
-G = roi_ave.C_dec;
+G = roi_ave.F_dff;
 
 idx = 1:3:size(G,2);
-L = 60; %length of corr;
+L = 30; %length of corr;
 
-% 
-% parfor i = 1:1000%(size(idx,2)-1)
-%   disp(['processing ' num2str(i), 'of ', num2str(size(idx,2)-1)])
-% G1= G(:,idx(i):idx(i)+L);
-% [dim_to_use1, result1] = findzdim(G1);
-% pool1(:,i) = result1.line;
-% dim(:,i) = dim_to_use1;
-% 
-% mn(:,i) = mean(mean(G1),2);
-% % % Randomize...
-% % for ii = 1:size(G1,1)
-% % g2 = randperm(size(G1,2));
-% % C1(ii,:) = smooth(G1(1,g2),4);
-% % end
-% %
-% % [dim_to_use3, result3] = findzdim(C1);
-% % pool3(:,i) = result3.line;
-% 
-% % try
-% % G2= squeeze(Gb(i,:,:))';
-% % [dim_to_use2, result2] = findzdim(G2);
-% % pool2(:,i) = result2.line;
-% % catch
-% 
-% %
-% % end
+
+parfor i = 1:500%(size(idx,2)-1)
+  disp(['processing ' num2str(i), 'of ', num2str(size(idx,2)-1)])
+G1= G(:,idx(i):idx(i)+L);
+[dim_to_use1, result1] = findzdim(G1);
+pool1(:,i) = result1.line;
+dim(:,i) = dim_to_use1;
+% % Randomize...
+% for ii = 1:size(G1,1)
+% g2 = randperm(size(G1,2));
+% C1(ii,:) = smooth(G1(1,g2),4);
 % end
-% 
-% figure(); 
-% h = plot(pool1,'g');
+%
+% [dim_to_use3, result3] = findzdim(C1);
+% pool3(:,i) = result3.line;
+
+% try
+% G2= squeeze(Gb(i,:,:))';
+% [dim_to_use2, result2] = findzdim(G2);
+% pool2(:,i) = result2.line;
+% catch
+
+%
+% end
+end
+
+figure();
+h = plot(pool1,'g');
 
 % colors = summer(4);
 % set(h, {'color'}, num2cell(colors, 2));
@@ -51,16 +49,6 @@ L = 60; %length of corr;
 
 %figure(); hold on; plot(pool1,'g'); plot(pool2,'m'); plot(pool3,'b');
 warning on
-
-
-for i = 1:5000%(size(idx,2)-1)
-G1= G(:,idx(i):idx(i)+L);
-mn(:,i) = mean(mean(G1,1));
-st(:,i) = mean(std(G1,[],2));
-end
-
-
-% Calculate the mean of the signal
 
 
 %

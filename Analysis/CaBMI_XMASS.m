@@ -1,7 +1,7 @@
 function RGB1 = CaBMI_XMASS(GG1,GG2,GG3);
 
 
-   HL = [0.001 .20];
+   HL = [0.001 .30];
    T = 1:size(GG1,2);
    F = 1:size(GG1,1);
 

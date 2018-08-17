@@ -28,7 +28,7 @@ for ii = 1:SM2;
     Rperm = randi(size(V,2),1,size(N,2)); % random timestamps
 
 for i = 1:size(N,2);
-    
+
 if ii ==1;
 [minDistance, indexOfMin(:,i)] = min(abs(V-N(i)));
 
@@ -85,11 +85,11 @@ indexa = -1.5:.1:2.5;
 %  ylim([2 5]);
 %  xlim([-1 2.5]);
 
-% Plot Actual 
+% Plot Actual
 figure()
 image(indexa,indexb,zeros(Sz,Sz));
 
-hold on; 
+hold on;
 imagesc(centers{2}([1 end]),centers{1}([1 end]),values2);
 hold on
 colormap(gray);
@@ -112,7 +112,7 @@ valuesB2=imfilter(valuesB,h,'circular','replicate');
 % Generage figure
 figure();
 image(indexa,indexb,zeros(Sz,Sz));
-hold on; 
+hold on;
 imagesc(centers2{2}([1 end]),centers2{1}([1 end]),valuesB2);
 hold on
 colormap(gray);
@@ -138,15 +138,15 @@ h=fspecial('gaussian',filt,filt);
 X=imfilter(X,h,'circular','replicate');
 
 % imagesc(indexa,indexa,zeros(100,100));
-hold on; 
+hold on;
 image(indexa,indexb,zeros(Sz,Sz));
 imagesc(centers{2}([1 end]),centers{1}([1 end]),X);
 colormap('jet');
 ylim([2 5]);
 xlim([-1 2.5]);
- 
- 
- 
+
+
+
  % Get Angle
 subplot(2,3,3);
 h2 = histogram(-a+360,15);
@@ -161,4 +161,3 @@ compass(b(2,:),b(1,:))
 % h = compass(b(2,i),b(1,i));
 % set(h, 'color', col(round(pks(i)*100),:));
 % end
-

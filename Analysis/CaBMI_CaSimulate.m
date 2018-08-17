@@ -1,10 +1,19 @@
-function [roi_ave_test] = CaBMI_CaSimulate
+function [roi_ave_test,norm_data,noise_data,A_wnoise ] = CaBMI_CaSimulate( )
+% CaBMI_CaSimulate
 
+% Simulate Data with ROI statistics to test source extraction algorythems
+% with a 'gound truth'
 
 % make null distribution, to demonstrate cell motor place fields
-numCell = 100;
+
+% Params:
+numCell = 200;
 t = 0 ;
 cursor = 0;
+
+
+
+
 for i = 1:numCell;
 cell{i} = 0;
 end
@@ -69,22 +78,23 @@ cellF2 = cellF;
     cell2use = 1;
     
     close all
+
+    % Calculate occupancy
+%  CaBMI_occupany(roi_ave_test,roi_ave2_test,cell2use)
     
-  %  CaBMI_occupany(roi_ave_test,roi_ave2_test,cell2use)
     
-    
-    % Make a fake movie
+% Make a fake movie with the data
     
     s1 = 500;
     s2 = 500;
-    for i = 1: 100;   
+    for i = 1: 200;   
         cellloc(1,i) = randi(500);
         cellloc(2,i) = randi(500);
-        radius(1,i) = 5+randi(20);
+        radius(1,i) = 10+randi(30);
     end
     
+% Filter Params:
 filt = 35;
-
 h=fspecial('gaussian',filt,filt);
         
     for i = 1:500;
@@ -111,14 +121,16 @@ X2(:,:,i) = X;
     end
     
     disp('smoothing matrix')
-    A_wnoise = 3*randn(size(X2));
+    A_wnoise = 1*randn(size(X2));
     figure();
     m = min(min(min(X2)));
     ma = max(max(max(X2)));
+    
     for i = 1:500;
         imagesc(X2(:,:,i)-A_wnoise(:,:,i),[0 8])
          norm_data(:,:,i) = (X2(:,:,i) - m)./  (ma - m);
-
+         noise_data = X2(:,:,i)-A_wnoise(:,:,i);
+ pause(0.01)
     end
     
 %     N = norm_data*255;
