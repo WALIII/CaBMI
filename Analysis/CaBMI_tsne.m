@@ -90,3 +90,5 @@ colormap(jet(max(T)));
 figure();
 
 scatter(ydat(1:20000,1),ydat(1:20000,2),10,T);
+
+figure(); plot(

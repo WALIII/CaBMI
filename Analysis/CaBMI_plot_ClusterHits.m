@@ -61,5 +61,5 @@ end
  data = zscore(squeeze(dataM{index(i)}(:,:)))';
  imagesc(data);
  colormap(gray);
- pause(0.1);
+ pause();
  end

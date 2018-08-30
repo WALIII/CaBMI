@@ -23,3 +23,5 @@ b = im(1:end-4);
 b = strcat(b,'_ROI_DATA.mat');
 save(b,'ROI')
 end
+
+% Save CSV for widefield input
