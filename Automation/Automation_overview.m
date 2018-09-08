@@ -17,7 +17,7 @@ START_DIR_ROOT = cd; % or a scheduled folder...
 if exist('Processed','file') >=0;;
  mkdir('Processed');
 end
-% 
+%
 
 csv_ext = 1; % extract .csv file? 1 = yes.
 mov_ext = 1; % extract downsampled video? 1 = yes
@@ -57,11 +57,17 @@ SsubFolders = Sfiles(SdirFlags);
 % Print folder names to command window.
 
 counter = 1;
+counter2 = 1;
 for k1 = 1:length(SsubFolders)
     A = strfind(SsubFolders(k1).name, 'main');
+    B = strfind(SsubFolders(k1).name, 'map');
     if ~isempty(A)
         S2S(counter) = SsubFolders(k1);
         counter = counter+1;
+    end
+    if ~isempty(B)
+        S2Sm(counter2) = SsubFolders(k1);
+        counter2 = counter2+1;
     end
 end
 
@@ -74,13 +80,13 @@ disp(['Entering  ',char(S2S(ii).name)]);
 
 % ** TO DO: Check to see if 'mptifs'. if not, convert the tifs
 if  exist('Processed','file') ==0; % if no tiff extraction...
- 
+
 CaBMI_mptif; % add a delete term to the raw tifs....
 disp('extracting tifs...')
 
 disp('removing .tifs')
 delete('*.tif')
-% TO DO: Delete Tifs...
+% Delete Tifs...
 
 end
 
@@ -101,10 +107,10 @@ end
 
   if exist('Processed/roi','file') >= 1 %
         disp( ' Folder already extracted!');
-        
+
   else
         disp(' mptiffs extracted, getting ROIs...')
-    
+
         try
             cd('Processed')
             % if so, run them
@@ -116,7 +122,7 @@ end
               disp(' Folder does not exist');
         end
   end
-% Extract video...  
+% Extract video...
 if mov_ext ==1;
 load('Processed\ds_data','Y')
 save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','Y.mat'],'Y','-v7.3');
@@ -124,10 +130,59 @@ end
 % copy data over
 disp('copying data...');
 copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
-% TO DO: Go back, and extract ROIs on the 'MAP' files.
+
+
+
+
+%% Go back, and extract ROIs on the 'MAP' files.
+disp('returning to extract the MAP data...')
+for ii = 1:length(S2Sm)
+cd([S2Sm(ii).folder,'\',S2Sm(ii).name])
+disp(['Entering  ',char(S2Sm(ii).name)]);
+
+% ** Check to see if 'mptifs'. if not, convert the tifs
+if  exist('Processed','file') ==0; % if no tiff extraction...
+
+CaBMI_mptif; % add a delete term to the raw tifs....
+disp('extracting tifs...')
+
+disp('removing .tifs')
+delete('*.tif')
+% TO DO: Delete Tifs...
+
+end
+% Extract ROIs based on the main data
+if exist('Processed/roi','file') >= 1 %
+      disp( ' Folder already extracted!');
+
+else
+      disp(' mptiffs extracted, getting ROIs...')
+
+      try
+          cd('Processed')
+          % if so, run them
+
+          disp('processing ( ROI extraction)...')
+          pause(0.01);
+          % get relevant ROI data:
+
+          [ROI_m,roi_ave_m] = CaBMI_plot_roi(ROI); % var ROI should be the last processed...
+      catch
+            disp(' Folder does not exist');
+      end
+end
+
+% copy data over
+disp('copying data...');
+copyfile([S2Sm(ii).folder,'\',S2Sm(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2Sm(ii).name]);
+
+
+
+
+
 % TO DO: Send warnings via text
  end
- 
+
 clear Sfiles SdirFlags S2S counter
 
 cd(START_DIR_ROOT);

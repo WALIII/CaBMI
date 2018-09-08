@@ -19,6 +19,7 @@ ReadObj = VideoReader(fileName);
 CurFrame = 0;
 GetFrame = 1:200;
 counter = 1;
+disp('loading in the first 200 frames...')
 while hasFrame(ReadObj)
     CurImage = readFrame(ReadObj);
     CurFrame = CurFrame+1;

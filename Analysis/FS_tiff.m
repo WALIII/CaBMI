@@ -27,6 +27,22 @@ function FS_tiff(videodata,varargin)
 filename = 'G.tif';
 
 [files, n] = FS_Format(videodata,1);
+
+disp('Removing Outliers...')
+% Filter any artifacts
+for i = 1:3; % for 2 ittereations,
+Im = squeeze(mean(mean(files(:,1:20,:),2),1));
+TF = isoutlier(Im);
+files(:,:,find(TF ==1)) = [];
+
+Im2 = squeeze(mean(mean(files(1:20,:,:),2),1));
+TF2 = isoutlier(Im2);
+files(:,:,find(TF2 ==1)) = [];
+disp(['Removed ' num2str(sum(TF)+sum(TF2)),' outliers!']);
+end
+
+clear Im
+
 for i=1:2:nparams
 	switch lower(varargin{i})
 		case 'colors'
