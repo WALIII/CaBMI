@@ -160,7 +160,7 @@ IM2 = double(squeeze(IMa.cdata(:,:,1)));
 CaBMI_3D_compare(IM,IM2);
 [h,p1] = kstest2(BinR(2,:),rBinR(2,:),'Alpha',0.01);
 [h,p2] = kstest2(BinR(1,:),rBinR(1,:),'Alpha',0.01);
-title(['p =   ', num2str(p1), '   p =   ', num2str(p2)]);
+title(['p =   ', num2str(p1), '  randomized control  p =   ', num2str(p2)]);
 ylim([-5 5]);
 xlim([-5 5]);
 

@@ -10,13 +10,9 @@ try
 ROI = roi_ave.S_dec(cell,:);
 
 % if there is no deconvolved data, make it:
-catch
-for i = cell
-    disp('Deconvolving data...');
- [c, s ] = deconvolveCa(roi_ave.interp_dff(cell,:));
-end
-ROI = s';
-end
+for i = 1:size(
+ [c(i,:), s ] = deconvolveCa(roi_ave.interp_dff(i,:));
+
 % figure(); plot(ROI)
 
 [pks, locs] = findpeaks(double(ROI),'MinPeakDistance',10,'MinPeakHeight',std(ROI)*2);
@@ -24,7 +20,6 @@ end
 % figure();
 % hold on;
 % plot(ROI);
-% plot(c);
 % plot(locs,pks,'*');
 
 
@@ -78,11 +73,7 @@ b(2,i) = x2-x1;
 end
 
 
-% if there is no a...
-if exist('a') ==0
-    a = 1:360;
-    a = [a, randi(360)];
-end
+
 
 % figure();
 % x = histogram(ThetaInDegrees,25)

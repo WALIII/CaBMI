@@ -60,7 +60,7 @@ end% end
 %% Extract clusteres from the t-sne plot
 
 %T = clusterdata(ydat(1:20000,:),'Maxclust',20); 
-T = clusterdata(ydat(1:20000,:),'Linkage','ward','Maxclust',50);
+T = clusterdata(ydat(1:20000,:),'Linkage','ward','Maxclust',50 );
 colormap(jet(max(T)));
 
 figure(); 
