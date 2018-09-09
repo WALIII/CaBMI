@@ -42,7 +42,7 @@ end
 
 
 % Run through all folder...
-for i = 1:length(subFolders)-1;
+for i = 1:length(subFolders);
 disp(['entering folder', char(subFolders(i).name)])
 cd(subFolders(i).name)
 
@@ -132,13 +132,13 @@ disp('copying data...');
 copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
 
 
-
+ end
 
 %% Go back, and extract ROIs on the 'MAP' files.
 disp('returning to extract the MAP data...')
-for ii = 1:length(S2Sm)
-cd([S2Sm(ii).folder,'\',S2Sm(ii).name])
-disp(['Entering  ',char(S2Sm(ii).name)]);
+for iii = 1:length(S2Sm)
+cd([S2Sm(iii).folder,'\',S2Sm(iii).name])
+disp(['Entering  ',char(S2Sm(iii).name)]);
 
 % ** Check to see if 'mptifs'. if not, convert the tifs
 if  exist('Processed','file') ==0; % if no tiff extraction...
@@ -152,21 +152,22 @@ delete('*.tif')
 
 end
 % Extract ROIs based on the main data
-if exist('Processed/roi','file') >= 1 %
+if exist('Processed\Mtiff_folder2\roi','file') >= 1 %
       disp( ' Folder already extracted!');
 
 else
       disp(' mptiffs extracted, getting ROIs...')
 
       try
-          cd('Processed')
+          cd('Processed\Mtiff_folder2')
           % if so, run them
-
-          disp('processing ( ROI extraction)...')
+          
+          disp('Loading ROI... processing ROI extraction...')
           pause(0.01);
           % get relevant ROI data:
+          load([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\ave_roi.mat'],'ROI')
 
-          [ROI_m,roi_ave_m] = CaBMI_plot_roi(ROI); % var ROI should be the last processed...
+          [roi_ave_m] = CaBMI_plot_roi(ROI); % var ROI should be the last processed...
       catch
             disp(' Folder does not exist');
       end
@@ -174,7 +175,8 @@ end
 
 % copy data over
 disp('copying data...');
-copyfile([S2Sm(ii).folder,'\',S2Sm(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2Sm(ii).name]);
+mkdir([START_DIR_ROOT,'\','Processed','\',S2Sm(iii).name]);
+copyfile([S2Sm(iii).folder,'\',S2Sm(iii).name,'\','Processed\Mtiff_folder2\','roi\','Ca_ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2Sm(iii).name]);
 
 
 

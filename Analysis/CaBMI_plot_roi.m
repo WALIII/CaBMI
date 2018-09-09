@@ -266,5 +266,5 @@ clear tmp; clear dff; clear yy2; clear yy;
 
 
 %roi_ave.t=ave_time;
-%save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
+save(fullfile(save_dir,['Ca_ave_roi.mat']),'roi_ave');
 disp('Generating average ROI figure...');
