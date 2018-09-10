@@ -4,7 +4,7 @@ function roi_ave= CaBMI_plot_roi(ROIS,varargin)
 %
 
 
-
+% Default Paramaters:
 colors=eval(['winter(' num2str(length(ROIS.coordinates)) ')']);
 sono_colormap='hot';
 baseline=3;
@@ -24,7 +24,7 @@ detrend_traces=0;
 crop_correct=0;
 ring = 0; % subtract ring around ROI ( local backgrounds)
 mov_case = 0; % for many single tiffs....
-
+filename = 'Ca
 
 
 nparams=length(varargin);
@@ -65,6 +65,8 @@ for i=1:2:nparams
 			crop_correct=varargin{i+1};
 		case 'ring'
 			ring = varargin{i+1};
+        case 'filename'
+			filename = varargin{i+1}; % if tiff, mov, mat, etc
 		case 'type'
 			format = varargin{i+1}; % if tiff, mov, mat, etc
 	end
@@ -266,5 +268,5 @@ clear tmp; clear dff; clear yy2; clear yy;
 
 
 %roi_ave.t=ave_time;
-save(fullfile(save_dir,['Ca_ave_roi.mat']),'roi_ave');
+save(fullfile(save_dir,[filename, '.mat']),'roi_ave');
 disp('Generating average ROI figure...');

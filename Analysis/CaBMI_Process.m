@@ -77,6 +77,8 @@ end
 
 
 
+% check to see if data is already extracted...
+
 
 
 % Start complete pipeline for calcium imaging data pre-processing
@@ -90,10 +92,17 @@ files = subdir(fullfile(foldername,'*.tif'));   % list of filenames (will search
 FOV = size(read_file(files(1).name,1,1));
 numFiles = length(files);
 
+
+
+
 %% motion correct (and save registered h5 files as 2d matrices (to be used in the end)..)
 % register files one by one. use template obtained from file n to
 % initialize template of file n + 1;
 
+if exist('ds_data.mat','file') >= 1 %
+    disp('data exists from previous extraction...');
+else
+     disp('No previous extractions detected');
                                             % flag for non-rigid motion correction
 if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
 options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
@@ -114,13 +123,14 @@ for i = 1:numFiles
     end
 end
 
-
+end
 %% downsample h5 files and save into a single memory mapped matlab file
 if motion_correct
     h5_files = subdir(fullfile(foldername,['*',append,'.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
 else
     h5_files = subdir(fullfile(foldername,'*_mc.h5'));
 end
+
 
 
 
