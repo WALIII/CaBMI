@@ -19,7 +19,7 @@ if exist('Processed','file') >=0;;
 end
 %
 
-csv_ext = 0; % extract .csv file? 1 = yes.
+csv_ext = 1; % extract .csv file? 1 = yes.
 mov_ext = 1; % extract downsampled video? 1 = yes
 
 
@@ -124,7 +124,7 @@ end
 
             disp('processing ( ROI extraction)...')
             pause(0.01);
-            [ROI,roi_ave] = CaBMI_Process('type',2);
+             [ROI,roi_ave] = CaBMI_Process('type',2);
            cd('Mtiff_folder2')
             % extract
             [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi');% var ROI should be the last processed...
@@ -180,7 +180,8 @@ else
           disp('Loading ROI... processing ROI extraction...')
           pause(0.01);
           % get relevant ROI data:
-          load([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\ave_roi.mat'],'ROI')
+          load([START_DIR_ROOT,'\','Processed','\',subFolders(i).name,S2S(ii).name,'\ave_roi.mat'],'ROI')
+
 
           [roi_ave_m] = CaBMI_plot_roi(ROI,'filename','Indirect_roi'); % var ROI should be the last processed...
           [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi'); % var ROI should be the last processed...

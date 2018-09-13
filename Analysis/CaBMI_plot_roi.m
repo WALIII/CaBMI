@@ -24,7 +24,7 @@ detrend_traces=0;
 crop_correct=0;
 ring = 0; % subtract ring around ROI ( local backgrounds)
 mov_case = 0; % for many single tiffs....
-filename = 'Ca
+filename = 'Ca_roi_ave.mat';
 
 
 nparams=length(varargin);
