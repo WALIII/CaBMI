@@ -57,10 +57,10 @@ figure();
 hold on; 
 for i = 1:size(locs,1);
     try
-        B1(:,i) = smooth(B(1,locs(i)-50:locs(i)+50),3);
-        C1(:,i) = smooth(C(1,locs(i)-50:locs(i)+50),3);
-        D1(:,i) = smooth(D(1,locs(i)-50:locs(i)+50),3);
-        E1(:,i) = smooth(E(1,locs(i)-50:locs(i)+50),3);
+        B1(:,i) = smooth(B(1,locs(i)-50:locs(i)+50);
+        C1(:,i) = smooth(C(1,locs(i)-50:locs(i)+50);
+        D1(:,i) = smD(1,locs(i)-50:locs(i)+50);
+        E1(:,i) = E(1,locs(i)-50:locs(i)+50);
     plot(B1(:,i),'r');
     plot(E1(:,i),'m');
     plot(C1(:,i),'b');
@@ -99,7 +99,7 @@ dataM(:,:,3) = D1;
 dataM(:,:,4) = E1;
 col = hsv(size(dataM,3));
 counter = 1;
-shift = 0;
+shift = 1;
 
 
 figure(); 

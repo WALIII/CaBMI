@@ -15,7 +15,7 @@ disp('Select a .mov file');
 % dname = fullfile(pathName,fileName)
 % filelist = dir([fileparts(dname) filesep '*.mov']);
 
-ReadObj = VideoReader(fileName); 
+ReadObj = VideoReader(fileName);
 CurFrame = 0;
 GetFrame = 1:200;
 counter = 1;
@@ -77,10 +77,10 @@ imwrite(I3,'ROI_image.png');
 % Select an ROI
 
   ROI = caBMI_annotate_image('ROI_image.png');
-  
+
   % Wait until keypress to move forward
   disp('press S when complete.. Do not forget to SAVE!');
-  
+
 pause();
 
   ROI = caBMI_annotate_image('ROI_image.png');
@@ -90,9 +90,9 @@ G = ROI.coordinates
 [ydim xdim] = size(I3);
 
 for i = 1: size(G,2); % for each ROI
-cells(1,i) = mean(G{i}(:,1))/ydim; % xnorm
-cells(2,i) = mean(G{i}(:,2))/xdim; % ynorm
-cells(3,i) = (max(G{i}(:,1)-min(G{i}(1,:))))/ydim;
+cells(i,1) = mean(G{i}(:,1))/ydim; % xnorm
+cells(i,2) = mean(G{i}(:,2))/xdim; % ynorm
+cells(i,3) = (max(G{i}(:,1)-min(G{i}(1,:))))/ydim;
 end
 
 % Save as a CSV with the date-time as the title (for backup)
