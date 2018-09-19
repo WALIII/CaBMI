@@ -113,3 +113,29 @@ GanguliCarmena2009_test(kin_data,neural_data,i);
     end
 
 end
+
+
+
+
+%%%%
+% Split a 3D map into 2 seperate maps:
+%load('/Volumes/DATA_01/LIBERTI_DATA/Processed/2D_BMI/d050618/theta/M010_theta_main.mat')
+% found in: CaBMI_schnitz_format_thetamap
+t = 1:20000:54000;
+for i = 1:size(t,2)-1
+    try
+R.C_dec = roi_ave1.C_dec(:,t(i):t(i+1));
+R.S_dec = roi_ave1.S_dec(:,t(i):t(i+1));
+R.F_dff = roi_ave1.F_dff(:,t(i):t(i+1));
+    catch
+       R.interp_dff =  roi_ave1.interp_dff(:,t(i):t(i+1));
+    end
+R2.interp_dff = roi_ave2.interp_dff(:,t(i):t(i+1));
+
+[out{i}] = CaBMI_theta_map(R, R2,ROI1, ROI2);
+clear R R2
+end
+
+data.directed(1,:,:) = out{1}.bins_zscore;
+data.undirected(1,:,:) = out{2}.bins_zscore;
+figure(); CaBMI_schnitz(data)

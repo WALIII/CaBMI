@@ -1,4 +1,4 @@
-function N = CaBMI2D_theta(roi_ave,roi_ave2,cell)
+function [N N2]= CaBMI2D_theta(roi_ave,roi_ave2,cell)
 % Where do indirect neurons 'live' in 2D space?
 % Load in the extracted direct neurons, and the indirect cells
 
@@ -19,8 +19,9 @@ ROI = s';
 end
 % figure(); plot(ROI)
 
-[pks, locs] = findpeaks(double(ROI),'MinPeakDistance',10,'MinPeakHeight',std(ROI)*2);
+[pks, locs] = findpeaks(double(ROI(:,1:end-10)),'MinPeakDistance',5,'MinPeakHeight',std(ROI)*2);
 
+locs(locs<10) = []; % removed early peaks
 % figure();
 % hold on;
 % plot(ROI);
@@ -31,8 +32,8 @@ end
 % Reconstruct the cursor
 
 
-sM = 5;
-TData2.cursorA = smooth((zscore(roi_ave2.interp_dff(1,:)) + zscore(roi_ave2.interp_dff(3,:)))  - (zscore(roi_ave2.interp_dff(3,:)) + zscore(roi_ave2.interp_dff(4,:))),sM)';
+sM = 10;
+TData2.cursorA = smooth((zscore(roi_ave2.interp_dff(1,:)) + zscore(roi_ave2.interp_dff(2,:)))  - (zscore(roi_ave2.interp_dff(3,:)) + zscore(roi_ave2.interp_dff(4,:))),sM)';
 TData2.cursorB = smooth((zscore(roi_ave2.interp_dff(5,:)) + zscore(roi_ave2.interp_dff(6,:)))  - (zscore(roi_ave2.interp_dff(7,:)) + zscore(roi_ave2.interp_dff(8,:))),sM)';
 
 % Fake cursor ( pick random cells as 'cursor')
@@ -88,7 +89,7 @@ end
 % x = histogram(ThetaInDegrees,25)
 figure(1);
 subplot(1,2,1);
-h2 = histogram(-a+360,15);
+h2 = histogram(-a+360,12);
 h2.Normalization = 'probability';
 
 % subplot(1,2,2);
@@ -101,5 +102,5 @@ h2.Normalization = 'probability';
 % end
 
 N = h2.Values;
-
+N2 = -a+360;
 
