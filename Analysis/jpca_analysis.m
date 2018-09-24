@@ -6,10 +6,10 @@
 % Each column of A corresponds to a neuron, and each row to a timepoint.
 
 
-clear all
+% clear all
 
 % load data
-load('csv_data.mat'); load('ave_roi.mat'); 
+%load('csv_data.mat'); load('ave_roi.mat');
 
 
 % Extract Hits;
@@ -42,7 +42,7 @@ disp(' one hit is too close to the end...');
 end
 end
 
-%% Ploting function 
+%% Ploting function
 close all
 
 a = 1;
@@ -54,16 +54,16 @@ hold on;
 figure(b);
  hold on;
  figure(c);
- hold on; 
+ hold on;
 fig1=figure(1); fig1.Renderer='Painters';
 fig2=figure(2); fig2.Renderer='Painters';
 fig3=figure(3); fig3.Renderer='Painters';
 fig4=figure(4); fig4.Renderer='Painters';
 smth = 5; % smooth in time
-PC1 = 1; 
+PC1 = 1;
 PC2 = 2;
 PC3 = 3;
-PC4 = 4; 
+PC4 = 4;
 PC5 = 5;
 PC6 = 6;
 fr = 10; % smooth across trials
@@ -117,5 +117,3 @@ end
 
 
 scrap_roi_plot_shaded(ROIhits);
-
-

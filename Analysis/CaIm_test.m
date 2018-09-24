@@ -1,4 +1,4 @@
-function [B1 C1 D1 ] = CaIm_test_(ROI,TData);
+function [out] = CaIm_test_(ROI,TData);
 
 
  % Hits
@@ -21,12 +21,12 @@ E = zscore(TData.ROI_dff(4,:));
 
 figure();
 hold on;
-plot(A);  
+plot(A);
 
-plot(B); 
-plot(C); 
-plot(-(D)); 
-plot(-(E)); 
+plot(B);
+plot(C);
+plot(-(D));
+plot(-(E));
 
 
 B = B- median(B);
@@ -38,13 +38,13 @@ plot(locs,pks,'*');
 
 figure();
 hold on;
-plot(A);  
+plot(A);
 
 
-plot(B-10,'r'); 
-plot(C-10,'m'); 
-plot((D-10),'b'); 
-plot((E)-10,'c'); 
+plot(B-10,'r');
+plot(C-10,'m');
+plot((D-10),'b');
+plot((E)-10,'c');
 
 
 plot(((B+C)-(D+E)),'LineWidth',2);
@@ -54,27 +54,27 @@ plot(locs,pks,'*');
 
 
 figure();
-hold on; 
+hold on;
 for i = 1:size(locs,1);
     try
-        B1(:,i) = smooth(B(1,locs(i)-50:locs(i)+50),3);
-        C1(:,i) = smooth(C(1,locs(i)-50:locs(i)+50),3);
-        D1(:,i) = smooth(D(1,locs(i)-50:locs(i)+50),3);
-        E1(:,i) = smooth(E(1,locs(i)-50:locs(i)+50),3);
+        B1(:,i) = smooth(B(1,locs(i)-50:locs(i)+50),1);
+        C1(:,i) = smooth(C(1,locs(i)-50:locs(i)+50),1);
+        D1(:,i) = smooth(D(1,locs(i)-50:locs(i)+50),1);
+        E1(:,i) = smooth(E(1,locs(i)-50:locs(i)+50),1);
     plot(B1(:,i),'r');
     plot(E1(:,i),'m');
     plot(C1(:,i),'b');
     plot(D1(:,i),'c');
-    
+
     catch
         disp('catching...');
     end
-    
+
 end
 
 
 figure();
-hold on; 
+hold on;
 plot(mean(B1'),'r');
 plot(mean(E1'),'m');
 plot(mean(C1'),'b');
@@ -102,12 +102,12 @@ counter = 1;
 shift = 0;
 
 
-figure(); 
+figure();
 hold on;
 
 for i = 1:size(dataM,3);
     data = squeeze(dataM(:,:,i))';
-    
+
 L = size(data,2);
 se = std(data)/sqrt(length(data));
 mn = mean(data)+counter*shift;
@@ -115,7 +115,13 @@ mn = mean(data)+counter*shift;
 
 h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(i,:)); alpha(0.5);
 plot(mn,'Color',col(i,:));
-    
+
 end
 
-
+out.e1a = B1;
+out.e1b = C1;
+out.e2a = D1;
+out.e2b = E1;
+out.E1 = B1+C1;
+out.E2 = D1+E1;
+out.cursor = (B1+C1)-(D1+E1);

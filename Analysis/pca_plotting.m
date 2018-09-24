@@ -1,30 +1,12 @@
-function [PCA_hits]= CaBMI_PCA(roi_ave,roi_hits);
-% CaBMI_getROI.m
+function pca_plotting(PCA_hits,roi_hits)
 
-% wal3
-% d03.19.18
-
-
-ploting =1;
-
-
-[coeff,score] = pca(roi_ave.F_dff);
-coeff = coeff';
-  for i = 1:size(roi_hits)
-      try
-PCA_hits(i,:,:) = (coeff(:,roi_hits(i)-400:roi_hits(i)+400))';
-      catch
-          disp(' one hit is too close to the end...');
-      end
-  end
-
-  
-if ploting == 1;
-  PCs = [4 5 6];
+  PCs = [1 2 3];
 counter = 1;
 for ii = PCs
 for i = 1:size(PCA_hits,1);
-    mat2(i,:,counter) = smooth(mat2gray(( PCA_hits(i,:,ii))-( PCA_hits(i,1,ii))),20);
+    %mat2(i,:,counter) = mat2gray(smooth( diff(PCA_hits(i,:,ii)),5));
+    mat2(i,:,counter) = mat2gray(smooth(PCA_hits(i,:,ii),5));
+
 end
 counter = counter+1;
 end
@@ -56,6 +38,3 @@ subplot(5,1,2:5)
 h = imagesc(mat3); 
 % set(gca,'DataAspectRatio',[1 .5 .1])
 hold off 
-end
-
-  

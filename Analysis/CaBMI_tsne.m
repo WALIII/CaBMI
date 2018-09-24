@@ -83,9 +83,9 @@ T = clusterdata(ydat(1:20000,:),'Linkage','ward','Maxclust',50);
 
 colormap(jet(max(T)));
 
-% figure();
-% subplot(1,2,1)
-% scatter(ydat_30b(1:20000,1),ydat_30b(1:20000,2),10,T);
+figure();
+subplot(1,2,1)
+scatter(ydat_30b(1:20000,1),ydat_30b(1:20000,2),10,T);
 
 figure();
 

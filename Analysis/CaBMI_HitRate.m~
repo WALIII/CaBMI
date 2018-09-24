@@ -5,7 +5,7 @@ function [out] = CaBMI_HitRate(roi_ave,direct);
 
 
 smt = 3; % cursor moothing factor
-smt2 = 2; % histogram smoothing;
+smt2 = 3; % histogram smoothing;
 thresh = 2.5;
 reset = 1;
 
@@ -43,7 +43,7 @@ for i = 1:400; % 400 permutations
     
     Icursor(i,:) = smooth(Ie1-Ie2,smt);
 end
-countTime = round((size(roi_ave.F_dff,2)/30)/60)/5
+countTime = round((size(roi_ave.F_dff,2)/30)/60)
 
 catch
 g = randperm(size(roi_ave.interp_dff,1));
@@ -57,7 +57,7 @@ for i = 1:400; % 400 permutations
     
     Icursor(i,:) = smooth(Ie1-Ie2,smt);
 end
-countTime = round((size(roi_ave.interp_dff,2)/30)/60)/5
+countTime = round((size(roi_ave.interp_dff,2)/30)/60)
 end
 
 
@@ -117,28 +117,6 @@ plot(mn,'Color',col(1,:));
 
 plot(N1,'b');
 
-
-
-% Plot by subtracting the null distrubution:
-
-figure(); 
-hold on;
-
-col = hsv(1);
-data = (N-mean(N,2))';
-    
-L = size(data,2);
-se = std(data)/sqrt(length(data));
-sd = std(data)/2;
-
-mn = mean(data);
-
-
-h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(1,:)); alpha(0.5);
-plot(mn,'Color',col(1,:));
-    
-
-plot(N1-mean(N,2),'b');
 
 
 % get the hit rate
