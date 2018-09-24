@@ -25,9 +25,13 @@ load('csv_data.mat'); load('ave_roi.mat');  load('Y.mat');
  % Get ROI traces in a matrix, bounded by the hits
  [ROIhits, ROIhits_d, ROIhits_s]= CaBMI_getROI(roi_ave,roi_hits);
 
-
  % get PCA matrix
   [PCA_mat]= CaBMI_PCA(roi_ave,roi_hits);
+
+% PCA on video:
+CaBMI_PCAmov(mov_data,varargin);
+
+
  % Make Schnitz plot
  figure();
   G1 = ROIhits;
@@ -64,11 +68,41 @@ writeVideo(v, F);
  end
  close(v);
 
-%
+% Make raster plot
+
+% Cluster data, then display organization on a raster plot ( sort by time!)
+
+
+% Factor analysis ( num factors/dims over time)
+
+
+% Kernal Density estimation:
+% https://www.mathworks.com/matlabcentral/fileexchange/37374-ssvkernel-x-tin
+
+
+% Node/network analysis:
+%   1. How does covariance increase/decrease with hits?
+%   2. Granger causality ( transfer of entropy?)
+% http://alexhwilliams.info/itsneuronalblog/2016/03/27/pca/
+% https://en.wikipedia.org/wiki/Mutual_information
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% MOVIE STUFF:
+
 %% Get Avg Video
 [VidHits, I]= CaBMI_getvid(Y,ds_hits);
-
-
    % sort into alternating movies...
    counter = 1;
   for i = 1:round(size(VidHits,4)/2);
@@ -81,12 +115,7 @@ writeVideo(v, F);
   counter = counter+1;
     end
 
-    A1T = mean(A1,4);
-    A2T = mean(A2,4);
-
-    A1T = A1T-min(A1T,[],3);
-    A2T = A2T-min(A2T,[],3);
-
+    A1T = mean(A1,4);  A2T = mean(A2,4);  A1T = A1T-min(A1T,[],3); A2T = A2T-min(A2T,[],3);
 
     figure(); colormap(gray); for i = 1: 61; imagesc(squeeze(A2T(:,:,i)-10)); pause(0.1); end
 
@@ -103,17 +132,12 @@ writeVideo(v, F);
           plot(ROI.coordinates{1,i}(:,1),ROI.coordinates{1,i}(:,2));
         end
 
-
-
-        figure();  for i = 1: 61; imshow(squeeze(X(:,:,i,:))); pause(0.01); end
+figure();  for i = 1: 61; imshow(squeeze(X(:,:,i,:))); pause(0.01); end
 v = VideoWriter('GreenFirstHalf.mov');
 open(v);
 for i = 1:61
-
      writeVideo(v, squeeze(X(:,:,i,:)));
      disp(num2str(i));
-
-
 end
 close(v);
 
@@ -134,42 +158,25 @@ close(v);
   counter = counter+1;
     end
 
-    A1T = mean(A1,4);
-    A2T = mean(A2,4);
-
-    A1T = A1T-min(A1T,[],3);
-    A2T = A2T-min(A2T,[],3);
-
+    A1T = mean(A1,4);  A2T = mean(A2,4);  A1T = A1T-min(A1T,[],3);    A2T = A2T-min(A2T,[],3);
 
     figure(); colormap(gray); for i = 1: 61; imagesc(squeeze(A2T(:,:,i)-10)); pause(0.1); end
+      X =  CaBMI_XMASS(A2T,A1T,A2T);
+    figure();  for i = 1: 61; imshow(squeeze(X(:,:,i,:))); pause(0.01); end
+      v = VideoWriter('M2_interleaved.mov');
+        open(v);
+        for i = 1:61
+          writeVideo(v, squeeze(X(:,:,i,:)));
+          disp(num2str(i));
+        end
+        close(v);
 
 
-  X =  CaBMI_XMASS(A2T,A1T,A2T);
 
 
-
-        figure();  for i = 1: 61; imshow(squeeze(X(:,:,i,:))); pause(0.01); end
-v = VideoWriter('M2_interleaved.mov');
-open(v);
-for i = 1:61
-
-     writeVideo(v, squeeze(X(:,:,i,:)));
-     disp(num2str(i));
-
-
-end
-close(v);
-
-
-%       counter = counter+1;
-%     end
-%   X(:,:,:,i) = XMASS_song(A4,A(:,:,i),A4);
-
-
-%
-%
-%     for i = 1:1000:9000;
-%       A(:,:,counter) = std(single(Y(:,:,i:+1000)),[],3);
-%       counter = counter+1;
-%     end
-%   X(:,:,:,i) = XMASS_song(A4,A(:,:,i),A4);
+%% Make Beeswarm plot:
+% Get data from Lily's jupyter notebook:
+g = [0.69258935 0.71622049 0.75296566 0.90446337 0.71081001 0.72428753  0.86529316];
+data2 = h5read('IDNpredIDNperm_0.hf5','/perf_all_fake_combo' );
+data = {g,data2(5,:),data2(6,:),data2(7,:),};
+figure(); plotSpread(data)

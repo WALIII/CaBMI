@@ -12,7 +12,7 @@ clear G;
 clear G2
 for i = 1:Cel;
     G(i,:) = ((mean(data.directed(:,:,i),1)));
-    out = smooth(G(i,:),6);
+    out = WL_smooth(x,num);
     Gp(i,:) = zscore(out);
 
     G_std(i,:) = ((var(data.directed(:,:,i),[],1)));
@@ -21,8 +21,7 @@ end
 for i = 1:Cel;
     G2(i,:) = ((mean(data.undirected(:,:,i),1)));
 
-    out = smooth(G2(i,:),6);
-    Gp2(i,:) = zscore(out);
+    Gp2(i,:) = zscore(smooth(G2(i,:),10));
 
     G2_std(i,:) = ((var(data.undirected(:,:,i),[],1)));
 end

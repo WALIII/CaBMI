@@ -20,11 +20,11 @@ PCA_hits(i,:,:) = (coeff(:,roi_hits(i)-400:roi_hits(i)+400))';
 
   
 if ploting == 1;
-  PCs = [1 2 4];
+  PCs = [4 5 6];
 counter = 1;
 for ii = PCs
 for i = 1:size(PCA_hits,1);
-    mat2(i,:,counter) = smooth(mat2gray(( PCA_hits(i,:,ii))-( PCA_hits(i,1,ii))),50);
+    mat2(i,:,counter) = smooth(mat2gray(( PCA_hits(i,:,ii))-( PCA_hits(i,1,ii))),20);
 end
 counter = counter+1;
 end
