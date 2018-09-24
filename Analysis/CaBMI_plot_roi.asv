@@ -25,8 +25,6 @@ crop_correct=0;
 ring = 0; % subtract ring around ROI ( local backgrounds)
 mov_case = 0; % for many single tiffs....
 filename = 'Ca_roi_ave.mat';
-docon =1;
- 
 
 
 nparams=length(varargin);
@@ -242,13 +240,11 @@ clear tmp; clear dff; clear yy2; clear yy;
 
 		temp.interp_dff(j,:)=dff(j,:);
 		temp.interp_raw(j,:)=tmp;
-       
         % deconvolve data
         if docon ==1;
-           [c, s] = deconvolveCa(dff(j,:)); 
-        temp.S_dec = s;
-        temp.C_dec = c;
-        clear s c
+           [c, s] = deconvolveCa(y, 
+        temp.S_dec
+        temp.C_dec
         end
     end
 
