@@ -1,4 +1,4 @@
-function [ROIhits, ROIhits_d, ROIhits_s, ROIhits_z]= CaBMI_getROI(roi_ave,roi_hits);
+function [ROIhits,ROIhits_d,ROIhits_s, ROIhits_z]= CaBMI_getROI(roi_ave,roi_hits);
 % CaBMI_getROI.m
 
 % wal3
@@ -11,9 +11,14 @@ temp = zscore(roi_ave.F_dff(:,:),[],2);
   for i = 1:size(roi_hits)
       try
 ROIhits(i,:,:) = (roi_ave.F_dff(:,roi_hits(i)-bound:roi_hits(i)+bound))';
+try
 ROIhits_d(i,:,:) = (roi_ave.C_dec(:,roi_hits(i)-bound:roi_hits(i)+bound))';
 ROIhits_s(i,:,:) = (roi_ave.S_dec(:,roi_hits(i)-bound:roi_hits(i)+bound))';
-
+catch
+    disp('WARNING: no deconvolved data...');
+    ROIhits_d(i,:,:) = 0;
+    ROIhits_s(i,:,:) = 0;
+end
 ROIhits_z(i,:,:) = temp(:,roi_hits(i)-bound:roi_hits(i)+bound)';
 
       catch

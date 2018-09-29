@@ -36,7 +36,7 @@ Data.A = roi_ave.F_dff';
 jG = zscore(Projection.proj');
 for i = 1:size(roi_hits)
 try
-jPCA_hits(i,:,:) = (jG(:,roi_hits(i)-200:roi_hits(i)+200))';
+jPCA_hits(i,:,:) = (jG(:,roi_hits(i)-400:roi_hits(i)+400))';
 catch
 disp(' one hit is too close to the end...');
 end
@@ -59,17 +59,18 @@ fig1=figure(1); fig1.Renderer='Painters';
 fig2=figure(2); fig2.Renderer='Painters';
 fig3=figure(3); fig3.Renderer='Painters';
 fig4=figure(4); fig4.Renderer='Painters';
-smth = 5; % smooth in time
+smth = 20; % smooth in time
 PC1 = 1;
 PC2 = 2;
 PC3 = 3;
 PC4 = 4;
 PC5 = 5;
 PC6 = 6;
-fr = 10; % smooth across trials
+fr = 3; % smooth across trials
+sm = 10 % smooth over time
 counter = 1;
-cmap = jet(31);
-for i = 55:1:85;
+cmap = jet(61);
+for i = 1:1:60;
 A1 = mean(smoothdata(jPCA_hits(i:i+fr,:,PC1)','gaussian',smth),2);
 B1 = mean(smoothdata(jPCA_hits(i:i+fr,:,PC2)','gaussian',smth),2);
 C1 = mean(smoothdata(jPCA_hits(i:i+fr,:,PC3)','gaussian',smth),2);

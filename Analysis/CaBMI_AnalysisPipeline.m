@@ -34,20 +34,27 @@ CaBMI_PCAmov(mov_data,varargin);
 
  % Make Schnitz plot
  figure();
+ clear data3;
   G1 = ROIhits;
 %  st = 30;
 %  ed2 = size(G1,1);
 %  ed1 = round(ed2/2);
 
 % sort cells
-c = squeeze(mean(G1,1));
-[m,ind] = max(c);
-[m2, ind2] = sort(ind,'ascend');
-B1 = 1:size(G1,1); %ind2(1:300);
+% range
+rn = 150:250;
+c = squeeze(mean(G1(:,rn,:),1)-min(G1(:,rn,:),1));
+ [m,ind] = max(c);
+% [ind] = mean(c);
+
+[m2, ind2] = sort(ind,'descend');
+% B1 = 1:size(G1,1); %ind2(1:300);
+B1 = ind2(1:80); %ind2(1:300);
+
 
  figure();
-data3.undirected = G1(1:2:size(G1,1),185:255,B1);
-data3.directed = G1(2:2:size(G1,1),185:255,B1);
+data3.undirected = G1(1:2:size(G1,1),155:255,B1);
+data3.directed = G1(2:2:size(G1,1),155:255,B1);
 [indX,B,C] = CaBMI_schnitz(data3);
  % Make clim matched image overlays
 

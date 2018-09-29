@@ -1,5 +1,6 @@
 function [indX,B,C] = CaBMI_schnitz(data)
 
+smth = 5; % smoothing factor!
 Cel =  size(data.directed,3);
 index_ref = cat(1,data.directed,data.undirected);
 
@@ -12,7 +13,7 @@ clear G;
 clear G2
 for i = 1:Cel;
     G(i,:) = ((mean(data.directed(:,:,i),1)));
-    out = smooth(G(i,:),6);
+    out = smooth(G(i,:),smth);
     Gp(i,:) = zscore(out);
 
     G_std(i,:) = ((var(data.directed(:,:,i),[],1)));
@@ -21,7 +22,7 @@ end
 for i = 1:Cel;
     G2(i,:) = ((mean(data.undirected(:,:,i),1)));
 
-    out = smooth(G2(i,:),6);
+    out = smooth(G2(i,:),smth);
     Gp2(i,:) = zscore(out);
 
     G2_std(i,:) = ((var(data.undirected(:,:,i),[],1)));

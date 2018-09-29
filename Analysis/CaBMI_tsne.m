@@ -47,8 +47,8 @@ c = 1:rnavg:trials;
 %% run T-SNE
 
 % pick a timewindow ( 200 is the center, 100-300 is resonable...)
-st = 100; %
-stp = 300;
+st = 160; %
+stp = 250;
 
 C2 =  newROI(st:stp,:)';
 ydat = tsne(C2);
@@ -91,4 +91,3 @@ figure();
 
 scatter(ydat(1:20000,1),ydat(1:20000,2),10,T);
 
-figure(); plot(

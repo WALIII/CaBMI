@@ -33,7 +33,7 @@ end
 
 
 %% run T-SNE 
-C2 =  newROI(100:300,:)';
+C2 =  newROI(:,:)';
 ydat = tsne(C2);
 
 
@@ -60,11 +60,11 @@ end% end
 %% Extract clusteres from the t-sne plot
 
 %T = clusterdata(ydat(1:20000,:),'Maxclust',20); 
-T = clusterdata(ydat(1:20000,:),'Linkage','ward','Maxclust',50 );
+T = clusterdata(ydat(1:end,:),'Linkage','ward','Maxclust',50 );
 colormap(jet(max(T)));
 
 figure(); 
-scatter(ydat(1:20000,1),ydat(1:20000,2),10,T);
+scatter(ydat(1:end,1),ydat(1:end,2),10,T);
 
 
 

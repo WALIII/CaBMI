@@ -5,9 +5,9 @@ function [out] = CaBMI_HitRate(roi_ave,direct);
 
 
 smt = 3; % cursor moothing factor
-smt2 = 2; % histogram smoothing;
+smt2 = 3; % histogram smoothing;
 thresh = 2.5;
-reset = 1;
+reset = 1.5;
 
 if nargin<2
 % Direct Neuron simulation
@@ -19,8 +19,8 @@ cursor = smooth(E1-E2,smt);
 else
     % Actual Direct Neuron activity
 
-E1 = zscore(direct.interp_dff(1,:))+zscore(direct.interp_dff(2,:));
-E2 = zscore(direct.interp_dff(3,:))+zscore(direct.interp_dff(4,:));
+E1 = zscore(smooth(direct.interp_dff(1,:),smt))+zscore(smooth(direct.interp_dff(2,:),smt));
+E2 = zscore(smooth(direct.interp_dff(3,:),smt))+zscore(smooth(direct.interp_dff(4,:),smt));
 cursor = smooth(E1-E2,smt);
 end
 
