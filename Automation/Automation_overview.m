@@ -129,7 +129,7 @@ end
             % extract
             [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi');% var ROI should be the last processed...
             roi_ave.directed = roi_ave_directed;
-               save('Direct_neuron\Direct_roi.mat','D','-append');
+               save('Direct_neuron_roi\Direct_roi.mat','D','-append');
             clear roi_ave_directed;
            
         catch
@@ -187,7 +187,7 @@ else
           [roi_ave_m] = CaBMI_plot_roi(ROI,'filename','Indirect_roi'); % var ROI should be the last processed...
           [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi'); % var ROI should be the last processed...
           roi_ave_m.directed = roi_ave_directed;
-          save('Direct_neuron_roi\Direct_roi.mat','D','append'); % append TData and ROI data
+          save('Direct_neuron_roi\Direct_roi.mat','D','-append'); % append TData and ROI data
           clear roi_ave_directed;
       catch
             disp(' Folder does not exist');

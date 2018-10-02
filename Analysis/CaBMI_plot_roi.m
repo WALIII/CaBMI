@@ -244,10 +244,11 @@ clear tmp; clear dff; clear yy2; clear yy;
 		temp.interp_raw(j,:)=tmp;
        
         % deconvolve data
-        if docon ==1;
+        if docon ==1;       
            [c, s] = deconvolveCa(dff(j,:)); 
-        temp.S_dec = s;
-        temp.C_dec = c;
+
+        temp.S_dec(j,:) = s';
+        temp.C_dec(j,:) = c';
         clear s c
         end
     end
@@ -260,6 +261,8 @@ clear tmp; clear dff; clear yy2; clear yy;
     else
         roi_ave.interp_dff = [roi_ave.interp_dff, temp.interp_dff];
         roi_ave.interp_raw = [roi_ave.interp_raw, temp.interp_raw];
+        roi_ave.S_dec = [roi_ave.S_dec, temp.S_dec];
+        roi_ave.C_dec = [roi_ave.C_dec, temp.C_dec];
 				temp2(1,:) = [roi_ave.indexing(1,:),(1:size(mov_data,3))+max(roi_ave.indexing(1,:))]; %frame index
 				temp2(2,:) = [roi_ave.indexing(2,:),ones(1,size(mov_data,3))*i]; % which file
 				temp2(3,:) = [roi_ave.indexing(3,:),1:size(mov_data,3)]; % local frame index
