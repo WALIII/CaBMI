@@ -127,7 +127,7 @@ end
              [ROI,roi_ave] = CaBMI_Process('type',2);
            cd('Mtiff_folder2')
             % extract
-            [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi_main');% var ROI should be the last processed...
+            [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi');% var ROI should be the last processed...
             roi_ave.directed = roi_ave_directed;
                save('Direct_neuron_roi\Direct_roi.mat','D','-append');
             clear roi_ave_directed;
@@ -145,7 +145,7 @@ end
 % copy data over
 disp('copying data...');
 copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
-copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\Mtiff_folder2\','Direct_neuron_roi\','Direct_roi_main.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
+copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\Mtiff_folder2\','Direct_neuron_roi\','Direct_roi.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
 
 
  end
@@ -187,7 +187,7 @@ else
           [roi_ave_m] = CaBMI_plot_roi(ROI,'filename','Indirect_roi_map'); % var ROI should be the last processed...
           [roi_ave_directed] = CaBMI_plot_roi(D.ROI,'save_dir','Direct_neuron_roi','filename','Direct_roi_map'); % var ROI should be the last processed...
           roi_ave_m.directed = roi_ave_directed;
-          save('Direct_neuron_roi\Direct_roi.mat','D','-append'); % append TData and ROI data
+          save('Direct_neuron_roi\Direct_roi_map.mat','D','-append'); % append TData and ROI data
           clear roi_ave_directed;
       catch
             disp(' Folder does not exist');
