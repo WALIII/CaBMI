@@ -24,7 +24,7 @@ ds = 5; % ds_data temporal downsampling rate;
 
   % Extract tone times ( last tone is the end of the recording)
   A = diff(Input0);
-  [pks1, locs1] = findpeaks(double(A),'MinPeakDistance',10,'MinPeakHeight',std(A)*2);
+  [pks1, locs1] = findpeaks(double(A),'MinPeakDistance',100,'MinPeakHeight',std(A)*5);
       % Plot TONE result:
            figure(); hold on; plot(A); plot(locs1,pks1,'*');
 q = max(locs1); % end of recording
@@ -36,7 +36,7 @@ fr = 1/((q/fs)/(size(roi_ave.F_dff,2)));
 
   % Extract Hit times
   B = diff(Input1);
-  [pks2, locs2] = findpeaks(double(B),'MinPeakDistance',100,'MinPeakHeight',std(B)*5);
+  [pks2, locs2] = findpeaks(double(B),'MinPeakDistance',10000,'MinPeakHeight',std(B)*10);
       % Plot HIT result:
            figure(); hold on; plot(B); plot(locs2,pks2,'*');
   % downsample to nearest time vector for ds_data and ROI data

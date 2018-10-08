@@ -35,7 +35,7 @@ CaBMI_PCAmov(mov_data,varargin);
  % Make Schnitz plot
  figure();
  clear data3;
-  G1 = ROIhits;
+  G1 = ROIhits_z;
 %  st = 30;
 %  ed2 = size(G1,1);
 %  ed1 = round(ed2/2);
@@ -49,7 +49,7 @@ c = squeeze(mean(G1(:,rn,:),1)-min(G1(:,rn,:),1));
 
 [m2, ind2] = sort(ind,'descend');
 % B1 = 1:size(G1,1); %ind2(1:300);
-B1 = ind2(1:80); %ind2(1:300);
+B1 = ind2(1:300); %ind2(1:300);
 
 
  figure();
