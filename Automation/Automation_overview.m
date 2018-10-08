@@ -97,13 +97,13 @@ delete('*.tif')
 
 end
 
-mkdir([START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
+mkdir([START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
 % Extracting CSV
 if csv_ext ==1;
 disp('Saving CSV extraction...');
 try
 [csv_data] = CaBMI_csvExtract;
-save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','csv_data'],'csv_data','-v7.3');
+save([START_DIR_ROOT,'\','Processed','\',subFolders(i).name,'\','csv_data.mat'],'csv_data','-v7.3');
 catch
     disp('NO CSV file, skipping...')
 end
@@ -140,12 +140,12 @@ end
 if mov_ext ==1;
     disp('Loading downsampled video...')
 load([[S2S(ii).folder,'\',S2S(ii).name],'\Processed\ds_data'],'Y')
-save([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\','Y.mat'],'Y','-v7.3');
+save([START_DIR_ROOT,'\','Processed','\',subFolders(i).name,'\','Y.mat'],'Y','-v7.3');
 end
 % copy data over
 disp('copying data...');
-copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
-copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\Mtiff_folder2\','Direct_neuron_roi\','Direct_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2S(ii).name]);
+copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\','roi\','ave_roi.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
+copyfile([S2S(ii).folder,'\',S2S(ii).name,'\','Processed\Mtiff_folder2\','Direct_neuron_roi\','Direct_roi.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
 
 
  end
@@ -181,7 +181,7 @@ else
           disp('Loading ROI... processing ROI extraction...')
           pause(0.01);
           % get relevant ROI data:
-          load([START_DIR_ROOT,'\','Processed','\',S2S(ii).name,'\ave_roi.mat'],'ROI')
+          load([START_DIR_ROOT,'\','Processed','\',subFolders(i).name,'\ave_roi.mat'],'ROI')
 
 
           [roi_ave_m] = CaBMI_plot_roi(ROI,'filename','Indirect_roi'); % var ROI should be the last processed...
@@ -196,9 +196,9 @@ end
 
 % copy data over
 disp('copying data...');
-mkdir([START_DIR_ROOT,'\','Processed','\',S2Sm(iii).name]);
-copyfile([S2Sm(iii).folder,'\',S2Sm(iii).name,'\','Processed\Mtiff_folder2\','roi\','Indirect_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2Sm(iii).name]);
-copyfile([S2Sm(iii).folder,'\',S2Sm(iii).name,'\','Processed\Mtiff_folder2\','Direct_neuron_roi\','Direct_roi.mat'],[START_DIR_ROOT,'\','Processed','\',S2Sm(iii).name]);
+mkdir([START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
+copyfile([S2Sm(iii).folder,'\',S2Sm(iii).name,'\','Processed\Mtiff_folder2\','roi\','Indirect_roi.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
+copyfile([S2Sm(iii).folder,'\',S2Sm(iii).name,'\','Processed\Mtiff_folder2\','Direct_neuron_roi\','Direct_roi.mat'],[START_DIR_ROOT,'\','Processed','\',subFolders(i).name]);
 
 
 
