@@ -14,12 +14,12 @@ a = XA(1:samp:end-lead);
 b = XB(1:samp:end-lead);
 c = XA((1+lead):samp:end);
 d = XB((1+lead):samp:end);
-q = quiver(a,b,a-c,b-d);
+q = quiver(a,b,a-c,b-d,'linewidth',2);
 
 
 %// Compute the magnitude of the vectors
-mags = sqrt(sum(cat(2, q.UData(:), q.VData(:), ...
-            reshape(q.WData, numel(q.UData), [])).^2, 2));
+mags = mat2gray(sqrt(sum(cat(2, q.UData(:), q.VData(:), ...
+            reshape(q.WData, numel(q.UData), [])).^2, 2)));
 
 %// Get the current colormap
 currentColormap = colormap(jet);
@@ -47,7 +47,7 @@ set(q.Tail, ...
 
 
 figure();
-q2 = quiver(a,b,a-c,b-d,'linewidth',.9);
+q2 = quiver(a,b,a-c,b-d,'linewidth',1.5);
 
 %// Compute the magnitude of the vectors
 mags = 1:size(ind,1);

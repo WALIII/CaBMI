@@ -1,11 +1,11 @@
 
-function [out] = CaBMI_theta_map(roi_ave, roi_ave2,ROIa, ROIb,varargin);
+function [out] = CaBMI_theta_map(roi_ave, roi_ave2,ROIa, ROIb);
 
 %plot a nice map of where the cells are, based on their theta value
 
 % roi_ave = indirect cells
 % roi_ave2 = direct cells
-addendum = num2str(0);
+addendum = 0;
 % Manual inputs
 vin=varargin;
 for i=1:length(vin)
@@ -42,7 +42,7 @@ end
 hbins = size(N,1);
 
 ccd = 1-round(mat2gray(c),1);
-ccd(ccd<.75)=.10;
+% ccd(ccd<.5)=.10;
 col = hsv(hbins);
 figure(); hold on;
 % imagesc(flip(ROI_1.reference_image));
@@ -64,10 +64,10 @@ end
 
 % Save figure
 
-saveFileName = ['ROI_Theta_Map',addendum,'.eps'];
+saveFileName = ['ROI_Theta_Map',addendum,'.eps']
 
 print(gcf,'-depsc','-painters',saveFileName);
-epsclean(saveFileName); % cleans and overwrites the input file
+epsclean('ROI_Theta_Map.eps'); % cleans and overwrites the input file
 
 
 

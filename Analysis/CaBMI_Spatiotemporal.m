@@ -37,7 +37,9 @@ end
   G1 = ROIhits;
 
 % sort cells
-rn = 150:250;% range
+mid = round(size(ROIhits,2)/2);
+bound = round(size(ROIhits,2)/4);
+rn = (mid-bound):(mid+bound);% range
 c = squeeze(mean(G1(:,rn,:),1));
  [m,ind] = max(c);
 [ind] = mean(c);
@@ -52,8 +54,8 @@ B1 = roidx;
 end
 
 
-range_null = [1:100]; % make a null range, 200-100 frames before the hit!
-range_true = [155:255]; % A true range, in the ~100 framse surrounding the hit
+range_null = [1:bound*2]; % make a null range, 200-100 frames before the hit!
+range_true = [(mid-bound):(mid+bound)]; % A true range, in the ~100 framse surrounding the hit
 offset = 0;
 
 figure();

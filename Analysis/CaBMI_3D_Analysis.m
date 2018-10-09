@@ -100,19 +100,19 @@ for i = 1: 30;
 end
 
 %%% Ganguli ephys
-mkdir Ganguli
-% Unsorted data
-for i = 1:512
-    try
-GanguliCarmena2009_test(kin_data,neural_data,i);
-     G = ['Cell  ',num2str(i)];
-     title(G);
-     saveas(gcf,['Ganguli/',G,'.png']);
-     clf('reset')
-    catch
-    end
-
-end
+% mkdir Ganguli
+% % Unsorted data
+% for i = 1:512
+%     try
+% GanguliCarmena2009_test(kin_data,neural_data,i);
+%      G = ['Cell  ',num2str(i)];
+%      title(G);
+%      saveas(gcf,['Ganguli/',G,'.png']);
+%      clf('reset')
+%     catch
+%     end
+%
+% end
 
 
 

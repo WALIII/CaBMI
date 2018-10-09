@@ -125,7 +125,7 @@ if   counter2 == 3  || counter2 == 7
 col = flipud(col);
 end
 
-h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(i,:,:)); alpha(0.5);
+h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(i,:,:)); alpha(1);
 plot(mn,'Color',col(i,:));
 counter2 = counter2+1;
 
@@ -168,3 +168,5 @@ GX = corr(squeeze(mean(neuron_hit(3:size(neuron_hit,1),30:60,:),1)));
 %  
 
 
+print(gcf,'-depsc','-painters','DirectNeurons_hit.eps');
+epsclean('DirectNeurons_hit.eps'); % cleans and overwrites the input file

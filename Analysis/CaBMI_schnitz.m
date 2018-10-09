@@ -1,6 +1,6 @@
 function [indX,B,C] = CaBMI_schnitz(data)
 
-smth = 5; % smoothing factor!
+smth = 3; % smoothing factor!
 Cel =  size(data.directed,3);
 index_ref = cat(1,data.directed,data.undirected);
 
