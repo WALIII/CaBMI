@@ -12,11 +12,6 @@ ROI = roi_ave.S_dec(cell,:);
 
 [pks, locs] = findpeaks(double(ROI),'MinPeakDistance',10,'MinPeakHeight',std(ROI)*2);
 
-if isempty(pks)
-    disp('empty matrix detected...');
-    pks = 10;
-    locs = 10;
-end
 % figure();
 % hold on;
 % plot(ROI);
@@ -85,10 +80,6 @@ h=fspecial('gaussian',filt,filt);
 try
 x = BinR(2,:);
 y = BinR(1,:);
-catch
-    disp(' no activity in this bin, skipping..');
-    return
-end
 
 [values, centers] = hist3([x(:) y(:)],[Sz Sz]);
 values2=imfilter(values,h,'circular');

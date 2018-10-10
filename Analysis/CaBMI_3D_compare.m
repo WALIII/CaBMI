@@ -1,5 +1,5 @@
 
-function CaBMI_3D_compare(IM,IM2);
+function X = CaBMI_3D_compare(IM,IM2);
 
 
 % Get the 'baseline' data by running CaBMI_plot_roi(ROI) ( Get ROI from the
@@ -21,18 +21,20 @@ figure();
 stdx = 1;
 A = IM;
 B = IM2;
-normA = A - min(A(:));
-normA = normA ./ max(normA(:)); % *
-
-normB = B - min(B(:));
-normB = normB ./ max(normB(:)); % *
+normA = IM;
+normB = IM2;
+% normA = A - min(A(:));
+% normA = normA ./ max(normA(:)); % *
+% 
+% normB = B - min(B(:));
+% normB = normB ./ max(normB(:)); % *
 
 
 uuA = -5:(10/(size(normA,1)-1)):5;
 uuB = -5:(10/(size(normA,2)-1)):5;
 
 
-imagesc(uuA,uuB,(normA)-(normB),[-1.2 1.2]);
+imagesc(uuA,uuB,(normA)-(normB),[-1 1]);
 colormap(fireice);
 hold on
 
@@ -61,7 +63,7 @@ X(X<0) = 0;
 % filter out artifacts...
 filt = 20;
 h=fspecial('gaussian',filt,filt);
-X=imfilter(X,h,'circular','replicate');
+X=imfilter(X,h,'circular');
 
 
 

@@ -30,7 +30,7 @@ D = B.D;
 ExpTyp =2;
 
 % Which Figures should we generate?
-figs = [1 2 3 4 5 6]
+figs = [3]
 
 if ExpTyp == 1; % if 2D experiment,
 
@@ -66,24 +66,35 @@ for i = 1: 30;
      title(G);
      saveas(gcf,['Theta2/',G,'.png']);
      clf('reset')
-     close
+     close all
+     pause(0.1);
 end
 end
 
 
 close all
 if ismember(3,figs)
+  topCells = 50;
 mkdir Im_diff2
-for i = 1:10;
+for i = 1:topCells;
      CaBMI_occupany(roi_ave1,roi_ave2,i);
      G = ['Cell ',num2str(i)];
      pause(0.1);
      title(G);
      saveas(gcf,['Im_diff2/',G,'.png']);
      clf('reset')
-     close
+     close all
+     pause(0.1);
 end
+
+cd('Im_diff2')
+
+for i = 1:topCells; CaBMI_RGB_placeCell(roi_ave1, roi_ave2,i); end
+cd(pwd_here);
+
 end
+
+
 
 
 
