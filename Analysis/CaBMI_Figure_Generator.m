@@ -99,6 +99,7 @@ end
 
 
 
+
 if ismember(4,figs)
   [out] = CaBMI_theta_map(roi_ave1, roi_ave2,ROIa, ROIb);
 end
