@@ -61,7 +61,7 @@ end
 close all
 mkdir Im_diff2
 for i = 1:300;
-     CaBMI_occupany(roi_ave,roi_ave2,i);
+     CaBMI_occupany(roi_ave1,roi_ave2,i);
      G = ['Cell ',num2str(i)];
      title(G);
      saveas(gcf,['IM_diff2/',G,'.png']);

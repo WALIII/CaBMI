@@ -60,7 +60,7 @@ function M = skewSymRegress(dX,X)
     %%%%%%%
     
     % just call minimize.m with the appropriate function...
-    [m, fM, i] = minimize( m0 , 'skewSymLSeval' , 1000, dX , X );
+    [m, fM, i] = minimize2( m0 , 'skewSymLSeval' , 1000, dX , X );
     
     
     

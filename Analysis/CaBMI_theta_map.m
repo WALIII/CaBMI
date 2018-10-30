@@ -25,7 +25,7 @@ end
 catch
     roi_ave.F_dff = roi_ave.interp_dff;
 for i = 1:size(roi_ave.F_dff,1)
-N(:,i) = CaBMI2D_theta(roi_ave,roi_ave2,i);
+[N(:,i) N2{i}] = CaBMI2D_theta(roi_ave,roi_ave2,i);
 end
 end
 for i = 1:size(roi_ave.F_dff,1)

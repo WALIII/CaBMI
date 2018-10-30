@@ -1,4 +1,27 @@
-function [indX,B,C] = CaBMI_schnitz(data)
+function [indX,B,C] = CaBMI_schnitz(data,varargin)
+
+
+
+
+% To run without generating figures:
+% [indX,B,C] = CaBMI_schnitz(data,'show',0)
+
+show = 1; 
+% Manual inputs
+vin=varargin;
+for i=1:length(vin)
+  if isequal(vin{i},'show') % manually inputing a sort order
+    show=vin{i+1};
+    man =1;
+  elseif isequal(vin{i},'ri')
+    ri=vin{i+1};
+end
+end
+
+
+
+
+
 
 smth = 3; % smoothing factor!
 Cel =  size(data.directed,3);
@@ -42,6 +65,10 @@ C_2  = (G2_std(index, :));
 indX = index;
 
 
+% Plotting
+if show ==1;
+figure(); 
+    
 subplot(1,2,1)
 imagesc((B), [0, 3]);
 title('Sorted Trials');
@@ -60,6 +87,7 @@ xlabel('Frames');
 
  colorbar
 
+end
 
 
 % 

@@ -18,7 +18,7 @@ col = hsv(6);
 hold on
 subplot(5,1,1);
 hold on;
-for ii = 1:6
+for ii = 1:6;
     data = squeeze(PCA_hits(:,:,ii))-squeeze(PCA_hits(:,1,ii));
     
 L = size(data,2);
@@ -33,7 +33,7 @@ plot(mn,'Color',col(ii,:));
     
     
 end
-xlim([0 800]);
+xlim([0 length(data)]);
 subplot(5,1,2:5)
 h = imagesc(mat3); 
 % set(gca,'DataAspectRatio',[1 .5 .1])
