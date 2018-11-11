@@ -194,7 +194,7 @@ options = CNMFSetParms(...
     'tsub',tSub,...                                % further temporal downsampling when processing
     'merge_thr',merge_thr,...                   % merging threshold
     'gSig',tau,...
-    'max_size_thr',300,'min_size_thr',10,...    % max/min acceptable size for each component
+    'max_size_thr',300,'min_size_thr',20,...    % max/min acceptable size for each component
     'spatial_method','regularized',...          % method for updating spatial components
     'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence
     'fr',fr/tsub,...                            % downsamples

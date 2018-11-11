@@ -245,7 +245,11 @@ clear tmp; clear dff; clear yy2; clear yy;
        
         % deconvolve data
         if docon ==1;       
+            try
            [c, s] = deconvolveCa(dff(j,:)); 
+            catch
+                
+            end
 
         temp.S_dec(j,:) = s';
         temp.C_dec(j,:) = c';
