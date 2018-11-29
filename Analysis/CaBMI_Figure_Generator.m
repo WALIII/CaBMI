@@ -44,11 +44,11 @@ roi_ave4 = Bbase.roi_ave;
 %% User Input
 
 % What type of experiment?
-ExpTyp =1;
+ExpTyp =2;
 pwd_here = cd;
 
 % Which Figures should we generate?
-figs = [];
+figs = [1];
 
 
 %% 1D FIGURES
@@ -151,11 +151,33 @@ elseif ExpTyp ==2;% if 2D experiment,
 % 4:  Place map?
 % 5:
 
+
+% Generate real and basline cursor:
+TData2.cursorA = (zscore(roi_ave2.interp_dff(1,:)) + zscore(roi_ave2.interp_dff(2,:)))  - (zscore(roi_ave2.interp_dff(3,:)) + zscore(roi_ave2.interp_dff(4,:)));
+TData2.cursorB = (zscore(roi_ave2.interp_dff(5,:)) + zscore(roi_ave2.interp_dff(6,:)))  - (zscore(roi_ave2.interp_dff(7,:)) + zscore(roi_ave2.interp_dff(8,:)));
+TData4.cursorA = (zscore(roi_ave4.interp_dff(1,:)) + zscore(roi_ave4.interp_dff(2,:)))  - (zscore(roi_ave4.interp_dff(3,:)) + zscore(roi_ave4.interp_dff(4,:)));
+TData4.cursorB = (zscore(roi_ave4.interp_dff(5,:)) + zscore(roi_ave4.interp_dff(6,:)))  - (zscore(roi_ave4.interp_dff(7,:)) + zscore(roi_ave4.interp_dff(8,:)));
+
+
 if ismember(1,figs)
 [neuron_hit, Cursor_hit] = CaIm_test_3D(D.TData);
+CaBMI_cursorOccupancy(TData2,TData4);
+[out_3D] = CaBMI_3D_plot(Cursor_hit);
+
+% Save figure
+
+cd(pwd_here);
+cd('..')
+if exist('DATA_3Dplot')<1;
+    mkdir('DATA_3Dplot');
+end
+save(['DATA_3Dplot/','3Dplot_',datestr(datetime('now')),'.mat'],'out_3D')
+cd(pwd_here);
+
 end
 
-close all
+
+
 
 if ismember(2,figs)
 mkdir Theta2
@@ -173,7 +195,6 @@ end
 end
 
 
-close all
 if ismember(3,figs)
   topCells = 50;
 mkdir Im_diff2

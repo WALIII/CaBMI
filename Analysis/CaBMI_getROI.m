@@ -4,7 +4,7 @@ function [ROIhits,ROIhits_d,ROIhits_s, ROIhits_z]= CaBMI_getROI(roi_ave,roi_hits
 % wal3
 % d03.19.18
 
-bound = 500;
+bound = 200;
 try
     roi_ave.F_dff = roi_ave.interp_dff;
     disp('converting to proper format...');
