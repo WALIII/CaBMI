@@ -248,7 +248,11 @@ clear tmp; clear dff; clear yy2; clear yy;
             try
            [c, s] = deconvolveCa(dff(j,:)); 
             catch
-                
+                disp(' ERROR detected, removing Neuron...');
+                xxx = zeros(size(dff(j,:)));
+                temp.interp_dff(j,:) = xxx;
+                temp.interp_raw(j,:)=xxx;
+                [c, s] = deconvolveCa(xxx); 
             end
 
         temp.S_dec(j,:) = s';
