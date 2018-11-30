@@ -1,6 +1,6 @@
 
-function CaBMI_3D_plot(Cursor_hit);
-smth = 4;
+function [out] = CaBMI_3D_plot(Cursor_hit);
+smth = 10;
 
 CA = squeeze(Cursor_hit(:,:,1))'; 
 CB = squeeze(Cursor_hit(:,:,2))';
@@ -59,3 +59,17 @@ end
 imwrite(im,map,'DancingPeaks_1.gif','DelayTime',0,'LoopCount',inf) %g443800
 
 
+col = jet(size(CA,2));
+% plot the static figure
+figure();
+hold on;
+plot(zeros(17,1),-8:8,'k');
+plot(-8:8,zeros(17,1),'k');
+plot(ones(17,1)*stdx,-8:8,'--b','LineWidth',2);
+plot(-8:8,ones(17,1)*-stdx,'--b','LineWidth',2);
+for i = 1: size(CA,2);
+plot(CA(40:48,i),CB(40:48,i),'Color',col(i,:)); 
+end
+
+out.xpos = CA;
+out.ypos = CB;
