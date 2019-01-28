@@ -26,12 +26,12 @@ colorm = jet(size(PCa(:,:,6),2));
 for i = 1: size(PCa(:,:,6),2)
     
 %format for plotting 
-A9 = zscore(PCa(:,:,1));
-B9 = zscore(PCa(:,:,2));
-C9 = zscore(PCa(:,:,3));
-z1 = (smooth(A9(:,counter),4));%-mean(smooth(A9(1:100,counter),5));
-x1 = (smooth(B9(:,counter),4));%- mean(smooth(B9(1:100,counter),5));
-y1 = (smooth(C9(:,counter),4));%-mean(smooth(C9(1:100,counter),5));
+A9 = zscore(PCa(:,:,2));
+B9 = zscore(PCa(:,:,3));
+C9 = zscore(PCa(:,:,4));
+z1 = (smooth(A9(:,counter),4))-mean(smooth(A9(1:100,counter),5));
+x1 = (smooth(B9(:,counter),4))- mean(smooth(B9(1:100,counter),5));
+y1 = (smooth(C9(:,counter),4))-mean(smooth(C9(1:100,counter),5));
 obj{counter} = cat(2,x1,y1,z1); 
 obj{counter}(:,4) = 1:length(obj{counter}); 
 obj{counter}(:,5) = counter; % Specify object ID number 

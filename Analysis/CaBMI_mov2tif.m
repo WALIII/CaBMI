@@ -16,7 +16,7 @@ downsamp = 0.5;
 % find all movs
 if nargin<1 | isempty(DIR), DIR=pwd; end
 
-mov_listing=dir(fullfile(DIR,'*.mov'));
+mov_listing=dir(fullfile(DIR,'*.mp4'));
 mov_listing={mov_listing(:).name};
 
 

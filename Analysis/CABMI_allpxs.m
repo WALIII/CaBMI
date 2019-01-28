@@ -1,4 +1,4 @@
-function [im1_rgb norm_max_proj,I] = CABMI_allpxs(MOV_DATA,varargin)
+function [im1_rgb norm_max_proj,I,idx_img] = CABMI_allpxs(MOV_DATA,varargin)
 %FS_plot_allpxs uses the center of mass (df/f here) (COM) across time to define
 
 
@@ -59,6 +59,8 @@ for i=1:2:nparams
 			startT=varargin{i+1};
         case 'stop'
 			stopT=varargin{i+1};
+        case 'exp'
+            exp = varargin{i+1};
 	end
 end
 
@@ -101,7 +103,7 @@ com_idx=repmat(com_idx,[rows columns 1]);
 
 
 
-max_proj=std(dff,[],3);
+max_proj=max(dff,[],3);
 
 %
 

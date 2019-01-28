@@ -31,7 +31,7 @@ Bbase = load('Direct_roi_map.mat');
 roi_ave3 = Abase.roi_ave;
 roi_ave4 = Bbase.roi_ave;
 
-%% Basic Ectraction 
+%% Basic Ectraction
  %   Basic Extraction of 'Hits' from .CSV file
 [ds_hits, roi_hits] = CaBMI_csvAlign(csv_data(:,2),csv_data(:,3),roi_ave1); %   1. Load in Y ( temporally downsampled movie) from ds_data
 
@@ -44,7 +44,7 @@ roi_ave4 = Bbase.roi_ave;
 %% User Input
 
 % What type of experiment?
-ExpTyp =2;
+ExpTyp =1;
 pwd_here = cd;
 
 % Which Figures should we generate?
@@ -64,7 +64,7 @@ end
 save(['DATA_spacetime/','SpaceTime_',datestr(datetime('now')),'.mat'],'out_spacetime')
 end
 cd(pwd_here);
- 
+
 if ismember(2,figs)
 disp('plotting shuffeled schnitz');
 CaBMI_SchnitzConsistancy(ROIhits)
@@ -76,9 +76,9 @@ if ismember(3,figs)
     % Get PCA
     mkdir('PCA');
     disp('plotting PCA...')
-  [PCA_data]= CaBMI_PCA(roi_ave1,roi_hits); 
+  [PCA_data]= CaBMI_PCA(roi_ave1,roi_hits);
 %   disp('plotting jPCA...')
-%  [PCAout] = jpca_analysis(roi_ave1,roi_hits); 
+%  [PCAout] = jpca_analysis(roi_ave1,roi_hits);
 %  CaBMI_PCA_trajectory(PCAout);
 
 end
@@ -121,7 +121,7 @@ end
 save(['DATA_dim/','DimData_',datestr(datetime('now')),'.mat'],'dim_explained')
 end
 cd(pwd_here);
-    
+
 
 
 
@@ -141,7 +141,7 @@ end
 
 
 
-%% 2D Figures 
+%% 2D Figures
 elseif ExpTyp ==2;% if 2D experiment,
 
 % 1: Plot Dir cells
@@ -330,4 +330,3 @@ end
 
 % To plot from aggregate data:
 % GetDataScrap % run in folter with mat files!
-

@@ -1,4 +1,4 @@
-function CaBMI_mptif
+function out = CaBMI_mptif
 
 
 
@@ -31,6 +31,6 @@ catch
     disp('file already exists')
 end
 
-
+out = I;
 clear I
 end

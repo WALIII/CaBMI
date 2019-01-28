@@ -54,11 +54,11 @@ while hasFrame(v1)
      Y = vK;
 T = size(Y,ndims(Y));
 
-% Motion Correction Params:
-options_nonrigid = NoRMCorreSetParms('d1',size(Y,1),'d2',size(Y,2),'grid_size',[32,32],'mot_uf',4,'bin_width',200,'max_shift',15,'max_dev',3,'us_fac',50,'init_batch',200);
-
-% perform motion correction
-tic; [vK,shifts2,template2,options_nonrigid] = normcorre_batch(Y,options_nonrigid); toc
+% % Motion Correction Params:
+% options_nonrigid = NoRMCorreSetParms('d1',size(Y,1),'d2',size(Y,2),'grid_size',[32,32],'mot_uf',4,'bin_width',200,'max_shift',15,'max_dev',3,'us_fac',50,'init_batch',200);
+% 
+% % perform motion correction
+% tic; [vK,shifts2,template2,options_nonrigid] = normcorre_batch(Y,options_nonrigid); toc
 
      
      

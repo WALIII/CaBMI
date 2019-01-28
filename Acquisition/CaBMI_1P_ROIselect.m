@@ -1,16 +1,16 @@
 function CaBMI_1P_ROIselect();
 % CaBMI_1P_ROIselect
 
-% Select ROIs from an arbitrary video, spit it out for Swift to read in!
+% Select ROIs from an arbitrary video, spit it out for For swift.
 
 % d082918
 % WAL3
 
 
+
 % Select movie to load;
 
 disp('Select a .mov file');
-
 [fileName,pathName] = uigetfile('*.mov')
 % dname = fullfile(pathName,fileName)
 % filelist = dir([fileparts(dname) filesep '*.mov']);
