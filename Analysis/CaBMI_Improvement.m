@@ -42,7 +42,3 @@ title('Mean across hits')
 
 out.Pvar = Pvar;
 out.Pmean = Pmean;
-
-
-
-

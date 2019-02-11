@@ -16,7 +16,7 @@ downsamp = 0.5;
 % find all movs
 if nargin<1 | isempty(DIR), DIR=pwd; end
 
-mov_listing=dir(fullfile(DIR,'*.mp4'));
+mov_listing=dir(fullfile(DIR,'*.mov'));
 mov_listing={mov_listing(:).name};
 
 
@@ -35,7 +35,7 @@ for i=1:length(mov_listing)
 v1 = VideoReader(FILE);
 
 if v1.NumberOfFrames < max_size
-    max_size = v1.NumberOfFrames-1;
+    max_size = v1.NumberOfFrames-4;
 end
 v1 = VideoReader(FILE);
 
@@ -43,7 +43,7 @@ k = 1;
 i = 1;
 while hasFrame(v1)
  v = readFrame(v1);
- vK(:,:,k) = imresize(squeeze(v(:,:,2)),downsamp); % keep only the green channel
+ vK(:,:,k) = imresize(squeeze(v(:,:,1)),downsamp); % keep only the green channel
  k = k+1;
  if k>max_size
      filename = ['Data_',num2str(i.','%03d'),'.tif'];
