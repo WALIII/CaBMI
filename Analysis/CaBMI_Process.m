@@ -266,7 +266,13 @@ counter = 1;
         ROI.coordinates{counter}(:,2) = yCoordinates;
         counter= counter+1;
         catch
+
+        ROI.coordinates{counter}(:,1) = 1:1;
+        ROI.coordinates{counter}(:,2) = 1:1;
+        counter= counter+1;
+        
             disp('ROI missing, skipping over it.')
+            
         end
     end
 
