@@ -23,7 +23,7 @@ end
 
 
 
-smth = 3; % smoothing factor!
+smth = 10; % smoothing factor!
 Cel =  size(data.directed,3);
 index_ref = cat(1,data.directed,data.undirected);
 
