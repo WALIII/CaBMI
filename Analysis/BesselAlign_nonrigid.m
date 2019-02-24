@@ -1,6 +1,9 @@
 function [D,movingReg,I] = BesselAlign_nonrigid(fixed,moving);
+ % Align Bessel to Gaussian ( or vice versa)
  
-% use the bessel as fixed
+ 
+
+
 
     moving = imhistmatch(moving,fixed);
 %    [D,Ar] = imregdemons(A,B,[500 400 200],'AccumulatedFieldSmoothing',1.3,'DisplayWaitBar',false);
