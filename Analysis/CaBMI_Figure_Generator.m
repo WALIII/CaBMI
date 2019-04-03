@@ -13,8 +13,18 @@ close all
 % Go thorugh all folders:
 % Call FigDispatch.m to deploy to all folders...
 
+%% User Input
 
-%% load data
+% What type of experiment?
+ExpTyp =2;
+pwd_here = cd;
+% Which Figures should we generate?
+figs = [5];
+
+
+
+% PREFLIGHT %
+
 %   1.Load in ROI  data
 load('csv_data.mat');
 
@@ -41,17 +51,16 @@ roi_ave4 = Bbase.roi_ave;
 % Get ROI traces for DIRECT neurons...
 [D_ROIhits, D_ROIhits_d, D_ROIhits_s, D_ROIhits_z]= CaBMI_getROI(roi_ave2,roi_hits);
 
-%% User Input
-
-% What type of experiment?
-ExpTyp =1;
-pwd_here = cd;
-
-% Which Figures should we generate?
-figs = [1];
 
 
-%% 1D FIGURES
+% Figure Generation:
+
+
+
+%%=================================================%%
+%%================== 1D FIGURES ===================%%
+%%=================================================%%
+
 if ExpTyp == 1; % if 2D experiment,
 
 if ismember(1,figs)
@@ -141,7 +150,9 @@ end
 
 
 
-%% 2D Figures
+%%=================================================%%
+%%================== 2D FIGURES ===================%%
+%%=================================================%%
 elseif ExpTyp ==2;% if 2D experiment,
 
 % 1: Plot Dir cells
@@ -327,6 +338,3 @@ end
 
 
 %% EXTRA
-
-% To plot from aggregate data:
-% GetDataScrap % run in folter with mat files!
