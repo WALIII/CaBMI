@@ -16,10 +16,10 @@ close all
 %% User Input
 
 % What type of experiment?
-ExpTyp =2;
+ExpTyp =1;
 pwd_here = cd;
 % Which Figures should we generate?
-figs = [5];
+figs = [];
 
 
 
