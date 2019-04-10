@@ -113,9 +113,9 @@ xlim([0 500]);
 ylim([0 500]);
 colorbar;
 
-out.ROI_location_index = Bt; % which ROI mask for which timeing
+out.ROI_location_index = Bt;
 out.ROI_Timing_index = b;
-out.ROI_ConsistancyScore = rk; % how consistant after splitting the data in 2?
+out.ROI_Consistanc
 
 hold on;
 for i = 1:4;

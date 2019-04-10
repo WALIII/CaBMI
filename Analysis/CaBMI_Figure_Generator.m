@@ -16,10 +16,10 @@ close all
 %% User Input
 
 % What type of experiment?
-ExpTyp =2;
+ExpTyp =1;
 pwd_here = cd;
 % Which Figures should we generate?
-figs = [5];
+figs = [1];
 
 
 
@@ -61,7 +61,7 @@ roi_ave4 = Bbase.roi_ave;
 %%================== 1D FIGURES ===================%%
 %%=================================================%%
 
-if ExpTyp == 1; % if 2D experiment,
+if ExpTyp == 1; % if 1D experiment,
 
 if ismember(1,figs)
  out_spacetime =  CaBMI_Spatiotemporal(ROIhits, ROIa,ROIb);
