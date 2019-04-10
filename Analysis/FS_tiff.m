@@ -16,7 +16,8 @@ function FS_tiff(videodata,varargin)
   %
   %
 
-
+% toggle artifacts
+artifacts = 0;
 
 
   nparams=length(varargin);
@@ -30,6 +31,7 @@ filename = 'G.tif';
 
 disp('Removing Outliers...')
 % Filter any artifacts
+if artifacts ==1;
 for i = 1:3; % for 2 ittereations,
 Im = squeeze(mean(mean(files(:,1:20,:),2),1));
 TF = isoutlier(Im);
@@ -39,6 +41,7 @@ Im2 = squeeze(mean(mean(files(1:20,:,:),2),1));
 TF2 = isoutlier(Im2);
 files(:,:,find(TF2 ==1)) = [];
 disp(['Removed ' num2str(sum(TF)+sum(TF2)),' outliers!']);
+end
 end
 
 clear Im

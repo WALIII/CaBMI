@@ -1,6 +1,6 @@
 function CaBMI_Behav_3d(mov,stereoParams);
 
-mov = mov(:,:,:,1001:1600);
+mov = mov(:,:,:,1:100);
 
 [height width color frames] =  size(mov(:,:,:,:));
 
@@ -90,8 +90,8 @@ end
 
 
 figure(); 
-for i = 1:1600;
-    imagesc(I4(:,:,:,i));
+for i = 1:frames;
+    imagesc(I2(:,:,:,i));
     pause(0.01);
 end
 
