@@ -2,26 +2,46 @@
 function CaBMI_behavrior_parse(mov_data,varargin);
 
 
-% get the tifs:
-if exist('mov_data2','var')
-mov_listing=dir(fullfile(pwd,'*.tif'));
-mov_listing={mov_listing(:).name};
+% % get the tifs:
+% if exist('mov_data2','var')
+% mov_listing=dir(fullfile(pwd,'*.tif'));
+% mov_listing={mov_listing(:).name};
+% 
+% 
+% mov_data = loadtiff((fullfile(pwd,mov_listing{2})));
+%  
+% for i = 3:7;
+%     b = loadtiff((fullfile(pwd,mov_listing{i})));
+%  mov_data = cat(3,mov_data,b);
+% end
+% 
+% end
 
-
-mov_data = loadtiff((fullfile(pwd,mov_listing{2})));
- 
-for i = 3:7;
-    b = loadtiff((fullfile(pwd,mov_listing{i})));
- mov_data = cat(3,mov_data,b);
+% load in video data
+video = VideoReader('2018-05-09 16 41 43.mov');
+k = 1;
+while hasFrame(video)
+vt = readFrame(video);
+% resize
+v(:,:,k) = imresize(squeeze(vt(:,:,2)),0.025);
+k = k+1;
 end
 
-end
+
+v = double(v);
+v2  = squeeze(mean(v,2));
+v3 = var(v2);
+vsm = smooth(v3,10)';
+figure(); plot(abs(zscore((v3-vsm))));
+
+
+
 
 
 % do PCA on the images
 
-mov_data2 = single(imresize(mov_data(:,:,:),0.5));
-mov_data2 = mov_data2-mean(mov_data2,3);
+%mov_data2 = single(imresize(mov_data(:,:,:),0.5));
+mov_data2 = mov_data-mean(mov_data,3);
 [rows, columns, frames] = size(mov_data2);
 
 % Get an N by 3 array of all the RGB values.  Each pixel is one row.

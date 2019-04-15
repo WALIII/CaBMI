@@ -69,7 +69,7 @@ epsclean('Null_schnitz.eps'); % cleans and overwrites the input file
  figure();
 data3.undirected = G1(1:2:size(G1,1),range_true,B1);
 data3.directed = G1(2:2:size(G1,1),range_true,B1);
-[indX,B,C] = CaBMI_schnitz(data3);
+[indX,B,C,out.index] = CaBMI_schnitz(data3);
 title('true range');
 print(gcf,'-depsc','-painters','True_schnitz.eps');
 epsclean('True_schnitz.eps'); % cleans and overwrites the input file
@@ -258,20 +258,63 @@ for ii = 1:size(ROIhits,3)% cell2
     % euclidian distance
    r1 =  [mean(ROIb.coordinates{i}(:,1)),mean(ROIb.coordinates{i}(:,2))];
    r2 =  [mean(ROI.coordinates{Bt(ii)}(:,1)),mean(ROI.coordinates{Bt(ii)}(:,2))];    
+E1_dist(counter,:) = r2-r1;
+
+
   distVa(i,ii) =  pdist2(r1,r2);
     %time difference
   timeVa(i,ii) = (max(b)/2-b(ii));
   
    r1b =  [mean(ROIb.coordinates{i+2}(:,1)),mean(ROIb.coordinates{i+2}(:,2))];
    r2b =  [mean(ROI.coordinates{Bt(ii)}(:,1)),mean(ROI.coordinates{Bt(ii)}(:,2))];    
-  distVb(i,ii) =  pdist2(r1b,r2b);
+E2_dist(counter,:) = r2b-r1b;
+ 
+
+distVb(i,ii) =  pdist2(r1b,r2b);
     %time difference
   timeVb(i,ii) = (max(b)/2-b(ii));
 
+
+counter = counter+1;
 end
 end
 
+% Just plot thos cells...
+ROIa = ROI;
+delta_v = cat(2,timeVa(1,:),timeVa(2,:));
+cmap = redblue(201);
+ 
+figure(); 
+hold on;
+for i = 1:size(ROIa.coordinates,2)*2
+col1 = cmap(round((delta_v(i)-min(delta_v))+1),:);
+scatter(E1_dist(i,1),E1_dist(i,2),'o','SizeData',200,'MarkerFaceColor',col1,'MarkerFaceAlpha',0.2,'MarkerEdgeAlpha',0.2);
+end
+title('E1 cells vs surrounding IND neuron timing tuning');
 
+% E2 cells...
+clear delta_v
+delta_v = cat(2,timeVb(1,:),timeVb(2,:));
+cmap = redblue(201);
+ 
+figure(); 
+hold on;
+for i = 1:size(ROIa.coordinates,2)*2
+col1 = cmap(round((delta_v(i)-min(delta_v))+1),:);
+scatter(E2_dist(i,1),E2_dist(i,2),'o','SizeData',200,'MarkerFaceColor',col1,'MarkerFaceAlpha',0.2,'MarkerEdgeAlpha',0.2);
+end
+title('E2 cells vs surrounding IND neuron timing tuning');
+
+
+
+out.E1_dist = E1_dist;
+out.E1_T =  cat(2,timeVa(1,:),timeVa(2,:));
+out.E2_dist = E2_dist;
+out.E2_T =  cat(2,timeVb(1,:),timeVb(2,:));
+out.E1E2_roi_index = Bt;
+
+
+% Plot in a graph or binned form
 [aT, bT] = sort(distVa(:),'ascend');
 AB = timeVa(:);
 AB2 = AB(bT);

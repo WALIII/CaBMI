@@ -1,4 +1,4 @@
-function [indX,B,C, output] = CaBMI_schnitz(data,varargin)
+function [indX,B,C, out] = CaBMI_schnitz(data,varargin)
 
 
 
@@ -29,18 +29,12 @@ index_ref = cat(1,data.directed,data.undirected);
 
 for i = 1:Cel;
     R(i,:) = (var(index_ref(:,:,i),1));
-    M(i,:) = ((mean(index_ref(:,:,i),1)));
-    out = smooth(M(i,:),smth);
+    M(i,:) = ((mean(data.directed(:,:,i),1)));
+    out = smooth(G(i,:),smth);
     Mp(i,:) = zscore(out);
-end
-[maxA, Ind] = max(Mp, [], 2);
-[dummy, index] = sort(Ind);
-FullSort  = (Mp(index, :));
-Index = index;
-output.FullSort = FullSort;
-output.Index = Index;
 
-clear Ind maxA dummy index;
+    M_std(i,:) = ((var(data.directed(:,:,i),[],1)));
+end
 
 
 clear G;
