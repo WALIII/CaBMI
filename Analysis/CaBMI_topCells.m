@@ -47,8 +47,8 @@ r = corr(cb);
 rk(:,i) = r(1,2);
 end
 % fale alpha = ccd = ones(1,size(B1,2))'; % alpha valu
- %ccd = mat2gray(rk);
-  ccd = (rk);
+ ccd = mat2gray(rk);
+ % ccd = (rk);
 
 %[a,b] = max(B'); % this will be the max of the image matrix ( use b)
 

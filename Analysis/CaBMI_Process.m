@@ -21,7 +21,7 @@ function [ROI,roi_ave] = CaBMI_Process(varargin)
 
 
 % Initial Params
-ExpType = 1;% 1, 2, 3
+ExpType = 2;% 1, 2, 3
 sSub = 2;                                % spatial downsampling when processing
 tSub = 4;                                % Temporal downsampling
 motion_correct = false;                                         % perform motion correction
