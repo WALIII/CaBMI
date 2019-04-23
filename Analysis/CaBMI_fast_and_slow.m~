@@ -91,10 +91,6 @@ imagesc(D_ROIhits_z(:,:,i),[-1 15]);
 colormap(hot);
 end
 
-
-[ROIhits_z ROIhits_z] = CaBMI_topCells(ROIhits_z,range,cutoff);
-
-
 % figure(); 
 % for i = 100:200;
 % imagesc(ROIhits_z(:,:,i));
@@ -151,7 +147,7 @@ figure();
 data1.undirected = ROIhits(1:2:60,100:300,:); 
 data1.directed = ROIhits(2:2:60,100:300,:); 
 [indX,B,C] = CaBMI_schnitz(data1);
-title('unwarped');
+
 data2.undirected = ROIhits2(1:2:60,100:300,:); 
 data2.directed = ROIhits2(2:2:60,100:300,:); 
 [indX,B,C] = CaBMI_schnitz(data1);
@@ -161,23 +157,23 @@ title('warped');
 % Bx = squeeze(mean(ROIhits(:,100:300,:),1));
 % Bx = Bx(:,indX);
 
-% 
-% 
-% data.undirected = ROIhits(ff(slowest),100:300,:); 
-% [indX,B1,C1] = CaBMI_schnitz(data);
-% 
-% figure(); 
-% scl = 10;
-% subplot(1,2,1);
-% imagesc(B1-C1, [-scl scl]);
-% subplot(1,2,2);
-% imagesc(C-B, [-scl scl]);
-% colormap(fireice)
-% 
-% 
-% figure();
-% data1.directed(1,:,:) = (C-C1)';
-% data1.undirected(1,:,:) = (C-C1)';
-% CaBMI_schnitz(data1);
-% 
-% figure(); plot(mean(C-C1));
+
+
+data.undirected = ROIhits(ff(slowest),100:300,:); 
+[indX,B1,C1] = CaBMI_schnitz(data);
+
+figure(); 
+scl = 10;
+subplot(1,2,1);
+imagesc(B1-C1, [-scl scl]);
+subplot(1,2,2);
+imagesc(C-B, [-scl scl]);
+colormap(fireice)
+
+
+figure();
+data1.directed(1,:,:) = (C-C1)';
+data1.undirected(1,:,:) = (C-C1)';
+CaBMI_schnitz(data1);
+
+figure(); plot(mean(C-C1));
