@@ -19,6 +19,7 @@ function [out] = CaBMI_Spatiotemporal(ROIhits, ROI,ROIb,varargin)
 % Hard coded inputs
 topmax = size(ROIhits,3); % max # of cells
 man = 0;
+plotting = 0;
 
 % Manual inputs
 vin=varargin;
@@ -63,17 +64,24 @@ data3.undirected = G1(1+offset:2:size(G1,1),range_null,B1);
 data3.directed = G1(2+offset:2:size(G1,1),range_null,B1);
 [~,~,~] = CaBMI_schnitz(data3);
 title(' null range');
+
+if plotting ==1;
 print(gcf,'-depsc','-painters','Null_schnitz.eps');
 epsclean('Null_schnitz.eps'); % cleans and overwrites the input file
+end 
 
  figure();
 data3.undirected = G1(1:2:size(G1,1),range_true,B1);
 data3.directed = G1(2:2:size(G1,1),range_true,B1);
 [indX,B,C,out.index] = CaBMI_schnitz(data3);
 title('true range');
+
+if plotting ==1;
 print(gcf,'-depsc','-painters','True_schnitz.eps');
 epsclean('True_schnitz.eps'); % cleans and overwrites the input file
- % Make clim matched image overlays
+end
+
+% Make clim matched image overlays
 
  %%%% plot the  map
  a2(1,:,:) = B';
@@ -92,7 +100,7 @@ end
 % ccd = 1-round(mat2gray(c),1);
 
 ccd2 = ccd;
-ccd(ccd<.80)=.1; % Set opacity to all low mean correlation scores
+ccd(ccd<.50)=.1; % Set opacity to all low mean correlation scores
 Bt = B1(indX); % correct the index here...
 B4 = B1(indX); % correct the index here... use for refining thr schnitz
 B4(ccd2<.90) = []; % Remove low values
@@ -122,9 +130,10 @@ for i = 1:4;
     plot(ROIb.coordinates{i}(:,1),ROIb.coordinates{i}(:,2),'LineWidth',1,'Color','k');
 end
 
+if plotting ==1;
 print(gcf,'-depsc','-painters','TimeMap.eps');
 epsclean('TimeMap.eps'); % cleans and overwrites the input file
-
+end
 
 % plot with fire/ice colormap
 col = hot(max(b));

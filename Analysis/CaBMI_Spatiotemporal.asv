@@ -58,6 +58,7 @@ range_null = [1:bound*2]; % make a null range, 200-100 frames before the hit!
 range_true = [(mid-bound):(mid+bound)]; % A true range, in the ~100 framse surrounding the hit
 offset = 0;
 
+if plotting ==1;
 figure();
 data3.undirected = G1(1+offset:2:size(G1,1),range_null,B1);
 data3.directed = G1(2+offset:2:size(G1,1),range_null,B1);
@@ -92,7 +93,7 @@ end
 % ccd = 1-round(mat2gray(c),1);
 
 ccd2 = ccd;
-ccd(ccd<.80)=.1; % Set opacity to all low mean correlation scores
+ccd(ccd<.50)=.1; % Set opacity to all low mean correlation scores
 Bt = B1(indX); % correct the index here...
 B4 = B1(indX); % correct the index here... use for refining thr schnitz
 B4(ccd2<.90) = []; % Remove low values
@@ -282,29 +283,26 @@ end
 % Just plot thos cells...
 ROIa = ROI;
 delta_v = cat(2,timeVa(1,:),timeVa(2,:));
-% delta_v = mat2gray(abs(delta_v));
-% delta_v = round(delta_v*100);
 cmap = redblue(201);
  
 figure(); 
 hold on;
 for i = 1:size(ROIa.coordinates,2)*2
 col1 = cmap(round((delta_v(i)-min(delta_v))+1),:);
-scatter(E1_dist(i,1),E1_dist(i,2),'o','Filled','SizeData',200,'MarkerFaceColor',col1,'MarkerEdgeColor',col1,'MarkerFaceAlpha',0.2,'MarkerEdgeAlpha',0.2);
+scatter(E1_dist(i,1),E1_dist(i,2),'o','SizeData',200,'MarkerFaceColor',col1,'MarkerFaceAlpha',0.2,'MarkerEdgeAlpha',0.2);
 end
 title('E1 cells vs surrounding IND neuron timing tuning');
 
 % E2 cells...
+clear delta_v
 delta_v = cat(2,timeVb(1,:),timeVb(2,:));
-% delta_v = mat2gray(abs(delta_v));
-% delta_v = round(delta_v*100);
 cmap = redblue(201);
  
 figure(); 
 hold on;
 for i = 1:size(ROIa.coordinates,2)*2
 col1 = cmap(round((delta_v(i)-min(delta_v))+1),:);
-scatter(E2_dist(i,1),E2_dist(i,2),'o','Filled','SizeData',200,'MarkerFaceColor',col1,'MarkerEdgeColor',col1,'MarkerFaceAlpha',0.2,'MarkerEdgeAlpha',0.2);
+scatter(E2_dist(i,1),E2_dist(i,2),'o','SizeData',200,'MarkerFaceColor',col1,'MarkerFaceAlpha',0.2,'MarkerEdgeAlpha',0.2);
 end
 title('E2 cells vs surrounding IND neuron timing tuning');
 

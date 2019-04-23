@@ -166,4 +166,24 @@ xlabel('Frames');
   subplot(133);
  imagesc((D_2./D), [0, 10] );
 colormap(hot);
+
+% Calculate differences
+for i = 1:size(B,2);
+    cb(:,1) = (B(i,:))';
+    cb(:,2) = (C(i,:))';
+    
+    cd(:,1) = (C(i,:))';
+    cd(:,2) = (D(i,:))';
+r1 = corr(cb);
+r2 = corr(cd);
+rk1(:,i) = r1(1,2);
+rk2(:,i) = r2(1,2);
 end
+% Early to mid
+disp(['early to mid corr = ',num2str(mean(rk1))]);
+% Mid to late
+disp(['mid to late corr = ',num2str(mean(rk2))]);
+
+figure();
+
+
