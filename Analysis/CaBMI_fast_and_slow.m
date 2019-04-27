@@ -1,4 +1,4 @@
-function CaBMI_fast_and_slow(ROIhits, D_ROIhits_z,roi_hits);
+function [out] = CaBMI_fast_and_slow(ROIhits, D_ROIhits_z,roi_hits);
 % see if timing maters for the sequence 
 
 
@@ -6,13 +6,18 @@ function CaBMI_fast_and_slow(ROIhits, D_ROIhits_z,roi_hits);
 
 
 % Calcultae the cursor
-x = size(roi_hits,1)-1;
+x = size(roi_hits,1);
 for i = 1:x;
+    try
 cursor(:,i) = smooth((D_ROIhits_z(i,:,1)+D_ROIhits_z(i,:,2))-(D_ROIhits_z(i,:,3)+D_ROIhits_z(i,:,4)),10);
+    catch
+        disp('one hit too close to the end. Skipping...');
+    end
 end
 
+x = size(cursor,2);
 figure(); 
-G = jet(x);
+G = jet(size(cursor,2));
 for i = 3:x
     hold on;
     plot(cursor(:,i)+i,'color',G(i,:))
@@ -92,7 +97,7 @@ colormap(hot);
 end
 
 
-[ROIhits_z ROIhits_z] = CaBMI_topCells(ROIhits_z,range,cutoff);
+%[ROIhits_z ROIhits_z] = CaBMI_topCells(ROIhits_z,range,cutoff);
 
 
 % figure(); 
@@ -121,24 +126,50 @@ c = smooth(diff(-smooth(cursor(:,i),1)),20);
  ln2save(i) = (b(closestIndex)-(b2(closestIndex2)+200));
 end
 
-
+disp('smoothing cursor...');
 for i = 1: size(cursor,2);
-    mg(i) = cursor(250,i)
+    cursor_smoothed = smooth(cursor(:,i),2);
+    xtemp = find(cursor_smoothed(202:end)<0.7);
+    try
+    xtrue(i) = xtemp(1)+200; % when do we go back below baseline...
+    catch
+        xtrue(i) = 400;
+    end
+    clear xtemp
+    mg(i) = mean(cursor_smoothed((210:240),:));
 end
 
 
 
 
 [~,ff] = sort(mg);
-figure(); imagesc(cursor(:,ff)',[-5,5]);
+figure(); 
+imagesc(cursor(:,ff)',[-5,5]);
+hold on;
+plot(xtrue(ff),1:size(cursor,2),'*')
 colormap(redblue);
+colorbar;
+
+% Plot based on second thresh crossing:
+[~,ff2] = sort(xtrue);
+figure(); 
+imagesc(cursor(:,ff2)',[-5,5]);
+hold on;
+plot(xtrue(ff2),1:size(cursor,2),'*')
+colormap(redblue);
+colorbar;
+title('sorted by second threshold crossing');
 
 
 
+out.sorted = ff;
+out.sorted_reset = ff2;
+out.xtrue = xtrue; % second thresh crossings
+out.cursor = cursor;
 
 
-fastest = 1:25;
-slowest = size(ROIhits,1)-25:size(ROIhits)-1;
+% fastest = 1:25;
+% slowest = size(ROIhits,1)-25:size(ROIhits)-1;
 
 
 % data.undirected = ROIhits(ff(fastest),100:300,:); 
@@ -147,15 +178,15 @@ slowest = size(ROIhits,1)-25:size(ROIhits)-1;
 % Bx = squeeze(mean(ROIhits(:,100:300,:),1));
 % Bx = Bx(:,indX);
 
-figure();
-data1.undirected = ROIhits(1:2:60,100:300,:); 
-data1.directed = ROIhits(2:2:60,100:300,:); 
-[indX,B,C] = CaBMI_schnitz(data1);
-title('unwarped');
-data2.undirected = ROIhits2(1:2:60,100:300,:); 
-data2.directed = ROIhits2(2:2:60,100:300,:); 
-[indX,B,C] = CaBMI_schnitz(data1);
-title('warped');
+% figure();
+% data1.undirected = ROIhits(1:2:60,100:300,:); 
+% data1.directed = ROIhits(2:2:60,100:300,:); 
+% [indX,B,C] = CaBMI_schnitz(data1);
+% title('unwarped');
+% data2.undirected = ROIhits2(1:2:60,100:300,:); 
+% data2.directed = ROIhits2(2:2:60,100:300,:); 
+% [indX,B,C] = CaBMI_schnitz(data1);
+% title('warped');
 
 
 % Bx = squeeze(mean(ROIhits(:,100:300,:),1));

@@ -4,13 +4,41 @@ function [ROIhits_z2 ROIhits_z3] = CaBMI_topCells(ROIhits_z,range,cutoff);
 
 
 % Sort by the 'task re;evant cells- most active at the hit.)
-
-
-
-figure();
- hold on; 
-h1 = histogram(max(mean(ROIhits_z(:,range,:),1)));
+range = 190:250;
+n2_range = 1:100;
+n1_range = 350:400;
+clear a b b2 a2
+% Early
+ a = abs(max(mean(ROIhits_z(1:10,range,:),1)) - min(mean(ROIhits_z(1:10,range,:),1)));
+ b = abs(max(mean(ROIhits_z(1:10,n1_range,:),1)) - min(mean(ROIhits_z(1:10,n1_range,:),1)));
+% Mid
+ a2 = abs(max(mean(ROIhits_z(20:40,range,:),1)) - min(mean(ROIhits_z(20:40,range,:),1)));
+ b2 = abs(max(mean(ROIhits_z(20:40,n1_range,:),1)) - min(mean(ROIhits_z(20:40,n1_range,:),1)));
+% Late
+ a3 = abs(max(mean(ROIhits_z(60:90,range,:),1)) - min(mean(ROIhits_z(60:90,range,:),1)));
+ b3 = abs(max(mean(ROIhits_z(60:90,n1_range,:),1)) - min(mean(ROIhits_z(60:90,n1_range,:),1)));
+ 
+ figure();
+ hold on;
+ h1 = histogram(a./b,100);
+ h2 = histogram(a2./b2,100);
+ h3 = histogram(a3./b3,100);
 h1.Normalization = 'probability';
+h1.BinWidth = 0.1;
+h1.FaceColor = 'r';
+
+h2.Normalization = 'probability';
+h2.BinWidth = 0.1;
+h2.FaceColor = 'g';
+
+h3.Normalization = 'probability';
+h3.FaceColor = 'b';
+h3.BinWidth = 0.1;
+
+plot([1 1],[0 0.3],'--','LineWidth',1) 
+title(' Modulation Ratio  (RGB = early, mid, late)');
+
+
 plot([cutoff cutoff],[0 0.3],'--','LineWidth',4) 
 
 % make the cutoff:

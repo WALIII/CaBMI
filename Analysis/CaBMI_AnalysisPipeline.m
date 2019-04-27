@@ -23,7 +23,7 @@ load('csv_data.mat'); load('ave_roi.mat');  load('Y.mat');
  % Get video matrix around the hits
 
  % Get ROI traces in a matrix, bounded by the hits
- [ROIhits, ROIhits_d, ROIhits_s]= CaBMI_getROI(roi_ave,roi_hits);
+[ROIhits,ROIhits_d,ROIhits_s, ROIhits_z]= CaBMI_getROI(roi_ave,roi_hits);
 
  % get PCA matrix
   [PCA_mat]= CaBMI_PCA(roi_ave,roi_hits);
