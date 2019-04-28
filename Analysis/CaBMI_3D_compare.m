@@ -32,9 +32,11 @@ normB = IM2;
 
 uuA = -5:(10/(size(normA,1)-1)):5;
 uuB = -5:(10/(size(normA,2)-1)):5;
+X = (normA)-(normB);
+X = X-std(X);
 
 
-imagesc(uuA,uuB,(normA)-(normB),[-1 1]);
+imagesc(uuA,uuB,X,[-1 1]);
 colormap(fireice);
 hold on
 

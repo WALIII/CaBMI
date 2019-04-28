@@ -122,7 +122,7 @@ end
 [ay by] = sort(GG,'ascend');
 
 
-multiplot = 0;
+multiplot = 1;
 if multiplot ==1;
 figure();  
 
@@ -152,6 +152,8 @@ hold on
 end;
 end
 
+
+if multiplot ==2;
 
 % Align to Second threshold point!
 for i = 1:size(ROIhits_s,1)
@@ -190,5 +192,6 @@ hold on
             
         pause();
 end;
+end
 end
     

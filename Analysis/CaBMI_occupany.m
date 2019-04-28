@@ -1,4 +1,4 @@
-function X =  CaBMI_occupany(roi_ave,roi_ave2,cell)
+function X =  CaBMI_occupany(roi_ave,x, y,cell)
 % Where do indirect neurons 'live' in 2D space?
 % Load in the extracted direct neurons, and the indirect cells
 
@@ -27,8 +27,8 @@ end
 
 
 
-TData2.cursorA = (zscore(roi_ave2.interp_dff(1,:)) + zscore(roi_ave2.interp_dff(2,:)))  - (zscore(roi_ave2.interp_dff(3,:)) + zscore(roi_ave2.interp_dff(4,:)));
-TData2.cursorB = (zscore(roi_ave2.interp_dff(5,:)) + zscore(roi_ave2.interp_dff(6,:)))  - (zscore(roi_ave2.interp_dff(7,:)) + zscore(roi_ave2.interp_dff(8,:)));
+TData2.cursorA = x; %(zscore(roi_ave2.interp_dff(1,:)) + zscore(roi_ave2.interp_dff(2,:)))  - (zscore(roi_ave2.interp_dff(3,:)) + zscore(roi_ave2.interp_dff(4,:)));
+TData2.cursorB = y; %(zscore(roi_ave2.interp_dff(5,:)) + zscore(roi_ave2.interp_dff(6,:)))  - (zscore(roi_ave2.interp_dff(7,:)) + zscore(roi_ave2.interp_dff(8,:)));
 
 % Fake cursor ( pick random cells as 'cursor')
 % TData2.cursorA = (zscore(roi_ave.F_dff(1,:)) + zscore(roi_ave.F_dff(3,:)))  - (zscore(roi_ave.F_dff(3,:)) + zscore(roi_ave.F_dff(4,:)));
@@ -78,7 +78,7 @@ plot(-5:5,ones(11,1)*-stdx,'--c','LineWidth',1.2);
 
 % Make heatplot
 Sz = 100;
-filt = 20;
+filt = 10;
 
 %figure(2);
 h=fspecial('gaussian',filt,filt);
