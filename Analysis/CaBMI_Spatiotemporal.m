@@ -336,7 +336,7 @@ n = 1;
 counter = 1;
 for i = 1:size(AB2,1);
 
-    if aT(i)>n+25;
+    if aT(i)>n+100;
     grp = grp+1;
     n=n+25;
     counter = 1;
@@ -368,7 +368,7 @@ n = 1;
 counter = 1;
 for i = 1:size(AB2,1);
 
-    if aT(i)>n+25;
+    if aT(i)>n+100;
     grp = grp+1;
     n=n+25;
     counter = 1;
