@@ -24,8 +24,8 @@ function [ROI,roi_ave] = CaBMI_Process(varargin)
 ExpType = 2;% 1, 2, 3
 sSub = 2;                                % spatial downsampling when processing
 tSub = 4;                                % Temporal downsampling
-motion_correct = false;                                         % perform motion correction
-non_rigid = false;
+motion_correct = true;                                         % perform motion correction
+non_rigid = true;
 
 
 nparams=length(varargin);
@@ -126,7 +126,7 @@ end
 end
 %% downsample h5 files and save into a single memory mapped matlab file
 if motion_correct
-    h5_files = subdir(fullfile(foldername,['*',-append,'.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+    h5_files = subdir(fullfile(foldername,['*','-append','.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
 else
     h5_files = subdir(fullfile(foldername,'*_mc.h5'));
 end
@@ -135,7 +135,12 @@ end
 
 
 ds_filename = [foldername,'/ds_data.mat'];
+try
 data_type = class(read_file(h5_files(1).name,1,1));
+catch
+    
+end
+
 data = matfile(ds_filename,'Writable',true);
 data.Y  = zeros([FOV,0],data_type);
 data.Yr = zeros([prod(FOV),0],data_type);
