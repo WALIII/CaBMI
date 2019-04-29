@@ -1,11 +1,23 @@
-function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3);
+function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
-   HL = [0.15 .3];
+   HL = [0.1 .5];
    T = 1:size(GG1,2);
    F = 1:size(GG1,1);
+    movie = 1;
 
-
+    % Manual inputs
+vin=varargin;
+for i=1:length(vin)
+  if isequal(vin{i},'Direct') % manually inputing a sort order
+    ROI=vin{i+1};
+    plotROI =1;
+  elseif isequal(vin{i},'Indirect')
+    ri=vin{i+1};
+end
+end
+    
+    
 Llim = HL(1);
  Hlim = HL(2);
 
@@ -32,3 +44,56 @@ rsjp2 = imadjust(im2(:),[Llim ; Hlim]);
 
 title('baseleine to baseline')
 
+if movie ==1;
+    
+    h = figure;
+axis tight manual % this ensures that getframe() returns a consistent size
+filename = 'testAnimated.gif';
+for i = 1:121; 
+    % Text assignment
+     % Draw plot for y = x.^n
+                if i < 10
+                      image = squeeze(RGB2(:,:,i,:));
+                    if plotROI ==1; 
+                     for ii = 1:4
+                         if ii<3
+                            image = insertShape(image,'circle',[mean(ROI.coordinates{ii}(:,1)) mean(ROI.coordinates{ii}(:,2)) 10],'Color','g','LineWidth',5);
+                         else
+                            image = insertShape(image,'circle',[mean(ROI.coordinates{ii}(:,1)) mean(ROI.coordinates{ii}(:,2)) 10],'Color','r','LineWidth',5);
+                         end
+                       image = insertText(image,[0 0],'E1','FontSize',18,'BoxColor','black','TextColor','green');
+                       image = insertText(image,[0 30],'E2','FontSize',18,'BoxColor','black','TextColor','red');
+
+                     end
+                    end
+                elseif i < 10
+                     image = squeeze(RGB2(:,:,i,:));
+                      image = insertText(image,[0 0],txt,'FontSize',18,'BoxColor','black','TextColor','white');
+                elseif i ==60
+                  txt = ['HIT!'];
+                      image = squeeze(RGB2(:,:,i,:));
+                       image = insertText(image,[0 0],txt,'FontSize',18,'BoxColor','black','TextColor','white');
+                else
+                 txt = ['Time post hit: ',num2str(i-60)];
+                     image = squeeze(RGB2(:,:,i,:));
+                     image = insertText(image,[0 0],txt,'FontSize',18,'BoxColor','black','TextColor','white');
+                end
+                
+
+    imshow(squeeze(image)); 
+axis tight manual % this ensures that getframe() returns a consistent size
+      % Capture the plot as an image 
+      frame = getframe(h); 
+      im = frame2im(frame); 
+      [imind,cm] = rgb2ind(im,256); 
+      % Write to the GIF File 
+      if i == 1 
+            imwrite(imind,cm,filename,'gif', 'Loopcount',inf);
+
+ 
+      else 
+          
+          imwrite(imind,cm,filename,'gif','DelayTime',0,'WriteMode','append'); 
+  end
+end
+end
