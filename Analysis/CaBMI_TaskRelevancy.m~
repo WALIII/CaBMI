@@ -5,8 +5,7 @@ function CaBMI_TaskRelevancy(ROIhits_z,ROIhits_s,D_ROIhits_z,varargin)
 threshplot = 0;
 sorting = 1:size(ROIhits_s,1);
 nparams=length(varargin);
-SaveFile =1;
-UIin =0;
+SaveCells =1;
 if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
 end
@@ -19,12 +18,10 @@ for i=1:2:nparams
         case 'thresh'
 			xtrue=varargin{i+1};
             threshplot = 1;
-        case 'uiin'
-            UIin=varargin{i+1};
     end
 end
 
-if SaveFile ==1;
+if SaveCells ==1;
     % make directory
 mkdir SparseCells
 end
@@ -135,16 +132,16 @@ figure();
 for i = 1:size(ROIhits_s,3); 
 %     map = brewermap(100,'YlOrRd');
 % map(1,:) = [1 1 1]; % optionally force first color to white
-map = (hot);
+map = flipud(gray);
 colormap(map);
     clf;
   bFig(1) = subplot(10,1,1:2);
 hold on
-    plot(smooth(mean(ROIhits_s(sorting(:),150:300,bx(i))),10),'r')%./(smooth(var(ROIhits_s(:,:,bx(i))),10)+.1));
+    plot(smooth(mean(ROIhits_s(sorting(:),:,bx(i))),10),'r')%./(smooth(var(ROIhits_s(:,:,bx(i))),10)+.1));
     %plot(smooth(mean(ROIhits_s(sorting(30:50),:,bx(i))),10),'g')%./(smooth(var(ROIhits_s(:,:,bx(i))),10)+.1));
     %plot(smooth(mean(ROIhits_s(sorting(60:80),:,bx(i))),10),'b')%./(smooth(var(ROIhits_s(:,:,bx(i))),10)+.1));
   bFig(2) = subplot(10,1,3:10); 
-    imagesc(ROIhits_s(sorting,150:300,bx(i))); 
+    imagesc(ROIhits_s(sorting,:,bx(i))); 
     linkaxes(bFig,'x'); 
         title(['Neuron number:  ', num2str(bx(i))]);
         if threshplot ==1;
@@ -153,36 +150,8 @@ hold on
             scatter1.MarkerFaceAlpha = .2;
             scatter1.MarkerEdgeAlpha = .2;
         end
-        
-        %         pause();
-        if SaveFile ==1;
-            if UIin ==1
-                if i ==1;
-                    mkdir 'SparseCells/TaskMod'
-                    mkdir 'SparseCells/NotMod'
-                end
-        prompt = 'Do you want more? Y/N [Y]: ';
-                str = input(prompt,'s');
-                    if isempty(str)
-                         str = 'N';
-                    end
-                    if str == 't';
-                folder = 'SparseCells/TaskMod';
-                disp('Task Modulated Cell IDd');
-                        else
-                 folder = 'SparseCells/NotMod';
-                        end
-               
-            else
-                folder = 'SparseCells';
-            end
             
-            
-print(gcf,'-depsc','-painters',[folder,'/',['Neuron number:  ', num2str(bx(i))],'.eps']);
-epsclean([folder,'/',['Neuron number:  ', num2str(bx(i))],'.eps']); % cleans and overwrites the input file
-        end
-            
-    
+        pause();
 end;
 end
 
@@ -224,6 +193,12 @@ hold on
             %scatter1.MarkerEdgeAlpha = .2;
         end
             
+        pause();
+        if Save_File ==1;
+            
+print(gcf,'-depsc','-painters',['SparseCells/',['Neuron number:  ', num2str(bx(i))],'.eps']);
+epsclean(['Theta2/',G,'.eps']); % cleans and overwrites the input file
+        end
 end;
 end
 end
