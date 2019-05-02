@@ -36,7 +36,12 @@ stp = round(size(roi_hits,1)/3);
 [VidHits, I]= CaBMI_getvid(Y,ds_hits);
 A = mean(VidHits(:,:,:,1:10),4);
 B = mean(VidHits(:,:,:,stp:stp*2),4);
+try
 C = mean(VidHits(:,:,:,stp*2:(stp*3 -1)),4);
+catch
+    C = mean(VidHits(:,:,:,stp*2:(stp*3 -3)),4);
+end
+
 [RGB1 RGB2] = CaBMI_XMASS(A,B,C,'Direct',ROIS);
 
     cd(DIR);

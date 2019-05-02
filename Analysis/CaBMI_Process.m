@@ -68,7 +68,7 @@ end
 if ExpType == 2% for 2P data
   fr = 30;                                         % frame rate
   tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-  K = 10;% used to be 7...                                            % number of components to be found
+  K = 7;% used to be 7...                                            % number of components to be found
   tau = 12;      %8                                    % std of gaussian kernel (half size of neuron)
   p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
   merge_thr = 0.8;                                  % merging threshold
@@ -126,7 +126,7 @@ end
 end
 %% downsample h5 files and save into a single memory mapped matlab file
 if motion_correct
-    h5_files = subdir(fullfile(foldername,['*','-append','.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+    h5_files = subdir(fullfile(foldername,['*','nr.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
 else
     h5_files = subdir(fullfile(foldername,'*_mc.h5'));
 end

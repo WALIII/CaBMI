@@ -1,7 +1,7 @@
 function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
-   HL = [0.1 .5];
+   HL = [0.2 .4];
    T = 1:size(GG1,2);
    F = 1:size(GG1,1);
     movie = 1;
@@ -26,8 +26,8 @@ im1(:,:,:,2)=  mat2gray(GG2);
 im1(:,:,:,3)=  mat2gray(GG3);
 
 % Mean subtracted/Normalized
-im2 = im1./(mean(im1(:,:,[50:60 10:20],:),3)+.02);
-im2 = im2 - mean(im2(:,:,[50:60 10:20],:),3);
+im2 = im1./(mean(im1(:,:,[1:30 110:120],:),3)+.01);
+im2 = im2 - mean(im2(:,:,1:30,:),3);
 im2 = mat2gray(im2);
 
 rsjp = imadjust(im1(:),[Llim ; Hlim]);
