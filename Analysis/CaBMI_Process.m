@@ -257,7 +257,12 @@ Cn = Y(:,:,10);
 figure;
     ax1 = subplot(121);
     [CC] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
+try
     ax2 = subplot(122); plot_contours(A(:,throw),Cn,options,0,[],Coor_t,'m',find(throw));title('Rejected components','fontweight','bold','fontsize',14);
+catch
+    disp('plotting error...')
+end
+
     linkaxes([ax1,ax2],'xy')
 
 
