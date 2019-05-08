@@ -1,7 +1,7 @@
 function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
-   HL = [0.2 .4];
+   HL = [0.2 .6];
    T = 1:size(GG1,2);
    F = 1:size(GG1,1);
     movie = 1;
@@ -20,15 +20,28 @@ end
     
 Llim = HL(1);
  Hlim = HL(2);
+%files   = (files - min(files(:))) / (max(files(:)) - min(files(:)))*255;
+% im1(:,:,:,1)=  (GG1 - min(GG1(:))) / (max(GG1(:)) - min(GG1(:)));
+% im1(:,:,:,2)=  (GG2 - min(GG2(:))) / (max(GG2(:)) - min(GG2(:)));
+% im1(:,:,:,3)=  (GG3 - min(GG3(:))) / (max(GG3(:)) - min(GG3(:)));
 
 im1(:,:,:,1)=  mat2gray(GG1);
 im1(:,:,:,2)=  mat2gray(GG2);
 im1(:,:,:,3)=  mat2gray(GG3);
 
 % Mean subtracted/Normalized
-im2 = im1./(mean(im1(:,:,[1:30 110:120],:),3)+.01);
-im2 = im2 - mean(im2(:,:,1:30,:),3);
-im2 = mat2gray(im2);
+for ii = 1:3
+     M = squeeze(im1(:,:,:,ii));
+imT = (M./(median(M,3)+.01));
+im2(:,:,:,ii) = imT- median(imT,3);
+end
+%im2 = im2 - mean(im2(:,:,:,:),3);
+%im2 = mat2gray(im2);
+
+for ii = 1:3; % normalize each channel...
+    M = squeeze(im2(:,:,:,ii));
+    im2(:,:,:,ii) = mat2gray(M);%(M - min(M(:))) / (max(M(:)) - min(M(:)));
+end
 
 rsjp = imadjust(im1(:),[Llim ; Hlim]);
 rsjp2 = imadjust(im2(:),[Llim ; Hlim]);
@@ -96,4 +109,9 @@ axis tight manual % this ensures that getframe() returns a consistent size
           imwrite(imind,cm,filename,'gif','DelayTime',0,'WriteMode','append'); 
   end
 end
+figure(); 
+hold on
+plot(zscore(squeeze(mean(mean(GG1,1),2))),'r');
+plot(zscore(squeeze(mean(mean(GG2,1),2))),'g');
+plot(zscore(squeeze(mean(mean(GG3,1),2))),'b');
 end
