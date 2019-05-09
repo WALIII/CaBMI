@@ -5,7 +5,7 @@ function CaBMI_TaskRelevancy(ROIhits_z,ROIhits_s,D_ROIhits_z,varargin)
 threshplot = 0;
 sorting = 1:size(ROIhits_s,1);
 nparams=length(varargin);
-SaveFile =1;
+SaveFile =0;
 UIin =0;
 if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
@@ -154,7 +154,7 @@ hold on
             scatter1.MarkerEdgeAlpha = .2;
         end
         
-        %         pause();
+                 pause();
         if SaveFile ==1;
             if UIin ==1
                 if i ==1;

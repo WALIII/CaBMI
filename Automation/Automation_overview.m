@@ -140,7 +140,7 @@ end
 % Extract video...
 if mov_ext ==1;
     disp('Loading downsampled video...')
-load([[S2S(ii).folder,'\',S2S(ii).name],'\Processed\ds_data'],'Y')
+load([[S2S(ii).folder,'\',S2S(ii).name],'\Processed\Mtiff_folder2\ds_data'],'Y')
 save([START_DIR_ROOT,'\','Processed','\',subFolders(i).name,'\','Y.mat'],'Y','-v7.3');
 end
 % copy data over
