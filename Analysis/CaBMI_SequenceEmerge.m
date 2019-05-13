@@ -39,7 +39,7 @@ figure();
 % To run without generating figures:
 % [indX,B,C] = CaBMI_schnitz(data,'show',0)
 
-show = 1; 
+show = 1;
 
 
 
@@ -122,8 +122,8 @@ indX = index;
 
 % Plotting
 if show ==1;
-figure(); 
-    
+figure();
+
 subplot(1,3,1)
 imagesc((B), [0, 3]);
 title('Sorted Trials');
@@ -155,10 +155,10 @@ xlabel('Frames');
 
  colorbar
 
- 
- 
- 
- figure(); 
+
+
+
+ figure();
  subplot(131);
  imagesc((B_2./B), [0, 10] );
   subplot(132);
@@ -171,7 +171,7 @@ colormap(hot);
 for i = 1:size(B,2);
     cb(:,1) = (B(i,:))';
     cb(:,2) = (C(i,:))';
-    
+
     cd(:,1) = (C(i,:))';
     cd(:,2) = (D(i,:))';
 r1 = corr(cb);
@@ -183,7 +183,3 @@ end
 disp(['early to mid corr = ',num2str(mean(rk1))]);
 % Mid to late
 disp(['mid to late corr = ',num2str(mean(rk2))]);
-
-
-
-

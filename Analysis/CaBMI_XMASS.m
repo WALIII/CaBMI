@@ -1,4 +1,9 @@
+
 function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
+
+% Make sure you take the median for the input matrixes..
+
+
 
 
    HL = [0.2 .6];
