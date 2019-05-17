@@ -4,7 +4,7 @@
 
 % d10/01/2018-d11/01/18
 % WAL3
-function [roi_ave1, roi_ave2, roi_ave3, roi_ave4, ROIa, ROIb, ds_hits, roi_hits, ROIhits, ROIhits_d, ROIhits_s, ROIhits_z ,D_ROIhits, D_ROIhits_d, D_ROIhits_s, D_ROIhits_z] =  CaBMI_Figure_Generator;
+function [roi_ave1, roi_ave2, roi_ave3, roi_ave4, ROIa, ROIb,ds_hits,roi_hits, CaBMI_Figure_Generator
 
 clear 
 close all

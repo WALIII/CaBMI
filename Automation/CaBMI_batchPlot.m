@@ -61,10 +61,11 @@ for ii = 1:length(flight_subFolders);
     
     disp(['indexing into folder ',flight_subFolders(ii).name, ' on day ', subFolders(i).name])
     % load data into workspace:
-     CaBMI_Figure_Generator; 
+[roi_ave1, roi_ave2, roi_ave3, roi_ave4, ROIa, ROIb, ds_hits, roi_hits, ROIhits, ROIhits_d, ROIhits_s, ROIhits_z,D_ROIhits, D_ROIhits_d, D_ROIhits_s, D_ROIhits_z] =  CaBMI_Figure_Generator
+
      [out] = CaBMI_fast_and_slow(ROIhits, D_ROIhits_z,roi_hits);
-     DATA{i}{ii} = [];
-   
+     DATA{i}{ii} = out;
+   clear out roi_ave1 roi_ave2 roi_ave3 roi_ave4 ROIa ROIb ds_hits roi_hits ROIhits ROIhits_d  ROIhits_s ROIhits_z D_ROIhits D_ROIhits_d D_ROIhits_s D_ROIhits_z
 end
 clear flight_subFolders % so as not to disrupt the next loop...
 end
