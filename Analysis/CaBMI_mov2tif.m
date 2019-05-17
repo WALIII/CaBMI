@@ -44,7 +44,7 @@ k = 1;
 i = 1;
 while hasFrame(v1)
  v = readFrame(v1);
- vK(:,:,k) = imresize(squeeze(v(:,:,1)),downsamp); % keep only the green channel
+ vK(:,:,k) = imresize(squeeze(v(:,:,2)),downsamp); % keep only the green channel
  k = k+1;
  if k>max_size
      filename = ['Data_',num2str(i.','%03d'),'.tif'];
