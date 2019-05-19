@@ -64,7 +64,8 @@ for ii = 1:length(flight_subFolders);
 [roi_ave1, roi_ave2, roi_ave3, roi_ave4, ROIa, ROIb, ds_hits, roi_hits, ROIhits, ROIhits_d, ROIhits_s, ROIhits_z,D_ROIhits, D_ROIhits_d, D_ROIhits_s, D_ROIhits_z] =  CaBMI_Figure_Generator;
 
      [out] = CaBMI_fast_and_slow(ROIhits, D_ROIhits_z,roi_hits);
-     DATA{i}{ii} = out;
+      out_fname = MatchFname(flight_subFolders(ii).name);
+     DATA{i}{out_fname} = out;
    clear out roi_ave1 roi_ave2 roi_ave3 roi_ave4 ROIa ROIb ds_hits roi_hits ROIhits ROIhits_d  ROIhits_s ROIhits_z D_ROIhits D_ROIhits_d D_ROIhits_s D_ROIhits_z
 end
 clear flight_subFolders % so as not to disrupt the next loop...
@@ -97,6 +98,15 @@ out_fname = 4;
 elseif strcmp('M006',in_name)
 % M006 = 5;
 out_fname = 5;
+
+elseif strcmp('M026',in_name)
+% M006 = 5;
+out_fname = 6;
+
+elseif strcmp('M051',in_name)
+% M006 = 5;
+out_fname = 7;
+
 
 end
 
