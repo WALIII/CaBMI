@@ -6,10 +6,10 @@ function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
 
-   HL = [0.2 .6];
+   HL = [0.15 .95];
    T = 1:size(GG1,2);
    F = 1:size(GG1,1);
-    movie = 1;
+    movie = 0;
 
     % Manual inputs
 vin=varargin;
