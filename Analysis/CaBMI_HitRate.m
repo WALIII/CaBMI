@@ -57,7 +57,7 @@ for i = 1:400; % 400 permutations
     
     Icursor(i,:) = smooth(Ie1-Ie2,smt);
 end
-countTime = round((size(roi_ave.interp_dff,2)/30)/60)/5
+countTime = round(round((size(roi_ave.F_dff,2)/30)/60)/5)
 end
 
 
