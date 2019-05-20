@@ -66,7 +66,7 @@ roi_ave4 = Bbase.roi_ave;
 if ExpTyp == 1; % if 1D experiment,
 
 if ismember(1,figs)
- out.spacetime =  CaBMI_Spatiotemporal(ROIhits, ROIa,ROIb);
+ out_spacetime =  CaBMI_Spatiotemporal(ROIhits, ROIa,ROIb);
 cd(pwd_here);
 cd('..')
 if exist('DATA_spacetime')<1;
