@@ -219,7 +219,6 @@ for ii = 1:size(ROIhits,3)% cell1
 for i = 1:size(ROIhits,3)% cell2
     
     if ii == i;
-        % skip identities
     else 
     % euclidian distance
    r1 =  [mean(ROI.coordinates{Bt(i)}(:,1)),mean(ROI.coordinates{Bt(i)}(:,2))];
@@ -237,37 +236,53 @@ end
 % figure();
 % plot(distV(:),timeV(:),'*');
 
-Sort_by(timeV,distV);
-title('All cells');
 
-clear distV timeV
-%%
-%Get local time map of just the best cells
+[aT, bT] = sort(distV(:),'ascend');
+AB = timeV(:);
+AB2 = AB(bT);
+AB3 = AB(randperm(size(AB,1)));
+
+
+
+clear aT bT AB AB2 grp n counter bX Bxv err Bxvfk errfk
+% sort by distance:
+[aT, bT] = sort(distV(:),'ascend');
+AB = timeV(:);
+AB2 = AB(bT);
+AB3 = AB(randperm(size(AB,1)));
+% group data every 100 um
+grp = 1;
+n = 1;
+stp = 5; % 10 um groups
 counter = 1;
-% compute ROI to ROI differences, and time differences in one big matrix:
-for ii = 1:size(ROIhits,3)% cell1
-for i = 1:size(ROIhits,3)% cell2
-    
-    if ii == i;
-        % skip identities
-    elseif ccd2(i)<.80 && ccd2(ii)<.80
-        
-    % euclidian distance
-   r1 =  [mean(ROI.coordinates{Bt(i)}(:,1)),mean(ROI.coordinates{Bt(i)}(:,2))];
-   r2 =  [mean(ROI.coordinates{Bt(ii)}(:,1)),mean(ROI.coordinates{Bt(ii)}(:,2))];
-    
-  distV(counter) =  pdist2(r1,r2);
-    %time difference
-  timeV(counter) = abs(b(i)/30-b(ii)/30); % divide by 30 to get seconds
-  counter = counter+1;
+for i = 1:size(AB2,1);
+
+    if aT(i)>n+stp;
+    grp = grp+1;
+    n=n+stp;
+    counter = 1;
+    end
+    bX{grp}(:,counter) = AB2(i);
+    bXfk{grp}(:,counter) = AB3(i);
+    counter = counter+1;
 end
-end
+    
+
+for i = 1:size(bX,2);
+    Bxv(:,i) = mean(bX{i});
+    err(:,i) = std(bX{i})/sqrt(length(bX{i}));;
+    
+    Bxvfk(:,i) = mean(bXfk{i});
+    errfk(:,i) = std(bXfk{i})/sqrt(length(bXfk{i}));;  
 end
 
-Sort_by(timeV,distV);
-title('High  cells');
+figure();
+hold on;
+errorbar((1:length(Bxv))*stp,Bxv,err)
+errorbar((1:length(Bxv))*stp,Bxvfk,errfk)
 
-%%
+out.SpaceTime = bX;
+out.SpaceTime2 = bXfk;
 
 
 
@@ -407,47 +422,3 @@ h2 = histogram(bX{1},5);
 % h4 = histogram(bXfk{2},5);
 h2.Normalization = 'probability';
 out.CloseE2 = bX;
-
-
-function Sort_by(timeV,distV);
-
-% sort by distance:
-[aT, bT] = sort(distV(:),'ascend');
-AB = timeV(:);
-AB2 = AB(bT);
-AB3 = AB(randperm(size(AB,1)));
-% group data every 100 um
-grp = 1;
-n = 1;
-stp = 1; % 10 um groups
-counter = 1;
-for i = 1:size(AB2,1);
-
-    if aT(i)>n+stp;
-    grp = grp+1;
-    n=n+stp;
-    counter = 1;
-    end
-    bX{grp}(:,counter) = AB2(i);
-    bXfk{grp}(:,counter) = AB3(i);
-    counter = counter+1;
-end
-    
-
-for i = 1:100%size(bX,2);
-    Bxv(:,i) = mean(bX{i});
-    err(:,i) = std(bX{i})/sqrt(length(bX{i}));;
-    
-    Bxvfk(:,i) = mean(bXfk{i});
-    errfk(:,i) = std(bXfk{i})/sqrt(length(bXfk{i}));;  
-end
-
-figure();
-hold on;
-errorbar((1:length(Bxv))*stp,Bxv,err)
-errorbar((1:length(Bxv))*stp,Bxvfk,errfk)
-
-out.SpaceTime = bX;
-out.SpaceTime2 = bXfk;
-
-

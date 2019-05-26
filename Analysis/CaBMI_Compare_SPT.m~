@@ -35,10 +35,10 @@ out = out_early;
 
 stp = 5;
 for i = 1:size(out.SpaceTime,2);
-    Bxv(:,i) = mean(out_early.SpaceTime{i});
-    err(:,i) = std(out_early.SpaceTime{i})/sqrt(length(out.SpaceTime{i}));  
-    Bxvfk(:,i) = mean(out_early.SpaceTime2{i});
-    errfk(:,i) = std(out_early.SpaceTime2{i})/sqrt(length(out.SpaceTime2{i})); 
+    Bxv(:,i) = mean(out.SpaceTime{i});
+    err(:,i) = std(out.SpaceTime{i})/sqrt(length(out.SpaceTime{i}));  
+    Bxvfk(:,i) = mean(out.SpaceTime2{i});
+    errfk(:,i) = std(out.SpaceTime2{i})/sqrt(length(out.SpaceTime2{i})); 
 end
 
 figure();
@@ -46,11 +46,12 @@ hold on;
 errorbar((1:length(Bxv))*stp,Bxv,err,'r')
 errorbar((1:length(Bxv))*stp,Bxvfk,errfk,'r')
 
+out = out_late;
 for i = 1:size(out.SpaceTime,2);
-    Bxv(:,i) = mean(out_late.SpaceTime{i});
-    err(:,i) = std(out_late.SpaceTime{i})/sqrt(length(out.SpaceTime{i}));  
-    Bxvfk(:,i) = mean(out_late.SpaceTime2{i});
-    errfk(:,i) = std(out_late.SpaceTime2{i})/sqrt(length(out.SpaceTime2{i}));
+    Bxv(:,i) = mean(out.SpaceTime{i});
+    err(:,i) = std(out.SpaceTime{i})/sqrt(length(out.SpaceTime{i}));  
+    Bxvfk(:,i) = mean(out.SpaceTime2{i});
+    errfk(:,i) = std(out.SpaceTime2{i})/sqrt(length(out.SpaceTime2{i}));
 end
 
 errorbar((1:length(Bxv))*stp,Bxv,err,'b')
@@ -125,7 +126,7 @@ delta_v = out_early.E2_T(1,rest1);
 delta_v2 = out_late.E2_T(1,rest2);
 delta_v = delta_v2;
 delta_v = abs(delta_v);
-cmap = jet(round(max(delta_v))+1);
+cmap = hot(round(max(delta_v))+1);
  
 figure(); 
 hold on;

@@ -19,10 +19,6 @@ end
 end
 
 
-
-
-
-
 smth = 10; % smoothing factor!
 Cel =  size(data.directed,3);
 index_ref = cat(1,data.directed,data.undirected);
@@ -37,8 +33,8 @@ end
 [dummy, index] = sort(Ind);
 FullSort  = (Mp(index, :));
 Index = index;
-output.FullSort = FullSort;
-output.Index = Index;
+output.FullSort = FullSort; % sort based on the whole dataset ( not applying the second half to the first) 
+output.Index = Index; % index from sorting the whole dataset
 
 clear Ind maxA dummy index;
 
