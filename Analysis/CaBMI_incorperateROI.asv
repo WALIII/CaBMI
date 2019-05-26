@@ -15,7 +15,7 @@ clear a b b2 a2
 
 Hitrange = 1:(floor(size(ROIhits_z,1)/num_bins)):size(ROIhits_z,1);
 
-if size(ROIhits_z,1)>10;
+if size(ROIhits_z,1)<10;
     
 size(ROIhits_z);
 
@@ -45,8 +45,3 @@ plot(G);
 
 out.a = a;
 out.b = b;
-else
-    out.a = [];
-    out.b = []
-end
-

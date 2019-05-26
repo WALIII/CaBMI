@@ -63,7 +63,7 @@ for ii = 1:length(flight_subFolders);
     % load data into workspace:
 [roi_ave1, roi_ave2, roi_ave3, roi_ave4, ROIa, ROIb, ds_hits, roi_hits, ROIhits, ROIhits_d, ROIhits_s, ROIhits_z,D_ROIhits, D_ROIhits_d, D_ROIhits_s, D_ROIhits_z] =  CaBMI_Figure_Generator;
 
-[out] = CaBMI_HitRate(roi_ave1,roi_ave2);
+[out] = CaBMI_incorperateROI(ROIhits_z,ROIhits_s,D_ROIhits_z);
 out_fname = MatchFname(flight_subFolders(ii).name);
      DATA{i}{out_fname} = out;
    clear out roi_ave1 roi_ave2 roi_ave3 roi_ave4 ROIa ROIb ds_hits roi_hits ROIhits ROIhits_d  ROIhits_s ROIhits_z D_ROIhits D_ROIhits_d D_ROIhits_s D_ROIhits_z
