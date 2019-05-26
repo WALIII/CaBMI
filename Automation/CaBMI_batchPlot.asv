@@ -70,14 +70,17 @@ for ii = 1:length(flight_subFolders);
 
 % Split data into thirds
 num_bins = 3;
-Hitrange = 1:(floor(size(ROIhits,1)/num_bins)):(size(ROIhits,1));
-if size(Hitrange,2)<4;
-    Hitrange = cat(2,Hitrange,(size(ROIhits,1)));
-end
+Hitrange = 1:(round(size(ROIhits,1)/num_bins)):(size(ROIhits,1));
+
 [out.early] = CaBMI_Spatiotemporal(ROIhits(Hitrange(1):Hitrange(2),:,:), ROIa,ROIb,'figures',0);
 [out.mid] = CaBMI_Spatiotemporal(ROIhits(Hitrange(2):Hitrange(3),:,:), ROIa,ROIb,'figures',0);
+try  
 [out.late] = CaBMI_Spatiotemporal(ROIhits(Hitrange(3):Hitrange(4),:,:), ROIa,ROIb,'figures',0);
 
+try
+    n = n+1
+[out.late] = CaBMI_Spatiotemporal(ROIhits(Hitrange(3):Hitrange(4)-n,:,:), ROIa,ROIb,'figures',0);
+catch
 
 out_fname = MatchFname(flight_subFolders(ii).name);
      DATA{i}{out_fname} = out;

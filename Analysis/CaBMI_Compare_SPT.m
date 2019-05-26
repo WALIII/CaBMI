@@ -10,9 +10,9 @@ Hitrange = 1:(round(size(ROIhits,1)/num_bins)):size(ROIhits,1);
 
 
 
-[out_early] = CaBMI_Spatiotemporal(ROIhits(Hitrange(1):Hitrange(2),:,:), ROIa,ROIb);
-[out_mid] = CaBMI_Spatiotemporal(ROIhits(Hitrange(2):Hitrange(3),:,:), ROIa,ROIb);
-[out_late] = CaBMI_Spatiotemporal(ROIhits(Hitrange(3):Hitrange(4),:,:), ROIa,ROIb);
+[out_early] = CaBMI_Spatiotemporal(ROIhits(Hitrange(1):Hitrange(2),:,:), ROIa,ROIb,'figures',0);
+[out_mid] = CaBMI_Spatiotemporal(ROIhits(Hitrange(2):Hitrange(3),:,:), ROIa,ROIb,'figures',0);
+[out_late] = CaBMI_Spatiotemporal(ROIhits(Hitrange(3):Hitrange(4),:,:), ROIa,ROIb,'figures',0);
 
 
 % Increase in population consistancy:
@@ -136,5 +136,5 @@ end
 title('E2 cells vs surrounding IND neuron timing tuning');
 
 
-out = []
+out = [];
 
