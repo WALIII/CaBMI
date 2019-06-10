@@ -7,10 +7,10 @@ function out = CaBMI_incorperateROI(ROIhits_z,ROIhits_s,D_ROIhits_z)
 
 
 % Sort by the 'task re;evant cells- most active at the hit.)
-range = 190:250;
+range = 170:200;
 n1_range = 1:50;
 %n1_range = 350:400;
-num_bins = 10;
+num_bins = 10; 
 clear a b b2 a2
 
 Hitrange = 1:(floor(size(ROIhits_z,1)/num_bins)):size(ROIhits_z,1);
@@ -23,8 +23,8 @@ for i = 1:num_bins-1
 % Early
 try
 local_Hitrange = Hitrange(i):Hitrange(i+1);
- a(:,i) = squeeze(abs(max(mean(ROIhits_z(local_Hitrange,range,:),1)) - min(mean(ROIhits_z(local_Hitrange,range,:),1))));
- b(:,i) = squeeze(abs(max(mean(ROIhits_z(local_Hitrange,n1_range,:),1)) - min(mean(ROIhits_z(local_Hitrange,n1_range,:),1))));
+ a(:,i) = squeeze(abs(max(mean(ROIhits_s(local_Hitrange,range,:),1)) - min(mean(ROIhits_s(local_Hitrange,range,:),1))));
+ b(:,i) = squeeze(abs(max(mean(ROIhits_s(local_Hitrange,n1_range,:),1)) - min(mean(ROIhits_s(local_Hitrange,n1_range,:),1))));
  %aD(:,i) = squeeze(abs(max(mean(D_ROIhits_z(local_Hitrange,range,:),1)) - min(mean(D_ROIhits_z(local_Hitrange,range,:),1))));
 % bD(:,i) = squeeze(abs(max(mean(D_ROIhits_z(local_Hitrange,n1_range,:),1)) - min(mean(D_ROIhits_z(local_Hitrange,n1_range,:),1))));
  

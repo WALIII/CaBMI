@@ -64,20 +64,20 @@ for ii = 1:length(flight_subFolders);
 [roi_ave1, roi_ave2, roi_ave3, roi_ave4, ROIa, ROIb, ds_hits, roi_hits, ROIhits, ROIhits_d, ROIhits_s, ROIhits_z,D_ROIhits, D_ROIhits_d, D_ROIhits_s, D_ROIhits_z] =  CaBMI_Figure_Generator;
 
 % Incorperate Hits:
-% [out] = CaBMI_incorperateROI(ROIhits_z,ROIhits_s,D_ROIhits_z);
+ [out] = CaBMI_incorperateROI(ROIhits_z,ROIhits_s,D_ROIhits_z);
 
 % Get Spatiotemporal data:
 
 % Split data into thirds
-num_bins = 3;
-Hitrange = 1:(floor(size(ROIhits,1)/num_bins)):(size(ROIhits,1));
-if size(Hitrange,2)<4;
-    Hitrange = cat(2,Hitrange,(size(ROIhits,1)));
-end
-[out.early] = CaBMI_Spatiotemporal(ROIhits(Hitrange(1):Hitrange(2),:,:), ROIa,ROIb,'figures',0);
-[out.mid] = CaBMI_Spatiotemporal(ROIhits(Hitrange(2):Hitrange(3),:,:), ROIa,ROIb,'figures',0);
-[out.late] = CaBMI_Spatiotemporal(ROIhits(Hitrange(3):Hitrange(4),:,:), ROIa,ROIb,'figures',0);
-
+% num_bins = 3;
+% Hitrange = 1:(floor(size(ROIhits,1)/num_bins)):(size(ROIhits,1));
+% if size(Hitrange,2)<4;
+%     Hitrange = cat(2,Hitrange,(size(ROIhits,1)));
+% end
+% [out.early] = CaBMI_Spatiotemporal(ROIhits(Hitrange(1):Hitrange(2),:,:), ROIa,ROIb,'figures',0);
+% [out.mid] = CaBMI_Spatiotemporal(ROIhits(Hitrange(2):Hitrange(3),:,:), ROIa,ROIb,'figures',0);
+% [out.late] = CaBMI_Spatiotemporal(ROIhits(Hitrange(3):Hitrange(4),:,:), ROIa,ROIb,'figures',0);
+% 
 
 out_fname = MatchFname(flight_subFolders(ii).name);
      DATA{i}{out_fname} = out;
