@@ -26,13 +26,19 @@ if nargin<1 | isempty(DIR), DIR=pwd; end
 % User input
 for i=1:2:nparams
 	switch lower(varargin{i})
-		case 'downsamp' % downsample video
-			downsamp=varargin{i+1};
-		case 'deinterlace' % de-interlace 60fps video
-			deinterlace =varargin{i+1};
-		case 'max_proj' % to make a max projectio
+		case 'type'
+			ExpType=varargin{i+1};
+		case 'filt_alpha'
+			filt_alpha=varargin{i+1};
+		case 'lims'
+			lims=varargin{i+1};
+		case 'max_proj'
 			max_proj=varargin{i+1};
-    end
+    case 'sSub'
+      sSub=varargin{i+1};
+    case 'tSub'
+      tSub=varargin{i+1};
+	end
 end
 
 

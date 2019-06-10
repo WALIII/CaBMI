@@ -5,13 +5,13 @@ mov = mov(:,:,:,1:100);
 [height width color frames] =  size(mov(:,:,:,:));
 
 disp('splitting video...');
-G2b = mat2gray(double(imresize(squeeze(mov(:,1281:end,2,:)),1)));
-G1b = mat2gray(double(imresize(squeeze(mov(:,1:1280,2,:)),1)));
+G2b = mat2gray(double(imresize(squeeze(mov(:,(width/2+1):end,1,:)),1)));
+G1b = mat2gray(double(imresize(squeeze(mov(:,1:(width/2),1,:)),1)));
 
 % Offsets...
 disp('resizing');
-G1b = imresize(G1b(:,141:end,:),1);
-G2b = imresize(G2b(:,1:end-140,:),1);
+G1b = imresize(G1b(:,:,:),1);
+G2b = imresize(G2b(:,:,:),1);
 
 clear mov
 
@@ -76,7 +76,7 @@ disp('processing frame...' )
 % Get depth profile by dispersion map...
 for i = 1:frames;
     
-    [D,movingReg,I2(:,:,:,i)] = BesselAlign_nonrigid(frameRightRect(50:end,:,i),frameLeftRect(50:end,:,i));
+    [D,movingReg,I2(:,:,:,i)] = BesselAlign_nonrigid(frameRightRect(50:end,:,i),frameLeftRect(50:end,:,i),'Large',100,'Mid',50,'Small',50);
     disp(num2str(i));
 end
 
@@ -103,9 +103,9 @@ disp('Making Gif...')
 
 
 delay=0.03;
-frame=size(I4,4);
+frame=size(I2,4);
 for i = 1:frame
-    [imind,cm] = rgb2ind(I4(:,:,:,i),256);
+    [imind,cm] = rgb2ind(I2(:,:,:,i),256);
     if i==1
         imwrite(imind,cm,filename,'gif', 'DelayTime', delay,'LoopCount',inf); %save file output
     else
