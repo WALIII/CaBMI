@@ -7,6 +7,8 @@ function [indX,B,C, output] = CaBMI_schnitz(data,varargin)
 % [indX,B,C] = CaBMI_schnitz(data,'show',0)
 
 show = 1; 
+smth = 10; % smoothing factor!
+
 % Manual inputs
 vin=varargin;
 for i=1:length(vin)
@@ -15,11 +17,13 @@ for i=1:length(vin)
     man =1;
   elseif isequal(vin{i},'ri')
     ri=vin{i+1};
+  elseif isequal(vin{i},'smooth') % manual smoothing entry
+    smth=vin{i+1};
 end
 end
 
 
-smth = 10; % smoothing factor!
+
 Cel =  size(data.directed,3);
 index_ref = cat(1,data.directed,data.undirected);
 

@@ -20,10 +20,7 @@ ExpTyp =1;
 pwd_here = cd;
 % Which Figures should we generate?
 
-figs = [];
-
-
-
+figs = [1 2];
 
 % PREFLIGHT %
 
@@ -43,7 +40,7 @@ Bbase = load('Direct_roi_map.mat');
 roi_ave3 = Abase.roi_ave;
 roi_ave4 = Bbase.roi_ave;
 
-%% Basic Ectraction
+%% Basic Extraction
  %   Basic Extraction of 'Hits' from .CSV file
 [ds_hits, roi_hits] = CaBMI_csvAlign(csv_data(:,2),csv_data(:,3),roi_ave1); %   1. Load in Y ( temporally downsampled movie) from ds_data
 

@@ -11,7 +11,7 @@ function CaBMI_mov2tif(varargin);
 % Default Params
 Total_max_size = 4000;
 max_size = 4000;
-downsamp = 1;
+downsamp = 0.5;
 deinterlace =0;
 max_proj = 0;
 
@@ -19,9 +19,19 @@ max_proj = 0;
 
 
 % find all movs
-if nargin<1 | isempty(DIR), DIR=pwd; end
-
+% if nargin<1 | isempty(DIR), DIR=pwd; end
+DIR = pwd;
 % user input
+
+% Loop
+mkdir('processed');
+
+nparams=length(varargin);
+
+if mod(nparams,2)>0
+	error('Parameters must be specified as parameter/value pairs');
+end
+
 
 % User input
 for i=1:2:nparams
@@ -32,6 +42,7 @@ for i=1:2:nparams
 			deinterlace =varargin{i+1};
 		case 'max_proj' % to make a max projectio
 			max_proj=varargin{i+1};
+           mkdir('processed/MAX');
     end
 end
 
@@ -44,8 +55,7 @@ mov_listing={mov_listing(:).name};
 
 filenames=mov_listing;
 
-% Loop
-mkdir('processed');
+
 
 for ii=1:length(mov_listing)
 
@@ -77,9 +87,10 @@ while hasFrame(v1)
        if size(size(vK),2)>3;
            % upsample by a factor of 3
            vK = double(vK);
-           vK = imresize(vK,3);
+           vK = imresize(vK,2);
            
     max_vK = mean(vK,4)*256;
+         filename = ['processed/MAX/',file,'_',num2str(i.','%03d')];
     imwrite(uint16(squeeze(max_vK)),[filename,'_MAX.tif']);
        end
      

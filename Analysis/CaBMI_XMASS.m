@@ -6,21 +6,23 @@ function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
 
-   HL = [0.05 .95];
+   HL = [0.20 .80];
    T = 1:size(GG1,2);
    F = 1:size(GG1,1);
     movie = 0;
 
     % Manual inputs
-vin=varargin;
-for i=1:length(vin)
-  if isequal(vin{i},'Direct') % manually inputing a sort order
-    ROI=vin{i+1};
-    plotROI =1;
-  elseif isequal(vin{i},'Indirect')
-    ri=vin{i+1};
-end
-end
+    vin=varargin;
+    for i=1:length(vin)
+        if isequal(vin{i},'Direct') % manually inputing a sort order
+            ROI=vin{i+1};
+            plotROI =1;
+        elseif isequal(vin{i},'Indirect')
+            ri=vin{i+1};
+        elseif isequal(vin{i},'HL')
+            HL = vin{i+1};
+        end
+    end
     
     
 Llim = HL(1);
@@ -60,7 +62,6 @@ rsjp2 = imadjust(im2(:),[Llim ; Hlim]);
 
 %image(T,F,(RGB1));set(gca,'YDir','normal');
 
-title('baseleine to baseline')
 
 if movie ==1;
     
