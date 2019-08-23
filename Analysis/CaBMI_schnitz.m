@@ -7,7 +7,7 @@ function [indX,B,C, output] = CaBMI_schnitz(data,varargin)
 % [indX,B,C] = CaBMI_schnitz(data,'show',0)
 
 show = 1; 
-smth = 10; % smoothing factor!
+smth = 4; % smoothing factor!
 
 % Manual inputs
 vin=varargin;
@@ -32,13 +32,17 @@ for i = 1:Cel;
     M(i,:) = ((mean(index_ref(:,:,i),1)));
     out = smooth(M(i,:),smth);
     Mp(i,:) = zscore(out);
+    Mp2(i,:) = out;
 end
 [maxA, Ind] = max(Mp, [], 2);
 [dummy, index] = sort(Ind);
 FullSort  = (Mp(index, :));
 Index = index;
 output.FullSort = FullSort; % sort based on the whole dataset ( not applying the second half to the first) 
+output.FullSort2 = (Mp2(index, :));; %not zscored,  sort based on the whole dataset ( not applying the second half to the first) 
+
 output.Index = Index; % index from sorting the whole dataset
+
 
 clear Ind maxA dummy index;
 
