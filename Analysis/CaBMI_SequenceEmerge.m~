@@ -1,4 +1,4 @@
-function out =  CaBMI_SequenceEmerge(ROIhits)
+function CaBMI_SequenceEmerge(ROIhits)
 
 % input paramaters
 
@@ -8,8 +8,8 @@ bound = round(size(ROIhits,2)/4);
 rn = (mid-bound):(mid+bound);% range
 
 %Ranges
-R1 = 1:10;%round((size(ROIhits,1)/3));
-R2 = round((size(ROIhits,1)/3)):round((size(ROIhits,1)/3))*2;
+R1 = 1:10;
+R2 = round((size(ROIhits,1)/3)):round((size(ROIhits,1)/3))*2
 R3 = round((size(ROIhits,1)/3))*2:(round((size(ROIhits,1)/3))*3)-1;
 RS = 1:(round((size(ROIhits,1)/3))*3)-1;
 
@@ -30,14 +30,14 @@ data.undirected = G1(R2,range_true,:);
 data.undirected3 = G1(R3,range_true,:);
 
 % early vs late
-earl = R1(1:(floor(size(R1,2))/2));
-lat = R1(floor(size(R1,2)/2):size(R1,2));
+earl = R1(1:(floor(size(R1,2)))
+lat = R1(floor(size(R1)/2)):
 EarlyData.directed = G1(earl,range_true,:);
-EarlyData.undirected = G1(lat,range_true,:);
-earl = R3(1:(floor(size(R3,2))/2));
-lat = R3(floor(size(R3,2)/2):size(R3,2));
+EarlyData.directed = G1(lat,range_true,:);
+earl = 1:floor(R3/2)
+lat = floor(R3/2):R3;
 LaterData.directed = G1(earl,range_true,:);
-LaterData.undirected = G1(lat,range_true,:);
+LaterData.directed = G1(lat,range_true,:);
 
 
 
@@ -176,7 +176,7 @@ xlabel('Frames');
 % colormap(hot);
 
 % Calculate differences
-for i = 1:size(B,1);
+for i = 1:size(B,2);
     cb(:,1) = (B(i,:))';
     cb(:,2) = (C(i,:))';
 
@@ -192,34 +192,12 @@ disp(['early to mid corr = ',num2str(mean(rk1))]);
 % Mid to late
 disp(['mid to late corr = ',num2str(mean(rk2))]);
 
-out.early_mid = mean(rk1);
-out.mid_late = mean(rk2);
 
 % look at early resort, vs late:
 figure(); 
-[indX,B1,C1, output] = CaBMI_schnitz(EarlyData);
+[indX,B,C, output] = CaBMI_schnitz(EarlyData,varargin)
 title('Early Data');
 figure
-[indX,B2,C2, output] = CaBMI_schnitz(LaterData);
+[indX,B,C, output] = CaBMI_schnitz(LaterData,varargin)
 title('Later Data');
 
-
-% Calculate differences
-for i = 1:size(B1,1);
-    cb(:,1) = (B1(i,:))';
-    cb(:,2) = (C1(i,:))';
-
-    cd(:,1) = (B2(i,:))';
-    cd(:,2) = (C2(i,:))';
-r1 = corr(cb);
-r2 = corr(cd);
-rk1(:,i) = r1(1,2);
-rk2(:,i) = r2(1,2);
-end
-% Early to mid
-disp(['early to early corr = ',num2str(nanmean(rk1))]);
-% Mid to late
-disp(['late to late corr = ',num2str(nanmean(rk2))]);
-
-out.early_early = nanmean(rk1);
-out.late_late = nanmean(rk1);
