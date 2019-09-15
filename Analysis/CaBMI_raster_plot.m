@@ -26,7 +26,7 @@ figure();
 %IN = [967 138 589 455 180 968 370 807 181 403 313 141 853 165 167 467 524 166 645 480 214 452 302 479 539 227 995 984 949 600 531 891 294 108 186 783 775 755  642 600 579 262 302 318 388 494];
 for i = 1:size(IN,2)
         
-SPKs = squeeze(ROIhits_s(end-100:end,:,IN(i)))'; 
+SPKs = squeeze(ROIhits_s(:,:,IN(i)))'; 
 %figure(); imagesc(SPKs'); 
 [~, srt(i)] = max(smooth(mean(squeeze(ROIhits_z(end-50:end,150:350,IN(i))),1),20)); 
 %SPKs = flipud(SPKs);

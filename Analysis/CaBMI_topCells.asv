@@ -9,18 +9,18 @@ n2_range = 1:100;
 n1_range = 350:400;
 clear a b b2 a2
 % trial_range
-TR1 = 1:10;
-TR2 = floor(size(ROIhits_z,1)/3):floor(size(ROIhits_z,1)/3)*2;
-TR3 = floor(size(ROIhits_z,1)/3)*2:size(ROIhits_z,1);
+TR1 = 
+TR2 = 
+TR
 % Early
- a = abs(max(mean(ROIhits_z(TR1,range,:),1)) - min(mean(ROIhits_z(TR1,range,:),1)));
- b = abs(max(mean(ROIhits_z(TR1,n1_range,:),1)) - min(mean(ROIhits_z(TR1,n1_range,:),1)));
+ a = abs(max(mean(ROIhits_z(1:10,range,:),1)) - min(mean(ROIhits_z(1:10,range,:),1)));
+ b = abs(max(mean(ROIhits_z(1:10,n1_range,:),1)) - min(mean(ROIhits_z(1:10,n1_range,:),1)));
 % Mid
- a2 = abs(max(mean(ROIhits_z(TR2,range,:),1)) - min(mean(ROIhits_z(TR2,range,:),1)));
- b2 = abs(max(mean(ROIhits_z(TR2,n1_range,:),1)) - min(mean(ROIhits_z(TR2,n1_range,:),1)));
+ a2 = abs(max(mean(ROIhits_z(20:40,range,:),1)) - min(mean(ROIhits_z(20:40,range,:),1)));
+ b2 = abs(max(mean(ROIhits_z(20:40,n1_range,:),1)) - min(mean(ROIhits_z(20:40,n1_range,:),1)));
 % Late
- a3 = abs(max(mean(ROIhits_z(TR3,range,:),1)) - min(mean(ROIhits_z(TR3,range,:),1)));
- b3 = abs(max(mean(ROIhits_z(TR3,n1_range,:),1)) - min(mean(ROIhits_z(TR3,n1_range,:),1)));
+ a3 = abs(max(mean(ROIhits_z(60:90,range,:),1)) - min(mean(ROIhits_z(60:90,range,:),1)));
+ b3 = abs(max(mean(ROIhits_z(60:90,n1_range,:),1)) - min(mean(ROIhits_z(60:90,n1_range,:),1)));
  
  figure();
  hold on;
