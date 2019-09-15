@@ -1,5 +1,5 @@
 
-function [ROIhits_z2 ROIhits_z3] = CaBMI_topCells(ROIhits_z,range,cutoff);
+function [ROIhits_z2 ROIhits_z3,ROI_index] = CaBMI_topCells(ROIhits_z,range,cutoff);
 %function [roi_ave1,roi_ave3,ROIa,ROIhits,ROIhits_z] = CaBMI_topCells(roi_ave1,roi_ave3,ROIhits_z,ROIhits,ROIa,cutoff)
 
 
@@ -96,3 +96,4 @@ figure();
 [indX,B,C,index] = CaBMI_schnitz(data2);
 
 ROIhits_z3 = ROIhits_z(:,:,B4);
+ROI_index = B4;

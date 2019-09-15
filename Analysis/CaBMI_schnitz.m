@@ -8,7 +8,8 @@ function [indX,B,C, output] = CaBMI_schnitz(data,varargin)
 
 show = 1; 
 smth = 4; % smoothing factor!
-
+index = 0;
+lims = [0,3];
 % Manual inputs
 vin=varargin;
 for i=1:length(vin)
@@ -19,6 +20,10 @@ for i=1:length(vin)
     ri=vin{i+1};
   elseif isequal(vin{i},'smooth') % manual smoothing entry
     smth=vin{i+1};
+      elseif isequal(vin{i},'index')% manually inputing a sort order
+    index=vin{i+1};
+          elseif isequal(vin{i},'lims')% manually inputing a sort order
+    lims=vin{i+1};
 end
 end
 
@@ -34,17 +39,21 @@ for i = 1:Cel;
     Mp(i,:) = zscore(out);
     Mp2(i,:) = out;
 end
+if index ==0;
 [maxA, Ind] = max(Mp, [], 2);
-[dummy, index] = sort(Ind);
-FullSort  = (Mp(index, :));
-Index = index;
+[dummy, indexA] = sort(Ind);
+else
+    indexA = index;
+end
+FullSort  = (Mp(indexA, :));
+Index = indexA;
 output.FullSort = FullSort; % sort based on the whole dataset ( not applying the second half to the first) 
-output.FullSort2 = (Mp2(index, :));; %not zscored,  sort based on the whole dataset ( not applying the second half to the first) 
+output.FullSort2 = (Mp2(indexA, :));; %not zscored,  sort based on the whole dataset ( not applying the second half to the first) 
 
 output.Index = Index; % index from sorting the whole dataset
 
 
-clear Ind maxA dummy index;
+clear Ind maxA dummy indexA;
 
 
 clear G;
@@ -69,8 +78,10 @@ end
 G = Gp;
 G2= Gp2;
 
+if index ==0
 [maxA, Ind] = max(G, [], 2);
 [dummy, index] = sort(Ind);
+end
 
 B  = (G(index, :));
 C  = (G2(index, :));
@@ -85,7 +96,7 @@ if show ==1;
 figure(); 
     
 subplot(1,2,1)
-imagesc((B), [0, 3]);
+imagesc((B), lims);
 title('Sorted Trials');
 ylabel('ROIs');
 xlabel('Frames');
@@ -93,7 +104,7 @@ hold on;
 subplot(1,2,2)
 
 
-imagesc((C), [0, 3] );
+imagesc((C),lims );
 
 title('Usorted Trials');
 ylabel('ROIs');
