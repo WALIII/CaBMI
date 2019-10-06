@@ -222,7 +222,7 @@ epsclean('High_Corr_schnitz.eps'); % cleans and overwrites the input file
 end
 
 
-
+Local_tbme_plot ==1;
 %Get local time map
 counter = 1;
 % compute ROI to ROI differences, and time differences in one big matrix:

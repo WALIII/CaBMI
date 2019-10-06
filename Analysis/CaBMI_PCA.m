@@ -7,7 +7,7 @@ function [PCA_data]= CaBMI_PCA(roi_ave,roi_hits);
 % [ds_hits, roi_hits] = CaBMI_csvAlign(csv_data(:,2),csv_data(:,3),roi_ave);
 
 
-ploting =0;
+ploting =1;
 do_jPCA = 0;
 
 temp = zscore(roi_ave.F_dff(:,:),[],2);
@@ -32,8 +32,8 @@ PCA_hits(i,:,:) = (coeff(:,roi_hits(i)-200:roi_hits(i)+200))';
   
 if ploting == 1;
 pca_plotting(PCA_hits,roi_hits);
-print(gcf,'-depsc','-painters','PCA/PCA_plot.eps');
-epsclean('PCA/PCA_plot.eps'); % cleans and overwrites the input file
+%print(gcf,'-depsc','-painters','PCA/PCA_plot.eps');
+%epsclean('PCA/PCA_plot.eps'); % cleans and overwrites the input file
 end
 
 
@@ -53,8 +53,8 @@ end
 
 if ploting == 1;
 pca_plotting(jPCA_hits,roi_hits);
-print(gcf,'-depsc','-painters','PCA/jPCA_plot.eps');
-epsclean('PCA/jPCA_plot.eps'); % cleans and overwrites the input file
+%print(gcf,'-depsc','-painters','PCA/jPCA_plot.eps');
+%epsclean('PCA/jPCA_plot.eps'); % cleans and overwrites the input file
 end
 
 PCA_data.jPCA_hits = jPCA_hits;

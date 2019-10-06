@@ -1,4 +1,4 @@
-function out =  CaBMI_SequenceEmerge(ROIhits)
+function output_1 =  CaBMI_SequenceEmerge(ROIhits)
 
 % input paramaters
 
@@ -192,8 +192,8 @@ disp(['early to mid corr = ',num2str(mean(rk1))]);
 % Mid to late
 disp(['mid to late corr = ',num2str(mean(rk2))]);
 
-out.early_mid = mean(rk1);
-out.mid_late = mean(rk2);
+output_1.early_mid = mean(rk1);
+output_1.mid_late = mean(rk2);
 
 % look at early resort, vs late:
 figure(); 
@@ -221,5 +221,5 @@ disp(['early to early corr = ',num2str(nanmean(rk1))]);
 % Mid to late
 disp(['late to late corr = ',num2str(nanmean(rk2))]);
 
-out.early_early = nanmean(rk1);
-out.late_late = nanmean(rk1);
+output_1.early_early = nanmean(rk1);
+output_1.late_late = nanmean(rk2);

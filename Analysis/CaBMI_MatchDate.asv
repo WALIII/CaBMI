@@ -1,0 +1,34 @@
+
+%% %animal reference:
+function out_date = CaBMI_MatchDate(in_name)
+
+if strcmp('d030818',in_name)
+%M001 = 1;
+out_date = 1;
+
+elseif strcmp('d030918',in_name)
+% M010 = 2;
+out_date = 2;
+
+elseif strcmp('d031018',in_name)
+% M011 = 3;
+out_date = 3;
+
+elseif strcmp('d031118',in_name)
+% M00q = 4; 
+out_date = 4;
+
+elseif strcmp('d031218',in_name)
+% M006 = 5;
+out_date = 5;
+
+elseif strcmp('d031318',in_name)
+% M006 = 5;
+out_date = 6;
+
+elseif strcmp('d031418',in_name)
+% M006 = 5;
+out_date = 7;
+
+
+end
