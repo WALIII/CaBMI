@@ -6,7 +6,7 @@ function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
 
-HL = [0.30 .70];
+HL = [0.0 .80];
 T = 1:size(GG1,2);
 F = 1:size(GG1,1);
 movie = 0;
