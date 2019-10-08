@@ -26,10 +26,6 @@ se = std(data)/sqrt(length(data));
 % se = std(data)/2;
 mn = mean(data);
 
-% compare each trial to the mean
-for iii = 1: size(data,1)
-    PCA_comp(ii,iii) = corr(data(iii,:)',mn');
-end
 
 h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(ii,:)); alpha(0.5);
 plot(mn,'Color',col(ii,:));
