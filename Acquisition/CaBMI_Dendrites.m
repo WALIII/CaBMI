@@ -38,7 +38,14 @@ for i = 1:2000%num_frames;
 I(:,:,i) = imread(fullfile(pathName, fileNames{i}));
 end
 else
+  try
     I = loadtiff(fileName);
+  catch
+    disp('scanimage format...')
+    reader=ScanImageTiffReader(fileName);
+  vol=reader.data();
+  imshow(vol(:,:,floor(size(vol,3)/2)),[]);
+  end
 end
 
 
