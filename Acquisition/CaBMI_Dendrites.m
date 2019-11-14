@@ -42,9 +42,8 @@ else
     I = loadtiff(fileName);
   catch
     disp('scanimage format...')
-    reader=ScanImageTiffReader(fileName);
-  vol=reader.data();
-  imshow(vol(:,:,floor(size(vol,3)/2)),[]);
+    reader=ScanImageTiffReader(dname);
+  I=reader.data();
   end
 end
 
