@@ -6,30 +6,31 @@ function [PCA_data]= CaBMI_PCA(roi_ave,roi_hits);
 
 % [ds_hits, roi_hits] = CaBMI_csvAlign(csv_data(:,2),csv_data(:,3),roi_ave);
 
-
+bounds = 500;
 ploting =1;
-do_jPCA = 0;
+do_jPCA = 1;
+disp('normalizing data...');
 
 temp = zscore(roi_ave.F_dff(:,:),[],2);
 
-disp('smoothing data');
+disp('smoothing data...');
 for i = 1:size(temp,1)
-    temp2(i,:) = smooth(temp(i,:),4);
+    temp2(i,:) = smooth(temp(i,:),40);
 end
 
-    
-    
+disp('running PCA...');
+
 [coeff,score] = pca(temp2);
 coeff = coeff';
   for i = 1:size(roi_hits)
       try
-PCA_hits(i,:,:) = (coeff(:,roi_hits(i)-200:roi_hits(i)+200))';
+PCA_hits(i,:,:) = (coeff(:,roi_hits(i)-bounds:roi_hits(i)+bounds))';
       catch
           disp(' one hit is too close to the end...');
       end
   end
 
-  
+
 if ploting == 1;
 pca_plotting(PCA_hits,roi_hits);
 %print(gcf,'-depsc','-painters','PCA/PCA_plot.eps');
@@ -45,7 +46,7 @@ if do_jPCA == 1;
 jG = zscore(Projection.proj');
 for i = 1:size(roi_hits)
 try
-jPCA_hits(i,:,:) = (jG(:,roi_hits(i)-400:roi_hits(i)+400))';
+jPCA_hits(i,:,:) = (jG(:,roi_hits(i)-bounds:roi_hits(i)+bounds))';
 catch
 disp(' one hit is too close to the end...');
 end
@@ -61,6 +62,3 @@ PCA_data.jPCA_hits = jPCA_hits;
 end
 
 PCA_data.PCA_hits = PCA_hits;
-    
-
-  

@@ -6,7 +6,7 @@ function [RGB1 RGB2] = CaBMI_XMASS(GG1,GG2,GG3,varargin);
 
 
 
-HL = [0.30 .70];
+HL = [0.005 .20];
 T = 1:size(GG1,2);
 F = 1:size(GG1,1);
 movie = 0;
@@ -19,7 +19,7 @@ for i=1:length(vin)
         plotROI =1;
     elseif isequal(vin{i},'Indirect')
         ri=vin{i+1};
-    elseif isequal(vin{i},'HL')
+    elseif isequal(vin{i},'hl')
         HL = vin{i+1};
     end
 end

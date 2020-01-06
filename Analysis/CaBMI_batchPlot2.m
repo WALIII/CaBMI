@@ -29,6 +29,7 @@ try
     [PCA_data]= CaBMI_PCA(roi_ave1,roi_hits);
     
     
+    
    close all     
 counter = counter+1;
 catch
