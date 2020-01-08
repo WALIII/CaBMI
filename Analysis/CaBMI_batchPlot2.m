@@ -2,6 +2,7 @@ function DATA = CaBMI_batchPlot2;
 
 % plot data that has already been extracted and saved... ( Lily's data);
 
+% optimized for PCA...
 
 
 % get all mat files
@@ -13,12 +14,11 @@ for i = 1:size(mov_listing,2)
     
     % LOADING  ROI_hits
     
-    load(filenames{i},'ROIhits');
+    load(filenames{i},'ROIhits_z');
     
     % Loading ROI_data
     
     load(filenames{i},'roi_ave1','roi_hits');
-
 
 try
     % Get data for batch plotting
