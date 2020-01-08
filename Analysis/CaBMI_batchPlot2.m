@@ -2,6 +2,7 @@ function DATA = CaBMI_batchPlot2;
 
 % plot data that has already been extracted and saved... ( Lily's data);
 
+% optimized for PCA...
 
 
 % get all mat files
@@ -13,14 +14,14 @@ for i = 1:size(mov_listing,2)
     
     % LOADING  ROI_hits
     
-    load(filenames{i},'ROIhits');
+    load(filenames{i},'ROIhits_z');
     
     % Loading ROI_data
     
     load(filenames{i},'roi_ave1','roi_hits');
 
 
-% try
+try
     % Get data for batch plotting
     
     [out] = CaBMI_SequenceEmerge(ROIhits);
@@ -29,14 +30,9 @@ for i = 1:size(mov_listing,2)
     [PCA_data]= CaBMI_PCA(roi_ave1,roi_hits);
     [outputB NumCellsTS] = CaBMI_FineSequenceEmerge(ROIhits);
     
-    % Get task-relevant Cells
-% sort cells
-mid = round(size(ROIhits,2)/2);
-bound = round(size(ROIhits,2)/4);
-rn = (mid-bound):(mid+bound);% range
-[ROIhits3, ROIhits2] = CaBMI_topCells(ROIhits(:,:,:),rn,0.8);
 
-   numCells =  size(ROIhits2,3)/size(ROIhits,3)*100;
+    
+    
    close all     
 counter = counter+1;
 % catch
