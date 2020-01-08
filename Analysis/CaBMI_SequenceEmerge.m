@@ -8,7 +8,13 @@ bound = round(size(ROIhits,2)/4);
 rn = (mid-bound):(mid+bound);% range
 
 %Ranges
+if size(ROIhits,1)>30; 
 R1 = 1:10;%round((size(ROIhits,1)/3));
+else
+    R1 = 1:round((size(ROIhits,1)/3));
+end
+
+
 R2 = round((size(ROIhits,1)/3)):round((size(ROIhits,1)/3))*2;
 R3 = round((size(ROIhits,1)/3))*2:(round((size(ROIhits,1)/3))*3)-1;
 RS = 1:(round((size(ROIhits,1)/3))*3)-1;

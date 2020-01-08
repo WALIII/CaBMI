@@ -4,6 +4,11 @@ function [ROIhits_z2 ROIhits_z3,ROI_index] = CaBMI_topCells(ROIhits_z,range,cuto
 
 
 % Sort by the 'task re;evant cells- most active at the hit.)
+
+plotHist =0; 
+
+
+if plotHist ==1;
 range = 190:250;
 n2_range = 1:100;
 n1_range = 350:400;
@@ -41,7 +46,7 @@ h3.BinWidth = 0.1;
 
 plot([1 1],[0 0.3],'--','LineWidth',1) 
 title(' Modulation Ratio  (RGB = early, mid, late)');
-
+end
 
 plot([cutoff cutoff],[0 0.3],'--','LineWidth',4) 
 
