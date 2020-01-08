@@ -20,6 +20,7 @@ for i = 1:size(mov_listing,2)
     
     load(filenames{i},'roi_ave1','roi_hits');
 
+
 try
     % Get data for batch plotting
     
@@ -27,20 +28,25 @@ try
     
     % PCA plotting
     [PCA_data]= CaBMI_PCA(roi_ave1,roi_hits);
+    [outputB NumCellsTS] = CaBMI_FineSequenceEmerge(ROIhits);
     
+
     
     
    close all     
 counter = counter+1;
-catch
-end
+% catch
+%     disp('SKIPPING TRIAL WARNING');
+% end
 
 out_date = CaBMI_MatchDate(mov_listing{i});
 out_fname = CaBMI_MatchFname(mov_listing{i});
      DATA.S{out_date}{out_fname} = out;
      DATA.PCA{out_date}{out_fname} = PCA_data;
-     
-   clear ROIhits roi_ave1 roi_hits
+     DATA.Consistancy{out_date}{out_fname} = outputB;
+     DATA.numCells{out_date}{out_fname} = numCells;
+     DATA.numCellsTS{out_date}{out_fname} =  NumCellsTS;
+   clear ROIhits roi_ave1 roi_hits 
 end
 
 
