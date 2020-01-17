@@ -19,7 +19,7 @@ for i = 1:size(mov_listing,2)
     % Loading ROI_data
     
     load(filenames{i},'roi_ave1','roi_hits');
-    load(filenames{i},'D_ROIhits','ROIhits_d');
+    load(filenames{i},'D_ROIhits'
 
 try
     % Get data for batch plotting
