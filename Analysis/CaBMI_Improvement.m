@@ -19,7 +19,9 @@ Gmean = mean(squeeze(mean(squeeze(D_ROIhits(all_hits,190:210,1:2)),2)),2)...
 -mean(squeeze(mean(squeeze(D_ROIhits(all_hits,190:210,3:4)),2)),2);
 
 figure(); plot(Gvar,'*');
+title('Variance across Direct');
 figure(); plot(Gmean,'*');
+title('Mean across Direct');
 
 % Indirect Neurons
 Pvar = var(squeeze(mean(squeeze(ROIhits_d(all_hits,170:210,:)),2)),[],2);
@@ -40,5 +42,11 @@ mdl = fitlm(n2,mat2gray(Pmean));
 figure(); plot(mdl);
 title('Mean across hits')
 
+
+% output variables
 out.Pvar = Pvar;
 out.Pmean = Pmean;
+out.Gvar = Gvar;
+out.Gmean = Gmean;
+
+
