@@ -1,4 +1,4 @@
-function out =  CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits)
+function [out,hits]=  CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits)
 % best so far: load('d031218_M00q.mat')  load('d031418_M00q.mat')
 
 % use best cells
@@ -12,6 +12,7 @@ roi2use.F_dff = roi_ave1.S_dec(ROI_index,:);
 pc1 = squeeze(PCA_data.jPCA_hits(:,:,1));
 pc2 = squeeze(PCA_data.jPCA_hits(:,:,2));
 
+hits = PCA_data.jPCA_hits;
 pc1 = (pc1'-mean(pc1'))';
 pc2 = (pc2'-mean(pc2'))';
 
@@ -21,8 +22,8 @@ figure();
 hold on;
 counter = 1;
 for i = 1:sz-1;
-    a1 = mean(pc1((i:i+1),470:550));
-    a2 = mean(pc2((i:i+1),470:550));
+    a1 = mean(pc1((i:i+1),400:600));
+    a2 = mean(pc2((i:i+1),400:600));
 plot(a1,a2,'color',col(counter,:),'LineWidth',1);
 counter = counter+1;
 arrow([a1(end-2) a2(end-2)],[a1(end) a2(end)],'FaceColor',col(counter,:))

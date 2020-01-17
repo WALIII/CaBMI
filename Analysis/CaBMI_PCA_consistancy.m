@@ -9,9 +9,9 @@ PCa = PCA_hits;
 
 figure()
 counter = 1; 
-for ii = 1:5 % for each PC
+for ii = 1:2 % for each PC
 % smooth PC over trials:
-rng = 10; % group size
+rng = 8; % group size
 PC2use = smooth2a(squeeze(PCa(:,:,ii)),1,10);    
 PC2use = PC2use-min(PC2use,[],2);
 PC2use = double(PC2use');

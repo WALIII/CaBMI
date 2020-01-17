@@ -26,9 +26,9 @@ try
 %     [out] = CaBMI_SequenceEmerge(ROIhits);
     
     % PCA plotting
-[out] = CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits);    
+[out, hits] = CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits);    
     
-    
+[out2] = CaBMI_PCA_consistancy(hits);
    close all     
 counter = counter+1;
 catch
@@ -37,6 +37,7 @@ end
 out_date = CaBMI_MatchDate(mov_listing{i});
 out_fname = CaBMI_MatchFname(mov_listing{i});
      DATA.PCA{out_date}{out_fname} = out;
+     DATA.PCA_consist{out_date}{out_fname} = out2;
      
    clear ROIhits_z roi_ave1 roi_hits
 end
