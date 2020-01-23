@@ -1,24 +1,24 @@
 
-function CaBMI_PCAmov(mov_data,varargin);
+function CaBMI_PCAmov(varargin);
 
 % get the pca from an input video ( cellular, behavior or both
 
 
 
 % get the tifs:
-if exist('mov_data2','var')
+% if exist('mov_data2','var')
 mov_listing=dir(fullfile(pwd,'*.tif'));
 mov_listing={mov_listing(:).name};
 
 
-mov_data = loadtiff((fullfile(pwd,mov_listing{2})));
+mov_data = loadtiff((fullfile(pwd,mov_listing{1})));
  
-for i = 3:7;
-    b = loadtiff((fullfile(pwd,mov_listing{i})));
- mov_data = cat(3,mov_data,b);
-end
+% for i = 3:7;
+%     b = loadtiff((fullfile(pwd,mov_listing{i})));
+%  mov_data = cat(3,mov_data,b);
+% end
 
-end
+
 
 
 % do PCA on the images
@@ -49,15 +49,29 @@ end
 
 pcaImage = mat2gray((pcaImage-min(pcaImage,[],3)));
 
+resz = 5;
 
 for i = 1:3
 figure(); 
 AxesH = axes;
-imshow(pcaImage(:,:,i+1:3+i));
+imshow(imresize(pcaImage(:,:,i+1:3+i),resz));
 InSet = get(AxesH, 'TightInset');
 set(AxesH, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)])
 axis off
 end
+
+
+figure(); 
+hold on;
+for i = 1:3
+subplot(1,3,i);
+
+imagesc(imresize(pcaImage(:,:,i+1:3+i)*3,resz),[0,0.1]);
+%InSet = get(AxesH, 'TightInset');
+%set(AxesH, 'Position', [InSet(1:2), 1-InSet(1)-InSet(3), 1-InSet(2)-InSet(4)])
+end
+
+
 
 
 

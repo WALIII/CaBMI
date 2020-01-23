@@ -15,7 +15,8 @@ dim1 = 1:3;
 for i = 1:ams
 % bin into 10 groups
  clear D
- 
+
+
 [outPCA] = CaBMI_PCA_consistancy(DATA.PCA{5}{i}.PCA_hits);
 data =  squeeze(outPCA.consistance_PC);
  % split into groups
@@ -55,7 +56,7 @@ for iii = [1 2 3 4 5 6  7];
 clear Dwhole Dtemp gg
 for i = 1:5
 % bin into 10 groups
- 
+
 try
 [outPCA] = CaBMI_PCA_consistancy(DATA.PCA{iii}{i}.PCA_hits);
 data =  squeeze(outPCA.consistance_PC); % split into groups
@@ -114,7 +115,7 @@ colorbar;
 GG1 = [gg1{1}(1,:) gg1{2}(1,:) gg1{3}(1,:) gg1{4}(1,:) gg1{5}(1,:) gg1{6}(1,:) gg1{7}(1,:)];
 GG2 = [gg1{1}(bin2use,:) gg1{2}(bin2use,:) gg1{3}(bin2use,:) gg1{4}(bin2use,:) gg1{5}(bin2use,:) gg1{6}(bin2use,:) gg1{7}(bin2use,:)];
 
-figure(); 
+figure();
 hold on;
 histogram(GG1,'Normalization','probability','FaceColor','b','BinWidth',0.13);
 histogram(GG2,'Normalization','probability','FaceColor','r','BinWidth',0.13);
@@ -137,7 +138,3 @@ errorbar(mean(GG3'),std(GG3'/sqrt( length(GG3')) ),'k','LineWidth',3)
 
 % figure();
 % errorbar(mean(GG3'),std(GG3'/sqrt( length(GG3')) ),'b')
-
-
-
-
