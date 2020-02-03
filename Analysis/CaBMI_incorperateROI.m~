@@ -23,8 +23,8 @@ for i = 1:num_bins-1
 % Early
 try
 local_Hitrange = Hitrange(i):Hitrange(i+1);
- a(:,i) = squeeze(abs(max(mean(ROIhits_s(local_Hitrange,range,:),1)) - min(mean(ROIhits_s(local_Hitrange,range,:),1))))+0.001;
- b(:,i) = squeeze(abs(max(mean(ROIhits_s(local_Hitrange,n1_range,:),1)) - min(mean(ROIhits_s(local_Hitrange,n1_range,:),1))))+0.001;
+ a(:,i) = squeeze(abs(max(mean(ROIhits_s(local_Hitrange,range,:),1)) - min(mean(ROIhits_s(local_Hitrange,range,:),1))));
+ b(:,i) = squeeze(abs(max(mean(ROIhits_s(local_Hitrange,n1_range,:),1)) - min(mean(ROIhits_s(local_Hitrange,n1_range,:),1))));
  %aD(:,i) = squeeze(abs(max(mean(D_ROIhits_z(local_Hitrange,range,:),1)) - min(mean(D_ROIhits_z(local_Hitrange,range,:),1))));
 % bD(:,i) = squeeze(abs(max(mean(D_ROIhits_z(local_Hitrange,n1_range,:),1)) - min(mean(D_ROIhits_z(local_Hitrange,n1_range,:),1))));
  
@@ -36,10 +36,10 @@ end
  S(i,:) = squeeze(a(:,i)./b(:,i));
 end
 
-out.spikes = S;
+out.
 
 for i = 1:num_bins-1
-G(i,:) = (sum(S(i,:)>2)/size(S,2))*100;
+G(i,:) = (sum(S(i,:)>3)/size(S,2))*100;
 end
 figure(); 
 plot(G);

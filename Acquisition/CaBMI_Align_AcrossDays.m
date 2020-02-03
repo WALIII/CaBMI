@@ -3,8 +3,6 @@ function [score] = CaBMI_Align_AcrossDays(ref, pl)
 
 % Align data using PrarieView's format...
 
-
-
 % Pull in a frame
 Frame1 = double(ref);
 average = 4;
