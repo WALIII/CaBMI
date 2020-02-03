@@ -1,23 +1,26 @@
 function [ROI,roi_ave] = CaBMI_Process(varargin)
-  % CaBMI_Process
+% CaBMI_Process
 
-  % WAL3
-  % d02.14.2018
+% WAL3
+% d02.14.2018
 
-  % Processing pipeline for Carmena Lab.
-	% example: [ROI,roi_ave] = CaBMI_Process('type',2);
+% Processing pipeline for Carmena Lab.
+% example: [ROI,roi_ave] = CaBMI_Process('type',2);
 
-  % Dependencies:
+% Dependencies:
 
-  %   NoRMCorre, which can be found here:
-  %       https://github.com/flatironinstitute/NoRMCorre
-  %
-  %   NoRMCorre, which can be found here:
-  %       https://github.com/flatironinstitute/NoRMCorre
-  %
-  %   NoRMCorre, which can be found here:
-  %       https://github.com/flatironinstitute/NoRMCorre
+%   NoRMCorre, which can be found here:
+%       https://github.com/flatironinstitute/NoRMCorre
+%
+%   NoRMCorre, which can be found here:
+%       https://github.com/flatironinstitute/NoRMCorre
+%
+%   NoRMCorre, which can be found here:
+%       https://github.com/flatironinstitute/NoRMCorre
 
+
+% Remove competing code from path:
+rmpath(genpath('C:\Users\WAL3\Documents\MATLAB\CNMF_E'));
 
 
 % Initial Params
@@ -31,48 +34,48 @@ non_rigid = true;
 nparams=length(varargin);
 
 if mod(nparams,2)>0
-	error('Parameters must be specified as parameter/value pairs');
+    error('Parameters must be specified as parameter/value pairs');
 end
 
 % User input
 for i=1:2:nparams
-	switch lower(varargin{i})
-		case 'type'
-			ExpType=varargin{i+1};
-		case 'filt_alpha'
-			filt_alpha=varargin{i+1};
-		case 'lims'
-			lims=varargin{i+1};
-		case 'baseline'
-			per=varargin{i+1};
-    case 'sSub'
-      sSub=varargin{i+1};
-    case 'tSub'
-      tSub=varargin{i+1};
-	end
+    switch lower(varargin{i})
+        case 'type'
+            ExpType=varargin{i+1};
+        case 'filt_alpha'
+            filt_alpha=varargin{i+1};
+        case 'lims'
+            lims=varargin{i+1};
+        case 'baseline'
+            per=varargin{i+1};
+        case 'sSub'
+            sSub=varargin{i+1};
+        case 'tSub'
+            tSub=varargin{i+1};
+    end
 end
 
 
 
 if ExpType == 1% for 1P data
-  fr = 20;                                         % frame rate
-  tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-  K = 20;      %30                                      % number of components to be found
-  tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)
-  p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
-  merge_thr = 0.8;                                  % merging threshold
-  minSNR = 1.0;
+    fr = 20;                                         % frame rate
+    tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+    K = 20;      %30                                      % number of components to be found
+    tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)
+    p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+    merge_thr = 0.8;                                  % merging threshold
+    minSNR = 1.0;
 end
 
 
 if ExpType == 2% for 2P data
-  fr = 30;                                         % frame rate
-  tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-  K = 7;% used to be 7...                                            % number of components to be found
-  tau = 12;      %8                                    % std of gaussian kernel (half size of neuron)
-  p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
-  merge_thr = 0.8;                                  % merging threshold
-  minSNR = 6.0;                                     % minimum SNR for trace
+    fr = 30;                                         % frame rate
+    tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+    K = 7;% used to be 7...                                            % number of components to be found
+    tau = 25;      %8                                    % std of gaussian kernel (half size of neuron)
+    p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+    merge_thr = 0.8;                                  % merging threshold
+    minSNR = 7.0;                                     % minimum SNR for trace
 end
 
 
@@ -86,8 +89,8 @@ end
 addpath(genpath('../NoRMCorre'));               % add the NoRMCorre motion correction package to MATLAB path
 gcp;                                            % start a parallel engine
 foldername = cd;
-        % folder where all the files are located. Currently supported .tif,
-        % .hdf5, .raw, .avi, and .mat files
+% folder where all the files are located. Currently supported .tif,
+% .hdf5, .raw, .avi, and .mat files
 files = subdir(fullfile(foldername,'*.tif'));   % list of filenames (will search all subdirectories)
 FOV = size(read_file(files(1).name,1,1));
 numFiles = length(files);
@@ -102,27 +105,27 @@ numFiles = length(files);
 if exist('ds_data.mat','file') >= 1 %
     disp('data exists from previous extraction...');
 else
-     disp('No previous extractions detected');
-                                            % flag for non-rigid motion correction
-if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
-options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
-                'overlap_pre',64,'mot_uf',4,'bin_width',200,'max_shift',24,'max_dev',8,'us_fac',50,...
-                'output_type','h5');
-
-template = [];
-col_shift = [];
-for i = 1:numFiles
-    fullname = files(i).name;
-    [folder_name,file_name,ext] = fileparts(fullname);
-    options_mc.h5_filename = fullfile(folder_name,[file_name,append,'.h5']);
-    if motion_correct
-        [M,shifts,template,options_mc,col_shift] = normcorre_batch(fullname,options_mc,template);
-        save(fullfile(folder_name,[file_name,'_shifts',append,'.mat']),'shifts','-v7.3');           % save shifts of each file at the respective folder
-    else    % if files are already motion corrected convert them to h5
-        convert_file(fullname,'h5',fullfile(folder_name,[file_name,'_mc.h5']));
+    disp('No previous extractions detected');
+    % flag for non-rigid motion correction
+    if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
+    options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
+        'overlap_pre',64,'mot_uf',4,'bin_width',200,'max_shift',24,'max_dev',8,'us_fac',50,...
+        'output_type','h5');
+    
+    template = [];
+    col_shift = [];
+    for i = 1:numFiles
+        fullname = files(i).name;
+        [folder_name,file_name,ext] = fileparts(fullname);
+        options_mc.h5_filename = fullfile(folder_name,[file_name,append,'.h5']);
+        if motion_correct
+            [M,shifts,template,options_mc,col_shift] = normcorre_batch(fullname,options_mc,template);
+            save(fullfile(folder_name,[file_name,'_shifts',append,'.mat']),'shifts','-v7.3');           % save shifts of each file at the respective folder
+        else    % if files are already motion corrected convert them to h5
+            convert_file(fullname,'h5',fullfile(folder_name,[file_name,'_mc.h5']));
+        end
     end
-end
-
+    
 end
 %% downsample h5 files and save into a single memory mapped matlab file
 if motion_correct
@@ -136,7 +139,7 @@ end
 
 ds_filename = [foldername,'/ds_data.mat'];
 try
-data_type = class(read_file(h5_files(1).name,1,1));
+    data_type = class(read_file(h5_files(1).name,1,1));
 catch
     
 end
@@ -163,13 +166,13 @@ for i = 1:numFiles
     cnt_sub = 0;
     for t = 1:batch_size:Ts(i)
         Y = bigread2(name,t,min(batch_size,Ts(i)-t+1));
-
+        
         F_dark = min(nanmin(Y(:)),F_dark);
         ln = size(Y,ndimsY);
         Y = reshape(Y,[FOV,ln]);
-         if size(Y,3)>10;
-        Y = cast(downsample_data(Y,'time',tsub),data_type);
-         end
+        if size(Y,3)>10;
+            Y = cast(downsample_data(Y,'time',tsub),data_type);
+        end
         ln = size(Y,3);
         Ysub(:,:,cnt_sub+1:cnt_sub+ln) = Y;
         cnt_sub = cnt_sub + ln;
@@ -199,7 +202,7 @@ options = CNMFSetParms(...
     'tsub',tSub,...                                % further temporal downsampling when processing
     'merge_thr',merge_thr,...                   % merging threshold
     'gSig',tau,...
-    'max_size_thr',300,'min_size_thr',20,...    % max/min acceptable size for each component
+    'max_size_thr',500,'min_size_thr',100,...    % max/min acceptable size for each component
     'spatial_method','regularized',...          % method for updating spatial components
     'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence
     'fr',fr/tsub,...                            % downsamples
@@ -208,13 +211,14 @@ options = CNMFSetParms(...
     'cnn_thr',0.2,...                           % cnn classifier acceptance threshold
     'nb',1,...                                  % number of background components per patch
     'gnb',3,...                                 % number of global background components
-    'decay_time',0.5...                        % length of typical transient for the indicator used
+    'decay_time',0.5,...                        % length of typical transient for the indicator used
+    'p',p...
     );
 
 %% Run on patches (the main work is done here)
 
 [A,b,C,f,S,P,RESULTS,YrA] = run_CNMF_patches(data,K,patches,tau,0,options);  % do not perform deconvolution here since
-                                                                             % we are operating on downsampled data
+% we are operating on downsampled data
 %% compute correlation image on a small sample of the data (optional - for visualization purposes)
 %Cn = correlation_image_max(data.Y,8);
 
@@ -222,7 +226,7 @@ options = CNMFSetParms(...
 
 rval_space = classify_comp_corr(data,A,C,b,f,options);
 ind_corr = rval_space > options.space_thresh;           % components that pass the correlation test
-                                        % this test will keep processes
+% this test will keep processes
 
 %% further classification with cnn_classifier
 try  % matlab 2017b or later is needed
@@ -255,56 +259,56 @@ Coor_k = [];
 Coor_t = [];
 Cn = Y(:,:,10);
 figure;
-    ax1 = subplot(121);
-    [CC] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
+ax1 = subplot(121);
+[CC] = plot_contours(A(:,keep),Cn,options,0,[],Coor_k,'m',find(keep)); title('Selected components','fontweight','bold','fontsize',14);
 try
     ax2 = subplot(122); plot_contours(A(:,throw),Cn,options,0,[],Coor_t,'m',find(throw));title('Rejected components','fontweight','bold','fontsize',14);
 catch
     disp('plotting error...')
 end
 
-    linkaxes([ax1,ax2],'xy')
+linkaxes([ax1,ax2],'xy')
 
 
 %% Save ROI coordinates for later, and include for manual selection.
 counter = 1;
-    for i = 1:size(CC,1)
-        try
+for i = 1:size(CC,1)
+    try
         BW = poly2mask(CC{i}(1,:),CC{i}(2,:),FOV(1),FOV(2));
         [yCoordinates, xCoordinates] = find(BW);
         ROI.coordinates{counter}(:,1) = xCoordinates;
         ROI.coordinates{counter}(:,2) = yCoordinates;
         counter= counter+1;
-        catch
-
+    catch
+        
         ROI.coordinates{counter}(:,1) = 1:1;
         ROI.coordinates{counter}(:,2) = 1:1;
         counter= counter+1;
         
-            disp('ROI missing, skipping over it.')
-            
-        end
+        disp('ROI missing, skipping over it.')
+        
     end
+end
 
 
-    for i = 1: size(ROI.coordinates,2)
-        try
-    	ROI.stats(i).Centroid=mean(ROI.coordinates{i});
-    	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
-    	k=convhull(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2));
-    	ROI.stats(i).ConvexHull=ROI.coordinates{i}(k,:);
-        catch
+for i = 1: size(ROI.coordinates,2)
+    try
         ROI.stats(i).Centroid=mean(ROI.coordinates{i});
-    	ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
-    	k = [];
-    	ROI.stats(i).ConvexHull= [];
-        end
+        ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
+        k=convhull(ROI.coordinates{i}(:,1),ROI.coordinates{i}(:,2));
+        ROI.stats(i).ConvexHull=ROI.coordinates{i}(k,:);
+    catch
+        ROI.stats(i).Centroid=mean(ROI.coordinates{i});
+        ROI.stats(i).Diameter=max(pdist(ROI.coordinates{i},'euclidean'));
+        k = [];
+        ROI.stats(i).ConvexHull= [];
     end
+end
 
-    ROI.type = 'Image';
+ROI.type = 'Image';
 
 
-    %% keep only the active components
+%% keep only the active components
 A_keep = A(:,keep);
 C_keep = C(keep,:);
 
@@ -358,7 +362,7 @@ for i = 1:N
     spkmin = options.spk_SNR*GetSn(F_dff(i,:));
     lam = choose_lambda(exp(-1/(options.fr*options.decay_time)),GetSn(F_dff(i,:)),options.lam_pr);
     [cc,spk,opts_oasis] = deconvolveCa(F_dff(i,:),model_ar,'method','thresholded','optimize_pars',true,'maxIter',20,...
-                                'window',150,'lambda',lam,'smin',spkmin);
+        'window',150,'lambda',lam,'smin',spkmin);
     bl(i) = opts_oasis.b;
     C_dec(i,:) = cc(:)' + bl(i);
     S_dec(i,:) = spk(:);
@@ -372,16 +376,16 @@ end
 
 %% Consolidate ROI Data for saving.
 
-    roi_ave.C_dec = C_dec;
-    roi_ave.S_dec = S_dec;
-    roi_ave.neuron_sn = S_dec;
-    roi_ave.F_dff = F_dff;
-    roi_ave.F_full = F_full;
-    roi_ave.neuron_sn = S_dec;
+roi_ave.C_dec = C_dec;
+roi_ave.S_dec = S_dec;
+roi_ave.neuron_sn = S_dec;
+roi_ave.F_dff = F_dff;
+roi_ave.F_full = F_full;
+roi_ave.neuron_sn = S_dec;
 
 
-    save_dir='roi';
-    mkdir(save_dir);
+save_dir='roi';
+mkdir(save_dir);
 
 disp('Saving ROI data');
-    save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI','-v7.3');
+save(fullfile(save_dir,['ave_roi.mat']),'roi_ave','ROI','-v7.3');

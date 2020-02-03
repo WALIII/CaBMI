@@ -31,7 +31,7 @@ try
     
 [out2] = CaBMI_PCA_consistancy(hits);
 [out3] = CaBMI_Improvement(D_ROIhits,ROIhits_d,ROIhits_z,roi_hits);
-
+[~,~,~, percent_modulated] = CaBMI_topCells(ROIhits_z,[150:200],0.9);
 
    close all     
 counter = counter+1;
@@ -43,6 +43,7 @@ out_fname = CaBMI_MatchFname(mov_listing{i});
      DATA.PCA{out_date}{out_fname} = out;
      DATA.PCA_consist{out_date}{out_fname} = out2;
      DATA.IND{out_date}{out_fname} = out3;
+     DATA.P_mod{out_date}{out_fname} = percent_modulated;
      
    clear ROIhits_z roi_ave1 roi_hits
 end
