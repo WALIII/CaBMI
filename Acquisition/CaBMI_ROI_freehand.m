@@ -37,6 +37,7 @@ ROI.coordinates{1,i}(:,1) = x;
 ROI.coordinates{1,i}(:,2) = y;
 
 ROI.stats(i).centroid = mean(ROI.coordinates{1,i});
+ROI.BinaryMask(:,:,i) = binaryImage;
 cla('reset');
 
 
