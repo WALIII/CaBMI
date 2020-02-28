@@ -1,5 +1,5 @@
 function CaBMI_SI_BMI
-% BMI Scripts for Scanimage
+% Main BMI Scripts for Scanimage
 
 
 % ask to generate new folder ( animal nams)
@@ -14,13 +14,13 @@ fopen(arduino); % initiate arduino communication
 % Initialize workspace variables
 BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
-counter = 1;
+BMI_Data.frame_idx = 1;
 Tstart = tic; % timing vector
 
 %% BASELINE
 filename = 'Baseline_BEFORE'
 BMI_Data.BMIready = 0;
-time2run = 10; % minutes
+time2run = 1; % minutes
 TotalFrames = 30*60*time2run;
 automatedGrab_BMI(TotalFrames,PATH,filename);
 
@@ -28,24 +28,23 @@ automatedGrab_BMI(TotalFrames,PATH,filename);
 BMI_Data_Baseline = BMI_Data;
 
 %clear workspace
-clear BMI_Data Tstart counter
+clear BMI_Data Tstart
 
 %% Pick Cells ( or load from previous run)
+[I, M, ROI, ccimage] = CaBMI_Dendrites;
 
-% load baseline
-% pick cells
 
 %% RUN BMI
 filename = 'BMI'
 BMI_Data.BMIready = 1;
-time2run = 60; % minutes
+time2run = 1; % minutes
 TotalFrames = 30*60*time2run;
 automatedGrab_BMI(TotalFrames,PATH);
 
 %% POST EXPERIMENT BASELINE
 filename = 'Baseline_AFTER'
 BMI_Data.BMIready = 0;
-time2run = 10; % minutes
+time2run = 11; % minutes
 TotalFrames = 30*60*time2run;
 automatedGrab_BMI(TotalFrames,PATH,filename);
 
