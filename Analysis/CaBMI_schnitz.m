@@ -89,7 +89,7 @@ B_2  = (G_std(index, :));
 C_2  = (G2_std(index, :));
 % D =  (R(index, :));
 indX = index;
-
+output.peak_frame = dummy;
 
 % Plotting
 if show ==1;

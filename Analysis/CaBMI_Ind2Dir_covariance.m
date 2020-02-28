@@ -3,7 +3,7 @@ function CaBMI_Ind2Dir_covariance(roi_ave1,roi_ave2,roi_ave3,roi_ave4,ROIhits_s)
 
 
 
-DN = 3;
+DN = 4;
 
 % get the magnitude of ROI Modulation depth
 out = CaBMI_incorperateROI(ROIhits_s);
