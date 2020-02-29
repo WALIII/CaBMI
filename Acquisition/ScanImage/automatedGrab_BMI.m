@@ -8,7 +8,7 @@ function [out] =  automatedGrab_BMI(TotalFrames,PATH,filename)
     hSI.hScan2D.logFileStem = filename;     % set the base file name for the Tiff file
     hSI.hScan2D.logFileCounter = 1;         % set the current Tiff file number
     hSI.hChannels.loggingEnable = true;     % enable logging
-    hSI.hRoiManager.scanZoomFactor = 1;     % define the zoom factor
+    hSI.hRoiManager.scanZoomFactor = 2;     % define the zoom factor
     hSI.hStackManager.framesPerSlice = TotalFrames;     % set number of frames to capture in one Grab
 
     hSI.startGrab();                        % start the grab

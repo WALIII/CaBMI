@@ -11,10 +11,11 @@ hSI = src.hSI; % get the handle to the ScanImage model
 % LATENCY_CALIBRATION = 0;
 
 % Load in data from Workspace:
+Tstart = evalin('base','Tstart');
 BMI_Data = evalin('base','BMI_Data');
 %arduino = evalin('base','arduino');
 %data = BMI_Data.data;
-Tstart = BMI_Data.Tstart;
+Tsta
 frame_idx = BMI_Data.frame_idx;
 dsample_fact = 1;
 toc
