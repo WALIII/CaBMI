@@ -30,7 +30,7 @@ end
 if BMI_Data.BMIready ==1; % if BMI is ready to go:
 %ROI = BMI_Data.ROI % ROI syntax
 %BMI_Data.BMIready
-
+arduino =  evalin('base','BMI_Data');
 
 Im = frame{1}; % Get data from the 'Green' Channel...
 
