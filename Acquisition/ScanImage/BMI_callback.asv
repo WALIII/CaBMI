@@ -1,8 +1,7 @@
-function myFrameAcquiredCallback_BMI(src,evt,varargin)
+function BMI_callback(src,evt,varargin)
 % myFrameAcquiredCallback_BMI.m
 
 % workhorse function for SI based BMI
-
 
 tic
 hSI = src.hSI; % get the handle to the ScanImage model
@@ -18,6 +17,7 @@ Tstart = BMI_Data.Tstart;
 frame_idx = BMI_Data.frame_idx;
 dsample_fact = 1;
 toc
+disp('working')
 
 % scanimage stores image data in a data structure called 'stripeData'
 % this example illustrates how to extract an acquired frame from this structure
@@ -27,9 +27,11 @@ channels = lastStripe.roiData{1}.channels; % get the channel numbers stored in s
 for idx = 1:length(channels)
     frame{idx} = lastStripe.roiData{1}.imageData{idx}{1}; % extract all channels
 end
+toc
 
 if BMI_Data.BMIready ==1; % if BMI is ready to go:
 ROI = BMI_Data.ROI % ROI syntax
+BMI_Data.BMIready =
 
 Im = frame{2}; % Get data from the 'Green' Channel...
 

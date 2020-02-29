@@ -1,4 +1,4 @@
-function myFrameAcquiredCallback_BMI(src,evt,varargin)
+function BMI_callback(src,evt,varargin)
 % myFrameAcquiredCallback_BMI.m
 
 % workhorse function for SI based BMI
@@ -11,11 +11,10 @@ hSI = src.hSI; % get the handle to the ScanImage model
 % LATENCY_CALIBRATION = 0;
 
 % Load in data from Workspace:
-Tstart = evalin('base','Tstart');
 BMI_Data = evalin('base','BMI_Data');
 %arduino = evalin('base','arduino');
 %data = BMI_Data.data;
-Tsta
+Tstart = BMI_Data.Tstart;
 frame_idx = BMI_Data.frame_idx;
 dsample_fact = 1;
 toc
@@ -30,7 +29,7 @@ for idx = 1:length(channels)
 end
 
 if BMI_Data.BMIready ==1; % if BMI is ready to go:
-ROI = BMI_Data.ROI; % ROI syntax
+ROI = BMI_Data.ROI % ROI syntax
 
 Im = frame{2}; % Get data from the 'Green' Channel...
 
@@ -57,9 +56,9 @@ BMI_Data.cursor(:,frame_idx) = ROI_norm(1,frame_idx)+ROI_norm(2,frame_idx) - (RO
 % Smooth cursor
 if frame_idx>3;
 rn = 3; % running average...
-CURSOR = round(mean(BMI_Data.cursor(:,frame_idx-rn:frame_idx)));
+CURSOR = (mean(BMI_Data.cursor(:,frame_idx-rn:frame_idx)));
 else % dont smooth cursor if not enough frames...
-  CURSOR = round(mean(BMI_Data.cursor(:,frame_idx-rn:frame_idx)));
+  CURSOR = ((BMI_Data.cursor(:,frame_idx)));
 end
 
 BMI_Data.cursor_smoothed(:,frame_idx) = CURSOR;
