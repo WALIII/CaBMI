@@ -8,7 +8,7 @@ PATH_ADDN = datestr(now,'yyyymmdd_HHMM'); % Make sure this is unique!
 PATH = ['C:\Users\User\Documents\MATLAB\',PATH_ADDN] ;
 mkdir(PATH);
 % conncet to Arduino Through Serial
-arduino=serial('COM15','BaudRate',9600); % create serial communication object on port COM4
+arduino=serial('COM17','BaudRate',9600); % create serial communication object on port COM4
 fopen(arduino); % initiate arduino communication
 
 
@@ -50,7 +50,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = 'BMI'
 BMI_Data.BMIready = 1;
 time2run = 5; % minutes
-TotalFrames = 30*60*time2run;
+TotalFrames = 300;%30*60*time2run;
 automatedGrab_BMI(TotalFrames,PATH,filename);
 
 pause(time2run*60);
