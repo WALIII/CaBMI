@@ -30,7 +30,7 @@ end
 if BMI_Data.BMIready ==1; % if BMI is ready to go:
 %ROI = BMI_Data.ROI % ROI syntax
 %BMI_Data.BMIready
-arduino =  evalin('base','BMI_Data');
+arduino =  evalin('base','arduino');
 
 Im = frame{1}; % Get data from the 'Green' Channel...
 
@@ -71,10 +71,26 @@ BMI_Data.CURSOR = CURSOR;
 CURSOR
 
 % Send serial command
+
+% ============================= [ Water Delivery]  ============================= %
+
+            if CURSOR> 2.5
+              fdbk = 1;
+          while fdbk
+            disp('HIT!');
+              fprintf(arduino,'%c',char(99)); % send answer variable content to arduino
+          fdbk = 0;
+          end
+        end
+
+
+
+
+
 %disp(['FRAME ', num2str(counter),' Acquired'])
     else
     end
-    
+
 else
 end
 
