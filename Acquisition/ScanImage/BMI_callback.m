@@ -74,13 +74,27 @@ CURSOR
 
 % ============================= [ Water Delivery]  ============================= %
 
+
+data.hit(counter) =0; % hit counter
+if condition == 1; % reward eligibility
             if CURSOR> 2.5
               fdbk = 1;
           while fdbk
             disp('HIT!');
+            condition = 2;
+
               fprintf(arduino,'%c',char(99)); % send answer variable content to arduino
           fdbk = 0;
           end
+        end
+        elseif condition == 2
+          disp(' Waiting to drop below threshold...')
+          if CURSOR<1
+            disp ( 'Resetting Cursor')
+            condition = 1;
+          end
+        end
+
         end
 
 
