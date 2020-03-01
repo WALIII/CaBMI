@@ -13,6 +13,7 @@ fopen(arduino); % initiate arduino communication
 
 
 % Initialize workspace variables
+BMI_Data.condition = 1;
 BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
@@ -50,7 +51,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = 'BMI'
 BMI_Data.BMIready = 1;
 time2run = 5; % minutes
-TotalFrames = 300;%30*60*time2run;
+TotalFrames = 10000;%30*60*time2run;
 automatedGrab_BMI(TotalFrames,PATH,filename);
 
 pause(time2run*60);
