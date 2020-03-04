@@ -3,27 +3,28 @@
 
 % WAL3 d02/28/2020
 
-% ask to generate new folder ( animal nams)
+% BEFORE STARTING: add 'BMI_callback' to user funciton in the SI GUI
+
+% TO DO: ask to generate new folder ( animal nams)
 PATH_ADDN = datestr(now,'yyyymmdd_HHMM'); % Make sure this is unique!
 PATH = ['C:\Users\User\Documents\MATLAB\',PATH_ADDN] ;
 mkdir(PATH);
+
 % conncet to Arduino Through Serial
 arduino=serial('COM17','BaudRate',9600); % create serial communication object on port COM4
 fopen(arduino); % initiate arduino communication
 
-
 % Initialize workspace variables
 BMI_Data.condition = 1;
-BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
 BMI_Data.Hit_Thresh = 2;
 BMI_Data.Reset_Thresh = 1;
 BMI_Data.hit = 0; % index of hits
 BMI_Data.num_hits = 0; % number of hits
-
-
 BMI_Data.Tstart = tic; % timing vector
+BMI_Data.time_idx = []; % timing index for each frame
+
 
 %% BASELINE
 filename = 'Baseline_BEFORE'

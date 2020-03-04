@@ -110,7 +110,7 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
 else
 end
 
-BMI_Data.time(frame_idx) = toc(Tstart);
+BMI_Data.time_idx(frame_idx) = toc(Tstart);
 BMI_Data.MeanFrame(frame_idx) = mean(frame{1}(1,:));
 BMI_Data.frame_idx = frame_idx+1; % advance the frame index...
 
