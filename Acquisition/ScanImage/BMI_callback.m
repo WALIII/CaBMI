@@ -1,6 +1,6 @@
 function BMI_callback(src,evt,varargin)
 % myFrameAcquiredCallback_BMI.m
-
+tic
 % workhorse function for SI based BMI
 
 hSI = src.hSI; % get the handle to the ScanImage model
@@ -74,23 +74,26 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
         
         % ============================= [ Water Delivery]  ============================= %
         
-        
+        BMI_Data.hit(frame_idx) = 0; % default is 0
         if BMI_Data.condition == 1; % reward eligibility
-            if CURSOR> 2.5
+            if CURSOR> BMI_Data.Hit_Thresh;
                 fdbk = 1;
                 while fdbk
                     disp('HIT!');
                     BMI_Data.condition = 2;
-                    
+                    BMI_Data.hit(frame_idx) = 1; % frame with reward
                     fprintf(arduino,'%c',char(99)); % send answer variable content to arduino
                     fdbk = 0;
+                    BMI_Data.num_hits = BMI_Data.num_hits+1;
                 end
             end
         elseif BMI_Data.condition == 2
             disp(' Waiting to drop below threshold...')
-            if CURSOR<1
+            BMI_Data.hit(frame_idx) = -1;
+            if CURSOR<BMI_Data.Reset_Thresh;
                 disp ( 'Resetting Cursor')
                 BMI_Data.condition = 1;
+                BMI_Data.hit(frame_idx) = 0;
             end
         end
         
@@ -108,12 +111,12 @@ else
 end
 
 BMI_Data.time(frame_idx) = toc(Tstart);
-BMI_Data.cursor(frame_idx) = mean(frame{1}(1,:));
+BMI_Data.MeanFrame(frame_idx) = mean(frame{1}(1,:));
 BMI_Data.frame_idx = frame_idx+1; % advance the frame index...
 
 %% Output data back to workspace
 assignin('base','BMI_Data',BMI_Data);
 
-
+toc
 
 end

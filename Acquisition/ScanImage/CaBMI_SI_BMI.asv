@@ -19,8 +19,8 @@ BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
 BMI_Data.Hit_Thresh = 2;
 BMI_Data.Reset_Thresh = 1;
-BMI_Data.hit = 0; % index of hits
-BMI_Data.num_hits = 0; % number of hits
+BMI_Data.hit = 0;
+BMI_Data.num_hits = 
 
 
 BMI_Data.Tstart = tic; % timing vector
