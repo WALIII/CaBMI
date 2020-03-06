@@ -23,14 +23,12 @@ end
 
 % Meat of BMI function:
 if BMI_Data.BMIready ==1; % if BMI is ready to go:
-    %ROI = BMI_Data.ROI % ROI syntax
-    %BMI_Data.BMIready
+
     arduino =  evalin('base','arduino');
 
     Im = frame{1}; % Get data from the 'Green' Channel...
 
     % standard BMI, Index into E1-E4;
-
     Im = imresize(single(round(Im)),1/dsample_fact); % convert from 16bit
     BMI_Data.ROI_val(1,frame_idx) = mean(mean(Im(round(BMI_Data.ROI.coordinates{1}(:,2)/dsample_fact),round(BMI_Data.ROI.coordinates{1}(:,1)/dsample_fact)),1));
     BMI_Data.ROI_val(2,frame_idx) = mean(mean(Im(round(BMI_Data.ROI.coordinates{2}(:,2)/dsample_fact),round(BMI_Data.ROI.coordinates{2}(:,1)/dsample_fact)),1));
