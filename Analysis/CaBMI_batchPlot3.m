@@ -17,34 +17,39 @@ for i = 1:size(mov_listing,2)
     load(filenames{i},'ROIhits_z');
     
     % Loading ROI_data
+    load(filenames{i},'roi_ave1');
     
-    load(filenames{i},'roi_ave1','roi_hits');
-    load(filenames{i},'D_ROIhits','ROIhits_d');
-
-try
-    % Get data for batch plotting
+    %load(filenames{i},'roi_ave1','roi_ave2','roi_ave3','roi_ave4');
+    load(filenames{i},'roi_hits');
+    load(filenames{i},'D_ROIhits','ROIhits_d','ROIhits_s');
     
-%     [out] = CaBMI_SequenceEmerge(ROIhits);
+    try
+        % Get data for batch plotting
+        
+        %     [out] = CaBMI_SequenceEmerge(ROIhits);
+        
+        % PCA plotting
+        [out, hits] = CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits);
+        
+        [out2] = CaBMI_PCA_consistancy(hits);
+        [out3] = CaBMI_Improvement(D_ROIhits,ROIhits_d,ROIhits_z,roi_hits);
+        [out4] = CaBMI_incorperateROI(ROIhits_s);
+        [~,~,~, percent_modulated] = CaBMI_topCells(ROIhits_z,[150:200],0.9);
+        
+        close all
+        counter = counter+1;
+    catch
+    end
     
-    % PCA plotting
-[out, hits] = CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits);    
+    out_date = CaBMI_MatchDate(mov_listing{i});
+    out_fname = CaBMI_MatchFname(mov_listing{i});
+    DATA.PCA{out_date}{out_fname} = out;
+    DATA.PCA_consist{out_date}{out_fname} = out2;
+    DATA.IND{out_date}{out_fname} = out3;
+    DATA.P_mod_cor{out_date}{out_fname} = percent_modulated;
+    DATA.P_mod{out_date}{out_fname} = out4;
     
-[out2] = CaBMI_PCA_consistancy(hits);
-[out3] = CaBMI_Improvement(D_ROIhits,ROIhits_d,ROIhits_z,roi_hits);
-[~,~,~, percent_modulated] = CaBMI_topCells(ROIhits_z,[150:200],0.9);
-
-   close all     
-counter = counter+1;
-catch
-end
-
-out_date = CaBMI_MatchDate(mov_listing{i});
-out_fname = CaBMI_MatchFname(mov_listing{i});
-     DATA.PCA{out_date}{out_fname} = out;
-     DATA.PCA_consist{out_date}{out_fname} = out2;
-     DATA.IND{out_date}{out_fname} = out3;
-     DATA.P_mod{out_date}{out_fname} = percent_modulated;
-     
-   clear ROIhits_z roi_ave1 roi_hits
+    
+    clear ROIhits_z roi_ave1 roi_hits
 end
 
