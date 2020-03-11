@@ -9,12 +9,12 @@ clear MOV_DATA;
 
 MOV_DATA = abs(double((MOV_DATA2)));
 
- %MOV_DATA	= mov_data(:,:,7:end-10);
+%MOV_DATA	= mov_data(:,:,7:end-10);
 
 
 nparams=length(varargin);
 
-
+type = 'std';
 filt_rad=20; % gauss filter radius
 filt_alpha=20; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
@@ -27,41 +27,43 @@ stopT = size(MOV_DATA,3);
 exp = 2;
 
 if mod(nparams,2)>0
-	error('Parameters must be specified as parameter/value pairs');
+    error('Parameters must be specified as parameter/value pairs');
 end
 
 for i=1:2:nparams
-	switch lower(varargin{i})
-		case 'baseline'
-			baseline=varargin{i+1};
-		case 'filt_rad'
-			filt_rad=varargin{i+1};
+    switch lower(varargin{i})
+        case 'baseline'
+            baseline=varargin{i+1};
+        case 'filt_rad'
+            filt_rad=varargin{i+1};
             filt_alpha=filt_rad;
-		case 'trim_per'
-			trim_per=varargin{i+1};
-		case 'filt_alpha'
-			filt_alpha=varargin{i+1};
-		case 'per'
-			per=varargin{i+1};
-		case 'lims'
-			lims=varargin{i+1};
-		case 'fs'
-			fs=varargin{i+1};
-		case 'cmap'
-			cmap=varargin{i+1};
-		case 'bgcolor'
-			bgcolor=varargin{i+1};
-		case 'time_select'
-			time_select=varargin{i+1};
-		case 'sono_cmap'
-			sono_cmap=varargin{i+1};
+        case 'trim_per'
+            trim_per=varargin{i+1};
+        case 'filt_alpha'
+            filt_alpha=varargin{i+1};
+        case 'per'
+            per=varargin{i+1};
+        case 'lims'
+            lims=varargin{i+1};
+        case 'fs'
+            fs=varargin{i+1};
+        case 'cmap'
+            cmap=varargin{i+1};
+        case 'bgcolor'
+            bgcolor=varargin{i+1};
+        case 'time_select'
+            time_select=varargin{i+1};
+        case 'sono_cmap'
+            sono_cmap=varargin{i+1};
         case 'start'
-			startT=varargin{i+1};
+            startT=varargin{i+1};
         case 'stop'
-			stopT=varargin{i+1};
+            stopT=varargin{i+1};
         case 'exp'
             exp = varargin{i+1};
-	end
+        case 'type'
+            type = varargin{i+1};
+    end
 end
 
 MOV_DATA = MOV_DATA(:,:,startT:stopT);
@@ -88,7 +90,7 @@ disp('Computing the center of mass...');
 com_idx=zeros(1,1,frames);
 
 for i=1:frames
-	com_idx(:,:,i)=i;
+    com_idx(:,:,i)=i;
 end
 
 com_idx=repmat(com_idx,[rows columns 1]);
@@ -98,12 +100,15 @@ com_idx=repmat(com_idx,[rows columns 1]);
 %   com_dff=std((dff.*com_idx),[],3)./vars;
 
 %%% Center of mass in time
- mass=sum(dff,3);
- com_dff=sum((dff.*com_idx),3)./mass;
+mass=sum(dff,3);
+com_dff=sum((dff.*com_idx),3)./mass;
 
 
-
-max_proj=max(dff,[],3);
+if type == 'max'
+    max_proj=max(dff,[],3);
+elseif type == 'std'
+    max_proj=std(dff,[],3);
+end
 
 %
 
@@ -136,13 +141,13 @@ norm_dff=norm_dff./(clims(2)-clims(1)); % normalize to [0,1]
 idx_img=round(norm_dff.*size(cmap,1));
 im1_rgb=ind2rgb(idx_img,cmap);
 %
- cbar_idxs=linspace(0,size(cmap,1),1e3);
+cbar_idxs=linspace(0,size(cmap,1),1e3);
 
 
 % Single Use Plotting, make alpha mask
- imwrite(im1_rgb,'Filename.png','Alpha',norm_max_proj);
- I = imread('Filename.png', 'BackgroundColor',[0 0 0]);
- disp('another one');
+imwrite(im1_rgb,'Filename.png','Alpha',norm_max_proj);
+I = imread('Filename.png', 'BackgroundColor',[0 0 0]);
+disp('another one');
 %  close(1);
 figure(1);  imshow(I);
 %  imwrite(I, 'NewFilename.jpg');

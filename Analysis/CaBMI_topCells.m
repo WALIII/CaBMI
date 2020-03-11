@@ -1,5 +1,5 @@
 
-function [ROIhits_z2 ROIhits_z3,ROI_index, percent_modulated] = CaBMI_topCells(ROIhits_z,range,cutoff);
+function [ROIhits_z2 ROIhits_z3,ROI_index, percent_modulated,frame_time] = CaBMI_topCells(ROIhits_z,range,cutoff);
 %function [roi_ave1,roi_ave3,ROIa,ROIhits,ROIhits_z] = CaBMI_topCells(roi_ave1,roi_ave3,ROIhits_z,ROIhits,ROIa,cutoff)
 
 
@@ -73,8 +73,9 @@ range_true = [(mid-bound):(mid+bound)]; % A true range, in the ~100 framse surro
 
 data.directed = ROIhits_z(1:2:size(ROIhits_z,1),range_true,:);
 data.undirected = ROIhits_z(2:2:size(ROIhits_z,1),range_true,:);
-[indX,B,C,index] = CaBMI_schnitz(data);
+[indX,B,C,output] = CaBMI_schnitz(data);
 title('true range');
+
 
 
 for i = 1:size(B,1);
@@ -98,8 +99,10 @@ B4(ccd2<cutoff) = []; % Remove low values
 data2.directed = ROIhits_z(1:2:size(ROIhits_z,1),range_true,B4);
 data2.undirected = ROIhits_z(2:2:size(ROIhits_z,1),range_true,B4);
 figure();
-[indX,B,C,index] = CaBMI_schnitz(data2);
+[indX,B,C,output] = CaBMI_schnitz(data2);
 
 ROIhits_z3 = ROIhits_z(:,:,B4);
+frame_time = output.peak_frame;
+
 ROI_index = B4;
 percent_modulated = size(ROI_index,1)/size(ROIhits_z,3);

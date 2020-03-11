@@ -17,9 +17,10 @@ function [I, M, ROI, ccimage] = CaBMI_Dendrites(I);
 %   CrossCorrImage, which can be found here:
 %       http://labrigger.com/blog/2013/06/13/local-cross-corr-images/
 %
-%
+%   ScanImageTiffReader, which can be found on ScanImage's GitLab 
 
 colormap(gray);
+SI_format = 0; % scanImage format ( default flag is zero, will change if SI format is detected)
 
 
 
@@ -44,6 +45,7 @@ else
     disp('scanimage format...')
     reader=ScanImageTiffReader(dname);
   I=reader.data();
+  SI_format =1;
   end
 end
 
@@ -128,6 +130,7 @@ disp('Performing Local Cross-correlation...')
 %% Get Freehand ROIs
 [ROI] = CaBMI_ROI_freehand(ccimage);
 
+SI_format
 
 % Save Data with a unique filename
 filename = ['ROI_Backup-', datestr(datetime)]
