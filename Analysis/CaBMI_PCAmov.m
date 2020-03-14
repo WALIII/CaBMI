@@ -24,7 +24,7 @@ function CaBMI_PCAmov(mov_data,varargin);
 % do PCA on the images
 
 mov_data2 = single(imresize(mov_data(:,:,:),1));
-mov_data2 = mov_data2-mean(mov_data2,3);
+%mov_data2 = mov_data2-mean(mov_data2,3);
 [rows, columns, frames] = size(mov_data2);
 
 % Get an N by 3 array of all the RGB values.  Each pixel is one row.
@@ -32,7 +32,7 @@ mov_data2 = mov_data2-mean(mov_data2,3);
 listOfRGBValues = double(reshape(mov_data2, rows * columns, frames));
 
 % Now get the principal components.
-[coeff, score] = pca(listOfRGBValues);
+[coeff, score] = fastICA(listOfRGBValues,5);
 
 % Take the coefficients and transform the RGB list into a PCA list.
 transformedImagePixelList = listOfRGBValues * coeff;
@@ -73,7 +73,7 @@ end
 
 figure(); 
 
-imagesc(imresize(pcaImage(:,:,[2,3,4])*3,resz)*4);
+imagesc(imresize(pcaImage(:,:,[2,3,4])*3,resz)*12);
 title('PC 123')
 
 

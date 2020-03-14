@@ -63,8 +63,6 @@ for i=1:2:nparams
             exp = varargin{i+1};
         case 'type'
             type = varargin{i+1};
-        case 'long_mov'
-            long_mov = varargin{i+1};
     end
 end
 
@@ -106,12 +104,11 @@ mass=sum(dff,3);
 com_dff=sum((dff.*com_idx),3)./mass;
 
 
-if strcmp(type,'max')
+if type == 'max'
     max_proj=max(dff,[],3);
-elseif strcmp(type,'ccimage')
-    disp('computing cc image')
-    [max_proj] = CrossCorrImage(dff);
-elseif strcmp(type,'std')
+elseif type =='ccimage'
+    [max_proj] = CrossCorrImage(dff)
+elseif type == 'std'
     max_proj=std(dff,[],3);
 end
 

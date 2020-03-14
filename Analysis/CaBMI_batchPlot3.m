@@ -14,14 +14,13 @@ for i = 1:size(mov_listing,2)
     
     % LOADING  ROI_hits
     
-    load(filenames{i},'ROIhits_z');
     
     % Loading ROI_data
-    load(filenames{i},'roi_ave1');
+     load(filenames{i},'roi_ave1');
     
     %load(filenames{i},'roi_ave1','roi_ave2','roi_ave3','roi_ave4');
     load(filenames{i},'roi_hits');
-    load(filenames{i},'D_ROIhits','ROIhits_d','ROIhits_s');
+    load(filenames{i},'D_ROIhits','ROIhits_d','ROIhits_s','ROIhits_z');
     
     try
         % Get data for batch plotting
@@ -34,7 +33,8 @@ for i = 1:size(mov_listing,2)
         [out2] = CaBMI_PCA_consistancy(hits);
         [out3] = CaBMI_Improvement(D_ROIhits,ROIhits_d,ROIhits_z,roi_hits);
         [out4] = CaBMI_incorperateROI(ROIhits_s);
-        [~,~,~, percent_modulated] = CaBMI_topCells(ROIhits_z,[150:200],0.9);
+        [~,~,~, percent_modulated,~] = CaBMI_topCells(ROIhits_z,[150:210],0.8);
+        [out5]= CaBMI_PCA_zscore(ROIhits_z,95)
         
         close all
         counter = counter+1;
@@ -48,6 +48,7 @@ for i = 1:size(mov_listing,2)
     DATA.IND{out_date}{out_fname} = out3;
     DATA.P_mod_cor{out_date}{out_fname} = percent_modulated;
     DATA.P_mod{out_date}{out_fname} = out4;
+    DATA.PCA_norm{out_date}{out_fname} = out5;
     
     
     clear ROIhits_z roi_ave1 roi_hits

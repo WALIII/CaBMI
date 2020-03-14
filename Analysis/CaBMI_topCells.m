@@ -84,8 +84,10 @@ for i = 1:size(B,1);
 r = corr(cb);
 rk(:,i) = r(1,2);
 end
+
+figure(); histogram(rk,100);
 % fale alpha = ccd = ones(1,size(B1,2))'; % alpha valu
- ccd = mat2gray(rk);
+ ccd = rk ;
  % ccd = (rk);
 
 %[a,b] = max(B'); % this will be the max of the image matrix ( use b)

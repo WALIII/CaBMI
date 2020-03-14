@@ -5,7 +5,7 @@ function [out] = CaBMI_PCA_zscore(ROIhits_z,Nmax);
 
 for i = 1:size(ROIhits_z,1); 
     
- AA  = squeeze(ROIhits_z(i,140:200,:));
+ AA  = squeeze(ROIhits_z(i,:,:));
 % for ii = 1:size(AA,2);
 %     AA2(:,ii) = smooth(AA(:,ii),10);
 % end
