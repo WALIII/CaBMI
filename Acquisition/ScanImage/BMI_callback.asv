@@ -80,7 +80,7 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
                 while fdbk
                     disp('HIT!');
                     BMI_Data.condition = 2;
-                    % TO DO: probablistic catch
+                    % probablistic catch
                     
                     BMI_Data.hit(frame_idx) = 1; % frame with reward
                     fprintf(arduino,'%c',char(171)); % send answer variable content to arduino

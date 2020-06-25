@@ -8,6 +8,8 @@
 
 s = daq.createSession('ni');
 addAnalogInputChannel(s,'Dev6', 0, 'Voltage');
+addAnalogInputChannel(s,'Dev6', 1, 'Voltage');
+
 s.Rate = 2000;
 % set time
 if exist('time2run_sec')>0;
