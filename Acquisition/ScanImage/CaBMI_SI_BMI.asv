@@ -17,22 +17,25 @@ fopen(arduino); % initiate arduino communication
 end
 
 % Initialize workspace variables
+clear BMI_Data
+BMI_Data = [];
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
-BMI_Data.Hit_Thresh = 2;
-BMI_Data.Reset_Thresh = -0;
+BMI_Data.Hit_Thresh = 4; % threshold for getting a 'hit' in SD
+BMI_Data.Reset_Thresh = -0; % reset threshold ( in SD)
 BMI_Data.hit = 0; % index of hits
 BMI_Data.num_hits = 0; % number of hits
 BMI_Data.Tstart = tic; % timing vector
 BMI_Data.time_idx = []; % timing index for each frame
+BMI_Data.cursor_smooth = 3;
 
 
 %% BASELINE
 filename = 'Baseline_BEFORE'
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 1; % minutes
+time2run = 15; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -56,11 +59,13 @@ BMI_Data_Baseline = BMI_Data;
 
 %% Pick Cells ( or load from previous run)
 [I, M, ROI, ccimage] = CaBMI_Dendrites;
-BMI_Data.ROI = ROI;
-BMI_Data.ccimage = ccimage;
+
 
 
 %% RUN BMI
+clear I; % clear baseline data from ram
+BMI_Data.ROI = ROI;
+BMI_Data.ccimage = ccimage;
 % RE-Initialize workspace variables
 BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
@@ -70,7 +75,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = 'BMI'
 BMI_Data.BMIready = 1;
 % calulate frames to run...
-time2run = 10; % minutes
+time2run = 30; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -100,7 +105,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = 'Baseline_AFTER'
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 0.1; % minutes
+time2run = .2; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);

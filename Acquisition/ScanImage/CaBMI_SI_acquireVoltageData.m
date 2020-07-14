@@ -10,10 +10,10 @@ s = daq.createSession('ni');
 addAnalogInputChannel(s,'Dev6', 0, 'Voltage');
 addAnalogInputChannel(s,'Dev6', 1, 'Voltage');
 
-s.Rate = 2000;
+s.Rate = 500;
 % set time
 if exist('time2run_sec')>0;
-    s.DurationInSeconds = time2run_sec;
+    s.DurationInSeconds = time2run_sec+10;
 else
     disp('no defined time set, default to 10s');
     s.DurationInSeconds = 10;
