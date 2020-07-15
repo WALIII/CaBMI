@@ -22,7 +22,7 @@ BMI_Data = [];
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
-BMI_Data.Hit_Thresh = 2.5; % threshold for getting a 'hit' in SD
+BMI_Data.Hit_Thresh = 4; % threshold for getting a 'hit' in SD
 BMI_Data.Reset_Thresh = 0; % reset threshold ( in SD)
 BMI_Data.hit = 0; % index of hits
 BMI_Data.reward = 0; % index of rewards
@@ -81,7 +81,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = 'BMI'
 BMI_Data.BMIready = 1;
 % calulate frames to run...
-time2run = 1; % minutes
+time2run = 10; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);

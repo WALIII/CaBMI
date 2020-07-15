@@ -51,7 +51,7 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
         % Calculate Cursor
         % TO DO: add dedelay to cursor by indexing into old values of the
         % df/f..
-        frame_index_adjusted = frame_idx-BMI_Data.cursor_offset;
+        frame_index_adjusted = frame_idx;%BMI_Data.cursor_offset;
         BMI_Data.cursor(:,frame_idx) = ROI_norm(1,frame_index_adjusted)+ROI_norm(2,frame_index_adjusted) - (ROI_norm(3,frame_index_adjusted)+ROI_norm(4,frame_index_adjusted));
         
         % Smooth cursor
