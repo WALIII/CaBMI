@@ -49,10 +49,7 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
         end
         
         % Calculate Cursor
-        % TO DO: add dedelay to cursor by indexing into old values of the
-        % df/f..
-        frame_index_adjusted = frame_idx-BMI_Data.cursor_offset;
-        BMI_Data.cursor(:,frame_idx) = ROI_norm(1,frame_index_adjusted)+ROI_norm(2,frame_index_adjusted) - (ROI_norm(3,frame_index_adjusted)+ROI_norm(4,frame_index_adjusted));
+        BMI_Data.cursor(:,frame_idx) = ROI_norm(1,frame_idx)+ROI_norm(2,frame_idx) - (ROI_norm(3,frame_idx)+ROI_norm(4,frame_idx));
         
         % Smooth cursor
         if frame_idx>BMI_Data.cursor_smooth;
@@ -80,16 +77,20 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
         BMI_Data.reward(frame_idx) = 0; % default is 0
         if BMI_Data.condition == 1; % reward eligibility
             if CURSOR> BMI_Data.Hit_Thresh;
+                fdbk = 1;
+                
+                while fdbk
                     disp('HIT!');
                     BMI_Data.condition = 2;
                     BMI_Data.hit(frame_idx) = 1; % frame where success is reached
+                    fdbk = 0;
                     BMI_Data.num_hits = BMI_Data.num_hits+1;
                     % calculate jitter
                     BMI_Data.temp_frame_jitter = randi(BMI_Data.reward_jitter,1,1);
 
             end
         elseif BMI_Data.condition == 2
-         %   disp(' Waiting to drop below threshold...')
+            disp(' Waiting to drop below threshold...')
             BMI_Data.hit(frame_idx) = -1;
             if CURSOR<BMI_Data.Reset_Thresh;
                 disp ( 'Resetting Reward Eligibility')
@@ -99,15 +100,14 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
         end
         
         % TO DO: reward delay
-        if BMI_Data.temp_frame_jitter>=1
+        if BMI_Data.temp_frame_jitter>1
             disp([' waiting ', num2str(BMI_Data.temp_frame_jitter), ' more frames to dispense reward']);
-            if BMI_Data.temp_frame_jitter==1
+            if BMI_Data.temp_reward_jitter==2
                 fdbk2 = 1;
                 while fdbk2
                 BMI_Data.reward(frame_idx) = 1; %frame where reward is dispensed is reached
                 fprintf(arduino,'%c',char(171)); % send answer variable content to arduino
                 fdbk2 = 0;
-                disp('WATER DISPENSED');
                 end
             end
             BMI_Data.temp_frame_jitter = BMI_Data.temp_frame_jitter-1;

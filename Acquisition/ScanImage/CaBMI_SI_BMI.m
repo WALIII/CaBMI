@@ -22,20 +22,26 @@ BMI_Data = [];
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
-BMI_Data.Hit_Thresh = 4; % threshold for getting a 'hit' in SD
-BMI_Data.Reset_Thresh = -0; % reset threshold ( in SD)
+BMI_Data.Hit_Thresh = 2.5; % threshold for getting a 'hit' in SD
+BMI_Data.Reset_Thresh = 0; % reset threshold ( in SD)
 BMI_Data.hit = 0; % index of hits
+BMI_Data.reward = 0; % index of rewards
 BMI_Data.num_hits = 0; % number of hits
 BMI_Data.Tstart = tic; % timing vector
 BMI_Data.time_idx = []; % timing index for each frame
 BMI_Data.cursor_smooth = 3;
-
+%Reward Jitter
+BMI_Data.reward_jitter = 15; %(n-1 max frame jitter added between success and reward)
+BMI_Data.catch_trail_probability = 0; %percent catch trials
+BMI_Data.temp_frame_jitter = 0; % temp holder of frame jitter 
+%Cursor Delay
+BMI_Data.cursor_offset = 0; % add n frames of delay between cursor and Direct neurons
 
 %% BASELINE
 filename = 'Baseline_BEFORE'
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 15; % minutes
+time2run = 5; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -75,7 +81,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = 'BMI'
 BMI_Data.BMIready = 1;
 % calulate frames to run...
-time2run = 30; % minutes
+time2run = 1; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
