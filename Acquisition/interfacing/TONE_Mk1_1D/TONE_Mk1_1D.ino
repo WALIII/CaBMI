@@ -1,7 +1,8 @@
 /*
-CaBMI alpha script
-WAL3
-d11.21.17
+  CaBMI alpha script
+  WAL3
+  d07.15.20
+  undated 06/24/2020
 */
 
 #include "pitches.h"
@@ -12,15 +13,19 @@ long count = 0; //how many itterations over thresh
 int counter = 0; // total Timeouts
 unsigned long previousMillis = 0;        // will store last time LED was updated
 const long interval = 1000;
-
+int REWARD = 0;
+int reward_interval = 50; //  will need to be calibrated
+int TS1 = 0;
+int TS2 = 0;
+int PlayTone = 0;
 
 // Setup
 void setup() {
- // Init serial
-pinMode(10,OUTPUT);
-pinMode(7,OUTPUT);
-pinMode(5,OUTPUT);
-pinMode(9,OUTPUT);
+  // Init serial
+  pinMode(10, OUTPUT); // Tone
+  pinMode(7, OUTPUT); // TTL sync
+  pinMode(5, OUTPUT); // Aquisition trigger
+  pinMode(9, OUTPUT); // Water reward
 
   Serial.begin(9600);
 }
@@ -30,38 +35,61 @@ pinMode(9,OUTPUT);
 void loop() {
 
 
-// ROI input ( one for now)
+  // ROI input ( one for now)
+  int currentMillis = millis();
 
 
-   if(Serial.available()>0) // if there is data to read
-   {
-   int  melody=Serial.read(); // read data
+  if (Serial.available() > 0) // if there is data to read
+  {
+    int  melody = Serial.read(); // read data
 
 
-   // send Reward TTL
-   if (melody == 99){
-   int currentMillis = millis();
-    digitalWrite(9, HIGH);
-delay(100);
-    digitalWrite(9, LOW);
-   }
+    // send Reward TTL
+    if (melody == 171) {
+      TS1 = millis();
+      REWARD = 1;
+      digitalWrite(9, HIGH);
+      digitalWrite(7, HIGH);
+    }
 
-   // Aquisition Begin!
-      if (melody == 98){
-   int currentMillis = millis();
-    digitalWrite(5, HIGH);
-delay(100);
-    digitalWrite(5, LOW);
-   }
+    if (REWARD == 1 && currentMillis - TS1 >= reward_interval) {
+      digitalWrite(9, LOW);
+      digitalWrite(7, LOW);
+      REWARD = 0;
+    }
+
+    // Aquisition Begin!
+    if (melody == 170) {
+      int currentMillis = millis();
+      digitalWrite(5, HIGH);
+      delay(100);
+      digitalWrite(5, LOW);
+    }
 
 
-   melody = melody*1000;
-tone(10, melody, 1000);
-digitalWrite(7, HIGH); //TTL sync
-delay(100);
-noTone(10);
-digitalWrite(7, LOW);
-   }
+    melody = melody*100;
+    // Play Tone ( with delay)
+    tone(10, melody, 30);
+    
+    
+    delay(30);
+    noTone(10);
+
+
+//    // Play tone ( no Delay) 
+//    tone(10, melody, 32);
+//    if (PlayTone == 0) {
+//      PlayTone = 1;
+//      TS2 = millis();
+//    }
+//
+//    if (PlayTone == 1 && currentMillis - TS2 >= 32) {
+//      PlayTone = 0;
+//      noTone(10);
+//    }
+
+
+  }
 }
 
 
