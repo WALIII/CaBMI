@@ -21,14 +21,14 @@ for i = 1:size(mov_listing,2)
     load(filenames{i},'roi_ave1','roi_hits');
 
 
-try
+
     % Get data for batch plotting
     
-    [out] = CaBMI_SequenceEmerge(ROIhits);
+    [out] = CaBMI_SequenceEmerge(ROIhits_z);
     
     % PCA plotting
-    [PCA_data]= CaBMI_PCA(roi_ave1,roi_hits);
-    [outputB NumCellsTS] = CaBMI_FineSequenceEmerge(ROIhits);
+    [PCA_data,hits]=  CaBMI_PCA_rotational(ROIhits_z,roi_ave1,roi_hits);
+    [outputB NumCellsTS] = CaBMI_FineSequenceEmerge(ROIhits_z);
     
 
     
@@ -44,7 +44,7 @@ out_fname = CaBMI_MatchFname(mov_listing{i});
      DATA.S{out_date}{out_fname} = out;
      DATA.PCA{out_date}{out_fname} = PCA_data;
      DATA.Consistancy{out_date}{out_fname} = outputB;
-     DATA.numCells{out_date}{out_fname} = numCells;
+    % DATA.numCells{out_date}{out_fname} = numCells;
      DATA.numCellsTS{out_date}{out_fname} =  NumCellsTS;
    clear ROIhits roi_ave1 roi_hits 
 end
@@ -74,6 +74,42 @@ p1.Color(4) = 0.2;
 end
 
 errorbar(mean(dat1,2),(std(dat1,[],2)/sqrt(7)));
+
+
+
+
+
+
+counter = 1;
+col = hsv(7);
+figure();
+hold on;
+for i = 1: 5; % animal
+    for ii = 1:7; % date
+        plot(DATA.Consistancy{ii}{i},'Color',col(i,:))
+        try
+            Dat(i,ii,:) = DATA.Consistancy{ii}{i};
+        catch
+            Dat(i,ii,:) = DATA.Consistancy{ii-1}{i};
+        end
+    end
+end
+ 
+ 
+% plot all differences, then the error bar of the mean?
+
+% plot all differences, then the error bar of the mean...
+figure();
+hold on;
+for i = 1:5
+p1 = plot(Dat(:,i),'k');
+p1.Color(4) = 0.2;
+end
+ 
+errorbar(mean(Dat,2),(std(Dat,[],2)/sqrt(7)));
+
+
+
 
 
 
