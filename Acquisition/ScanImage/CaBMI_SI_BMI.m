@@ -6,9 +6,12 @@
 % !! BEFORE STARTING: add 'BMI_callback' under to: Settings=> User Funcitons. Event Name: 'frameAquired' in the SI GUI
 
 % TO DO: ask to generate new folder ( animal nams)
+prompt = 'Mouse ID:';
+MouseID = input(prompt,'s')
 PATH_ADDN = datestr(now,'yyyymmdd_HHMM'); % Make sure this is unique!
-PATH = ['F:\Liberti_data\BMI_DATA\',PATH_ADDN] ;
+PATH = ['F:\Liberti_data\BMI_DATA\',PATH_ADDN,'_',MouseID] ;
 mkdir(PATH);
+
 
 % conncet to Arduino Through Serial
 if exist('arduino')~=1 % dont re-open channel w/ arduino
@@ -19,6 +22,7 @@ end
 % Initialize workspace variables
 clear BMI_Data
 BMI_Data = [];
+BMI_Data.MouseID = MouseID
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
@@ -38,10 +42,10 @@ BMI_Data.temp_frame_jitter = 0; % temp holder of frame jitter
 BMI_Data.cursor_offset = 0; % add n frames of delay between cursor and Direct neurons
 
 %% BASELINE
-filename = 'Baseline_BEFORE'
+filename = ['Baseline_BEFORE_',BMI_Data.MouseID];
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 5; % minutes
+time2run = 15; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -78,10 +82,10 @@ BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
 BMI_Data.Tstart = tic; % timing vector
 % Run BMIA...
-filename = 'BMI'
-BMI_Data.BMIready = 1;
+filename = ['BMI_',BMI_Data.MouseID];
+BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 10; % minutes
+time2run = 15; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -108,7 +112,7 @@ BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
 BMI_Data.Tstart = tic; % timing vector
-filename = 'Baseline_AFTER'
+filename = ['Baseline_AFTER_',BMI_Data.MouseID];
 BMI_Data.BMIready = 0;
 % calulate frames to run...
 time2run = .2; % minutes

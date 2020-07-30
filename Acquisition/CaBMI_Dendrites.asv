@@ -52,20 +52,20 @@ if nargin < 1
     
 end
 disp('resizing');
-I = (I(:,:,1:2:end));
-%
-I = single(I);
+I = imresize(I,.5);
 
+I(:,:,1:100) = []; % remove bad frames
+if size(I,3)>2001;
+I(:,:,:,2000:end) = [];
+end
 %% Display smoothed movie:
 disp('smoothing data...');
 tic
 try
-   mov_data =  convn(I(:,:,1:4:2000), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
-  % mov_data = medfilt3(I(:,:,1:1:1000),[1 1 15]);
+    mov_data =  convn(I(:,:,1:4:2000), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
+    mov_data = medfilt3(I,[1 1 20])
 catch
     mov_data =  convn(I(:,:,:), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
-   %    mov_data = medfilt3(I(:,:,:),[1 1 15]);
-
 end
 toc
 
@@ -76,7 +76,7 @@ for i = 1:size(mov_data,3);
 end
 
 I = mov_data;
-
+mov_data = imresize(mov_data,2);
 % 
 % %% Motion Correction
 % prompt = 'Would you like to motion correct? (y/n) ';
