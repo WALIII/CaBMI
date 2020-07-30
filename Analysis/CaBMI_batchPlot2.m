@@ -31,8 +31,14 @@ for i = 1:size(mov_listing,2)
     [outputB NumCellsTS] = CaBMI_FineSequenceEmerge(ROIhits_z);
     
     [ROIhits_z2 ROIhits_z3,ROI_index, percent_modulated,~,corr_val] = CaBMI_topCells(ROIhits_z,150:250,0.80);
-    [numPC, c1exp] = CaBMI_PCA_zscore(ROIhits_s(:,:,ROI_index),90);
-    PCA_data.numPC = numPC;
+try
+    [PCA_data.numPC, PCA_data.pc1exp,PCA_data.stats] = CaBMI_PCA_zscore(ROIhits_s(:,150:400,:),95);
+catch
+ disp('SVD did not converge...');   
+[PCA_data.numPC, PCA_data.pc1exp,PCA_data.stats] = CaBMI_PCA_zscore(ROIhits_s(:,51:400,:),95);
+
+end
+
     
     
    close all     
@@ -48,7 +54,7 @@ out_fname = CaBMI_MatchFname(mov_listing{i});
      DATA.Consistancy{out_date}{out_fname} = outputB;
     % DATA.numCells{out_date}{out_fname} = numCells;
      DATA.numCellsTS{out_date}{out_fname} =  NumCellsTS;
-   clear ROIhits roi_ave1 roi_hits 
+   clear ROIhits roi_ave1 roi_hits PCA_data outputB NumCellsTS
 end
 
 

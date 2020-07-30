@@ -29,10 +29,13 @@ function CaBMI_Manuscript01
   % Figure 2d: Rasters from individual cells ( Example mouse/day/neurons: )
 
   % Figure 2e: SnakePlots ( mouse/day/neurons)
+    [output_1] =  CaBMI_SequenceEmerge(ROIhits); % single use
 
   % Figure 2f: Task relevant Neurons
-
+[ROIhits_z2 ROIhits_z3,ROI_index, percent_modulated] = CaBMI_topCells(ROIhits,150:250,0.8);
   % Figure 2g: Task Moulated Cells
+    % variable 'percent modulated'
+    [out] = CaBMI_TaskRelevantIncrease(ROIhits); % will give the %mod by the first/last ~30 hits
   % Figure 2h-i: Task Moulated Cells: SnakePlot quantification
 
   % Figure 2j: ROI timing
@@ -49,7 +52,7 @@ function CaBMI_Manuscript01
 
 %% ===== [ Figure 4 ] ===== %%
 
-  % Figure 3b-c: Prediction Quantification 
+  % Figure 3b-c: Prediction Quantification
 
 
   %% ===== [ Supplimental Figure 1 ] ===== %%
