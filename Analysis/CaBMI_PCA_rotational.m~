@@ -36,7 +36,7 @@ end
 
 figure(); 
 hold on;
-intr = 5;
+intr = 3;
 mtp = floor(sz/intr);
 for i = 1:mtp;
     if i < round(mtp/2);

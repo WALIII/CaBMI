@@ -21,7 +21,7 @@ RS = 1:(round((size(ROIhits,1)/3))*3)-1;
 
 % Get top cells:
 
-[ROIhits_z2 ROIhits_z] = CaBMI_topCells(ROIhits(:,:,:),rn,0.9);
+[ROIhits_z2 ROIhits_z] = CaBMI_topCells(ROIhits(:,:,:),rn,0.8);
 
 
 G1 = ROIhits_z;

@@ -31,8 +31,8 @@ for i = 1:size(mov_listing,2)
     [outputB NumCellsTS] = CaBMI_FineSequenceEmerge(ROIhits_z);
     
     [ROIhits_z2 ROIhits_z3,ROI_index, percent_modulated,~,corr_val] = CaBMI_topCells(ROIhits_z,150:250,0.80);
-    [numPC, c1exp] = CaBMI_PCA_zscore(ROIhits_s(:,:,ROI_index),90);
-    PCA_data.numPC = numPC;
+    [num_PC, c1exp] = CaBMI_PCA_zscore(ROIhits_s(:,:,ROI_index),90);
+PCA_data.num
     
     
    close all     
