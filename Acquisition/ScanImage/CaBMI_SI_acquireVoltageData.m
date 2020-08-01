@@ -16,7 +16,7 @@ if exist('time2run_sec')>0;
     s.DurationInSeconds = time2run_sec+10;
 else
     disp('no defined time set, default to 10s');
-    s.DurationInSeconds = 10;
+    s.DurationInSeconds = 30;
 end
 s
 

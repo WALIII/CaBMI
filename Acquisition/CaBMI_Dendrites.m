@@ -1,4 +1,4 @@
-function [I2, M, ROI, ccimage] = CaBMI_Dendrites(I);
+function [mov_data, M, ROI, ccimage] = CaBMI_Dendrites(I);
 % For Dendrite imaging, rough, manual ROI selection.
 
 % WAL3
@@ -51,16 +51,16 @@ if nargin < 1
     
     
 end
-disp('resizing');
+disp('smoothing data...');
 
 LastFrame = size(I,3);
-ds_temp = 5;
-frameIdx = 1:ds_temp:LastFrame;
+ds_temp = 10;
+frameIdx = 100:ds_temp:LastFrame;
 counter = 1;
 % mov = (convn(mov, single(reshape([1 1 1] / 3, 1, 1, [])), 'same'));
 
 for i = 1:size(frameIdx,2)-1
-  I2(:,:,counter) = mean(single(I(:,:,frameIdx(i)):single(frameIdx(i+1))),3);
+  mov_data(:,:,counter) = mean(single(I(:,:,frameIdx(i):frameIdx(i+1))),3);
 counter= counter+1;
 end
 clear I
@@ -68,17 +68,17 @@ clear I
 %
 
 %% Display smoothed movie:
-disp('smoothing data...');
-tic
-try
-   mov_data =  convn(I2(:,:,1:4:2000), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
-  % mov_data = medfilt3(I(:,:,1:1:1000),[1 1 15]);
-catch
-    mov_data =  convn(I2(:,:,:), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
-   %    mov_data = medfilt3(I(:,:,:),[1 1 15]);
 
-end
-toc
+% tic
+% try
+%    mov_data =  convn(I2(:,:,1:4:2000), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
+%   % mov_data = medfilt3(I(:,:,1:1:1000),[1 1 15]);
+% catch
+%     mov_data =  convn(I2(:,:,:), single(reshape([1 1 1] / 30, 1, 1, [])), 'same');% smooth movie:
+%    %    mov_data = medfilt3(I(:,:,:),[1 1 15]);
+% 
+% end
+% toc
 
 figure();
 for i = 1:size(mov_data,3);
@@ -86,7 +86,6 @@ for i = 1:size(mov_data,3);
     pause(0.01);
 end
 
-I2 = mov_data;
 
 % 
 % %% Motion Correction
@@ -144,7 +143,7 @@ I2 = mov_data;
 
 %% Take local cross-corr
 disp('Performing Local Cross-correlation...')
-if size(mov_data,4)>1000;
+if size(mov_data,3)>1000;
     disp('loading in first 1000 frames...');
     [ccimage]=CrossCorrImage(mov_data(:,:,10:1000));
 else
@@ -155,9 +154,10 @@ end
 %% Get Freehand ROIs
 [ROI] = CaBMI_ROI_freehand(ccimage);
 
-SI_format
+
 
 % Save Data with a unique filename
 filename = ['ROI_Backup-', datestr(datetime)]
 disp('Saving Data...')
 %save(filename,ROI);
+M = 0;

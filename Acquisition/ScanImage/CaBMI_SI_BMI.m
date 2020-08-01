@@ -15,7 +15,7 @@ mkdir(PATH);
 
 % conncet to Arduino Through Serial
 if exist('arduino')~=1 % dont re-open channel w/ arduino
-arduino=serial('COM15','BaudRate',9600); % create serial communication object on port COM4
+arduino=serial('COM19','BaudRate',9600); % create serial communication object on port COM4
 fopen(arduino); % initiate arduino communication
 end
 
@@ -26,7 +26,7 @@ BMI_Data.MouseID = MouseID
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
-BMI_Data.Hit_Thresh = 4; % threshold for getting a 'hit' in SD
+BMI_Data.Hit_Thresh = 2.5; % threshold for getting a 'hit' in SD
 BMI_Data.Reset_Thresh = 0; % reset threshold ( in SD)
 BMI_Data.hit = 0; % index of hits
 BMI_Data.reward = 0; % index of rewards
@@ -45,7 +45,7 @@ BMI_Data.cursor_offset = 0; % add n frames of delay between cursor and Direct ne
 filename = ['Baseline_BEFORE_',BMI_Data.MouseID];
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 15; % minutes
+time2run = 10; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -59,10 +59,8 @@ pause(time2run_sec+15);
 disp('data finished collection!');
 
 % save data
-save([PATH,'/',filename,'_matdata.m'],'BMI_Data')
+save([PATH,'/',filename,'_matdata.mat'],'BMI_Data')
 
-% save Baseline
-BMI_Data_Baseline = BMI_Data;
 
 %clear workspace
 
@@ -77,15 +75,16 @@ clear I; % clear baseline data from ram
 BMI_Data.ROI = ROI;
 BMI_Data.ccimage = ccimage;
 % RE-Initialize workspace variables
+BMI_Data.num_hits = 0; % number of hits
 BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
 BMI_Data.Tstart = tic; % timing vector
 % Run BMIA...
 filename = ['BMI_',BMI_Data.MouseID];
-BMI_Data.BMIready = 0;
+BMI_Data.BMIready = 1;
 % calulate frames to run...
-time2run = 15; % minutes
+time2run = 30; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -103,7 +102,7 @@ disp('data finished collection!');
 
 
 % save data
-save([PATH,'/',filename,'_matdata.m'],'BMI_Data')
+save([PATH,'/',filename,'_matdata.mat'],'BMI_Data')
 
 
 %% POST EXPERIMENT BASELINE
@@ -115,7 +114,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = ['Baseline_AFTER_',BMI_Data.MouseID];
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = .2; % minutes
+time2run = 5; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);

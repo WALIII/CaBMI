@@ -53,6 +53,7 @@ if BMI_Data.BMIready ==1; % if BMI is ready to go:
         % df/f..
         frame_index_adjusted = frame_idx;%BMI_Data.cursor_offset;
         BMI_Data.cursor(:,frame_idx) = ROI_norm(1,frame_index_adjusted)+ROI_norm(2,frame_index_adjusted) - (ROI_norm(3,frame_index_adjusted)+ROI_norm(4,frame_index_adjusted));
+        % BMI_Data.cursor(:,frame_idx) = mean(ROI_norm(1,frame_index_adjusted:frame_index_adjusted-rn))+mean(ROI_norm(2,frame_index_adjusted:frame_index_adjusted-rn)) - (mean(ROI_norm(3,frame_index_adjusted:frame_index_adjusted-rn))+mean(ROI_norm(4,frame_index_adjusted:frame_index_adjusted-rn)));
         
         % Smooth cursor
         if frame_idx>BMI_Data.cursor_smooth;
