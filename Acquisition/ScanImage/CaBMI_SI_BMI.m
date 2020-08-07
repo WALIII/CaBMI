@@ -26,8 +26,8 @@ BMI_Data.MouseID = MouseID
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
-BMI_Data.Hit_Thresh = 2.5; % threshold for getting a 'hit' in SD
-BMI_Data.Reset_Thresh = 0; % reset threshold ( in SD)
+BMI_Data.Hit_Thresh = 3.5; % threshold for getting a 'hit' in SD
+BMI_Data.Reset_Thresh = 1; % reset threshold ( in SD)
 BMI_Data.hit = 0; % index of hits
 BMI_Data.reward = 0; % index of rewards
 BMI_Data.num_hits = 0; % number of hits
@@ -35,11 +35,13 @@ BMI_Data.Tstart = tic; % timing vector
 BMI_Data.time_idx = []; % timing index for each frame
 BMI_Data.cursor_smooth = 3;
 %Reward Jitter
-BMI_Data.reward_jitter = 15; %(n-1 max frame jitter added between success and reward)
+BMI_Data.reward_jitter = 2;%15; %(n-1 max frame jitter added between success and reward)
 BMI_Data.catch_trail_probability = 0; %percent catch trials
 BMI_Data.temp_frame_jitter = 0; % temp holder of frame jitter 
 %Cursor Delay
 BMI_Data.cursor_offset = 0; % add n frames of delay between cursor and Direct neurons
+BMI_Data.BMIready = 0;
+
 
 %% BASELINE
 filename = ['Baseline_BEFORE_',BMI_Data.MouseID];
@@ -98,15 +100,18 @@ fprintf(arduino,'%c',char(17))
 pause(0.1);
 end
 pause(10); %saving buffer 
+% save data
+save([PATH,'/',filename,'_matdata.mat'],'BMI_Data')
 disp('data finished collection!');
 
 
-% save data
-save([PATH,'/',filename,'_matdata.mat'],'BMI_Data')
+
 
 
 %% POST EXPERIMENT BASELINE
 % RE-Initialize workspace variables
+save([PATH,'/',filename,'_matdata.mat'],'BMI_Data')
+
 BMI_Data.time = [];
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
@@ -114,7 +119,7 @@ BMI_Data.Tstart = tic; % timing vector
 filename = ['Baseline_AFTER_',BMI_Data.MouseID];
 BMI_Data.BMIready = 0;
 % calulate frames to run...
-time2run = 5; % minutes
+time2run = 10; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
@@ -126,7 +131,7 @@ disp('data finished collection!');
 
 
 % save data
-save([PATH,'/',filename,'matdata.m'],'BMI_Data')
+save([PATH,'/',filename,'matdata.mat'],'BMI_Data')
 
 % close arduino
 fclose(arduino)
