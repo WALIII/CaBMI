@@ -101,7 +101,6 @@ if ScanImageFormat ==1; % check if .h5 files exist..
     end
 end
 
-%% Load Files
 % folder where all the files are located. Currently supported .tif,
 % .hdf5, .raw, .avi, and .mat files
 files = subdir(fullfile(foldername,'*.h5'));   % list of filenames (will search all subdirectories)
