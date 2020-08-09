@@ -1,30 +1,50 @@
-function [out] = CaBMI_FA(ROIhits,roi_ave1);
+function [out] = CaBMI_FA(ROIhits,roi_ave1,roi_hits);
 
 
 % Dd06/08/18
 % Generate random hits:
 
-fake_hits  = randi(size(roi_ave1.F_dff,2),size(ROIhits,1),1);
+% Generate fake hits within a few seconds of the real hits  
+
+a = 500;
+b = 1100;
+r = (b-a).*rand(size(ROIhits,1),1) + a;
+%fake_hits = round(r)+roi_hits;
 
 
-[~,~,~, fake_ROIhits]= CaBMI_getROI(roi_ave1,fake_hits);
+fake_hits = randi(size(roi_ave1.F_dff,2),size(ROIhits,1),1);
+% fake_hits2 = 
+
+[~,~,fake_ROIhits, ~]= CaBMI_getROI(roi_ave1,fake_hits);
 
 warning off
 
-var_exp = 95;
+var_exp = 90;
 
-Ga = ROIhits;
-Gb = fake_ROIhits;
-for i = 1:size(ROIhits,1)
-G1= squeeze(Ga(i,185:200,:))';
-G2= squeeze(Gb(i,185:200,:))';
+Ga = ROIhits(:,100:400,:);
+Gb = fake_ROIhits(:,100:400,:);
 
-% [dim_to_use1, result1] = findzdim(G1);
+
+
+% Smooth spiking from each dataset:
+kernSize = 3;
+[Ga] = CaBMI_SmoothHits(Ga,kernSize);
+[Gb] = CaBMI_SmoothHits(Gb(:,:,1:size(Ga,3)),kernSize);
+
+for i = 1:size(Gb,1)
+G1= squeeze(Ga(i,:,:))';
+G2= squeeze(Gb(i,:,:))'; % to prevent overhang
+
+ %[dim_to_use1, result1] = findzdim(G1);
 % pool1(:,i) = result1.line;
-
+try
 [~,~,latent1,~,explained1,~] = pca(G1);
 [~,~,latent2,~,explained2,~] = pca(G2);
-
+catch
+    disp('SVD failure..');
+ [~,~,latent1,~,explained1,~] = pca(G1(:,2:end,:));
+[~,~,latent2,~,explained2,~] = pca(G2(:,2:end,:));   
+end
 
 b = explained1(1);
 counter = 1;
@@ -66,12 +86,13 @@ for ii = 1:10-1;
 
 end
 
-
+figure();
+hold on;
 gg{1} = Dtemp';
 gg2{1} = Dtemp2';
-plotme(gg)
+plotme(gg,'g')
 title('True hits');
-plotme(gg2)
+plotme(gg2,'b')
 title('Fake hits');
 
 % % Randomize...

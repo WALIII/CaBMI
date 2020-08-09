@@ -12,10 +12,11 @@ do_jPCA = 1;
 disp('normalizing data...');
 
 temp = zscore(roi_ave.F_dff(:,:),[],2);
-
+w = gausswin(40);
 disp('smoothing data...');
 for i = 1:size(temp,1)
-    temp2(i,:) = smooth(temp(i,:),40);
+    %temp2(i,:) = smooth(temp(i,:),40);
+    temp2(i,:) =  filter(w,1,temp(i,:));
 end
 
 disp('running PCA...');

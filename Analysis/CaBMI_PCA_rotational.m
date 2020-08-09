@@ -9,10 +9,18 @@ roi2use.F_dff = roi_ave1.S_dec(ROI_index,:);
 
 [PCA_data]= CaBMI_PCA(roi2use,roi_hits);
 
+% JPCA
+hits = PCA_data.jPCA_hits;
 pc1 = squeeze(PCA_data.jPCA_hits(:,:,1));
 pc2 = squeeze(PCA_data.jPCA_hits(:,:,2));
 
-hits = PCA_data.jPCA_hits;
+% % PCA
+% hits = PCA_data.PCA_hits;
+% pc1 = squeeze(PCA_data.PCA_hits(:,:,1));
+% pc2 = squeeze(PCA_data.PCA_hits(:,:,2));
+
+
+% remove mean
 pc1 = (pc1'-mean(pc1'))';
 pc2 = (pc2'-mean(pc2'))';
 
@@ -22,8 +30,10 @@ figure();
 hold on;
 counter = 1;
 for i = 1:sz-1;
-    a1 = mean(pc1((i:i+1),400:550));
-    a2 = mean(pc2((i:i+1),400:550));
+%     a1 = mean(pc1((i:i+1),400:550));
+%     a2 = mean(pc2((i:i+1),400:550));
+      a1 = (pc1((i),400:550));
+    a2 = (pc2((i),400:550));
 plot(a1,a2,'color',col(counter,:),'LineWidth',1);
 counter = counter+1;
 arrow([a1(end-2) a2(end-2)],[a1(end) a2(end)],'FaceColor',col(counter,:))

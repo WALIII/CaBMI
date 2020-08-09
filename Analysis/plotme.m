@@ -1,15 +1,14 @@
-function plotme(var_to_plot)
+function plotme(var_to_plot,col)
 if nargin < 4
   font_size = 18;
 end
 
 n_epochs = size(var_to_plot{1},1)
-figure;
 
 
 errorbar([1:n_epochs], nanmean(var_to_plot{1}'),...
         nanstd(var_to_plot{1}')/sqrt(length(var_to_plot{1}')), 'color', ...
-     [30/255, 144/255, 255/255], 'LineWidth', 2);
+     col, 'LineWidth', 2);
     %std(var_to_plot{1}'), 'color', ...
       %  [30/255, 144/255, 255/255], 'LineWidth', 2);
 
@@ -19,7 +18,7 @@ if length(var_to_plot)>1
  for i = 2:length(var_to_plot)
  errorbar([1:n_epochs], nanmean(var_to_plot{i}'),...
         nanstd(var_to_plot{i}')/sqrt(length(var_to_plot{i}')), 'color', ...
-     [30/255, 144/255, 255/255], 'LineWidth', 2);
+     col, 'LineWidth', 2);
     %std(var_to_plot{1}'), 'color', ...
       %  [30/255, 144/255, 255/255], 'LineWidth', 2);
  end

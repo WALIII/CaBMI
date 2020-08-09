@@ -11,14 +11,14 @@
 int sensorPin = 0;
 long count = 0; //how many itterations over thresh
 int counter = 0; // total Timeouts
-unsigned long previousMillis = 0;        // will store last time LED was updated
+int previousMillis = 0;        // will store last time LED was updated
 const long interval = 1000;
 int REWARD = 0;
-int reward_interval = 50; //  will need to be calibrated
-int TS1 = 0;
+const long reward_interval = 200; //  will need to be calibrated
+unsigned long TS1 = 0;
 int TS2 = 0;
 int PlayTone = 0;
-
+int  melody = 999;
 // Setup
 void setup() {
   // Init serial
@@ -36,47 +36,53 @@ void loop() {
 
 
   // ROI input ( one for now)
-  int currentMillis = millis();
-
+ unsigned long currentMillis = millis();
 
   if (Serial.available() > 0) // if there is data to read
   {
     int  melody = Serial.read(); // read data
 
-
-    // send Reward TTL
+    // prime Reward TTL
     if (melody == 171) {
-      TS1 = millis();
-      REWARD = 1;
-      digitalWrite(9, HIGH);
-      digitalWrite(7, HIGH);
+      TS1 = currentMillis;
+    digitalWrite(9, HIGH);
+    digitalWrite(7, HIGH);
     }
 
-    if (REWARD == 1 && currentMillis - TS1 >= reward_interval) {
-      digitalWrite(9, LOW);
-      digitalWrite(7, LOW);
-      REWARD = 0;
-    }
-
-    // Aquisition Begin!
-    if (melody == 170) {
-      int currentMillis = millis();
-      digitalWrite(5, HIGH);
-      delay(100);
-      digitalWrite(5, LOW);
-    }
-
-
-    melody = melody*100;
+    melody = melody * 100;
     // Play Tone ( with delay)
     tone(10, melody, 30);
-    
-    
+
     delay(30);
     noTone(10);
 
+  }
 
-//    // Play tone ( no Delay) 
+//  if (REWARD == 1) {
+//    digitalWrite(9, HIGH);
+//    digitalWrite(7, HIGH);
+//    int REWARD = 0;
+//  }
+
+
+  if (currentMillis - TS1 >= reward_interval) {
+    digitalWrite(9, LOW);
+    digitalWrite(7, LOW);
+  }
+}  
+
+// Aquisition Begin!
+//    if (melody == 199) {
+//     unsigned long currentMillis = millis();
+//      digitalWrite(5, HIGH);
+//      delay(100);
+//      digitalWrite(5, LOW);
+//    }
+
+
+
+
+//    // Play tone ( no Delay)
 //    tone(10, melody, 32);
 //    if (PlayTone == 0) {
 //      PlayTone = 1;
@@ -89,8 +95,8 @@ void loop() {
 //    }
 
 
-  }
-}
+
+
 
 
 
