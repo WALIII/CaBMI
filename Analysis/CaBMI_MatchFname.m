@@ -29,4 +29,24 @@ elseif contains(in_name,'M051')% M006 = 5;
 out_fname = 7;
 str1 = 'M051';
 
+elseif contains(in_name,'M266') %M266 = 1;
+out_fname = 8;
+str1 = 'M266';
+
+elseif contains(in_name,'M263') %M263 = 1;
+out_fname = 9;
+str1 = 'M263';
+
+elseif contains(in_name,'M269') %M269 = 1;
+out_fname = 10;
+str1 = 'M269';
+
+elseif contains(in_name,'M265') %M265 = 1;
+out_fname = 11;
+str1 = 'M265';
+
+elseif contains(in_name,'M267') %M265 = 1;
+out_fname = 9;
+str1 = 'M263';
+
 end
