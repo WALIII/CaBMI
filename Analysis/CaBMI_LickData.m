@@ -1,6 +1,8 @@
 function  CaBMI_LickData(data,time);
 
 
+smooth_factor = 300;
+
 % find peaks using derivative of signal
 [Apks,Alocs] = findpeaks(diff(data(:,2)),'MinPeakProminence',1,'MinPeakDistance',60);
 % generate random locs
@@ -40,14 +42,34 @@ subplot(1,2,1)
 imagesc(G');
 subplot(1,2,2);
 hold on;
-rr = smooth(sum(G,2),300);
-rrF = smooth(sum(GF,2),300);
+rr = smooth(sum(G,2),smooth_factor);
+rrF = smooth(sum(GF,2),smooth_factor);
 plot((1:size(rr,1))/500-10,rr);
 plot((1:size(rr,1))/500-10,rrF,'--r');
 x = [5000/500-10 5000/500-10];
 y = [min(rr) max(rr)];
 plot(x,y,'--');
 
+
+col = hsv(3);
+figure(); 
+hold on;
+for i = 1:2
+    
+if i ==1;
+adata = G';
+else
+adata = GF';
+end
+
+L = size(adata,2);
+se = std(adata)/8;%/sqrt(length(adata));
+mn = smooth((sum(adata)/counter)',smooth_factor)';
+ 
+h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(i,:)); alpha(0.5);
+plot(mn,'Color',col(i,:));
+ 
+end
 %
 %
 %
