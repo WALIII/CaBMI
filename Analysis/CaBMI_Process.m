@@ -70,7 +70,7 @@ if metadata.ExpType == 1% for 1P data
     metadata.minSNR = 1.0;
 end
 
-if ExpType == 2% for 2P data
+if metadata.ExpType == 2% for 2P data
     metadata.fr = 30;                                         % frame rate
     metadata.tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
     metadata.K = 20;% used to be 7...                                            % number of components to be found
