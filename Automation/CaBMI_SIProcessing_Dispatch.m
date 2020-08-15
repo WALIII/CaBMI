@@ -38,4 +38,5 @@ for i =  1:length(subFolders)
     
     % collect and save data
 end
-
+cd(HDir);
+end

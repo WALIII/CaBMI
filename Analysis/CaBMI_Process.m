@@ -28,7 +28,7 @@ rmpath(genpath('C:\Users\WAL3\Documents\MATLAB\CNMF_E'));
 ExpType = 2;% 1, 2, 3
 sSub = 4;                                % spatial downsampling when processing
 tSub = 10;                                % Temporal downsampling
-motion_correct = false;                                         % perform motion correction
+motion_correct = true;                                         % perform motion correction
 non_rigid = false;
 ScanImageFormat = 1; % I
 
