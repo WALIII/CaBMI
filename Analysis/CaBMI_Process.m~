@@ -395,7 +395,6 @@ roi_ave.F_dff = F_dff;
 roi_ave.F_full = F_full;
 roi_ave.neuron_sn = S_dec;
 roi_ave.A = A_keep;
-roi_ave.metadata = metadata;
 
 
 save_dir='roi';
