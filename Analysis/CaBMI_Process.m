@@ -28,7 +28,7 @@ rmpath(genpath('C:\Users\WAL3\Documents\MATLAB\CNMF_E'));
 ExpType = 2;% 1, 2, 3
 sSub = 4;                                % spatial downsampling when processing
 tSub = 10;                                % Temporal downsampling
-motion_correct = true;                                         % perform motion correction
+motion_correct = false;                                         % perform motion correction
 non_rigid = false;
 ScanImageFormat = 1; % I
 
@@ -77,7 +77,7 @@ if ExpType == 2% for 2P data
     tau = 10;      %8                                    % std of gaussian kernel (half size of neuron)
     p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
     merge_thr = 0.7;                                  % merging threshold
-    minSNR = 2.5;                                     % minimum SNR for trace
+    minSNR = 3.5;                                     % minimum SNR for trace
 end
 
 
@@ -140,22 +140,21 @@ else
 end
 %% downsample h5 files and save into a single memory mapped matlab file
 if motion_correct
-    h5_files = subdir(fullfile(foldername,['*','nr.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+    if non_rigid ==1;
+        h5_files = subdir(fullfile(foldername,['*','nr.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+    else
+        h5_files = subdir(fullfile(foldername,['*','_mc.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+    end
 else
-    h5_files = subdir(fullfile(foldername,'*_mc.h5'));
+    h5_files = subdir(fullfile(foldername,'*.h5'));
 end
 
 
 
 
 ds_filename = [foldername,'/ds_data.mat'];
-try
-    data_type = class(read_file(h5_files(1).name,1,1));
-catch
-    h5_files = subdir(fullfile(foldername,'*.h5'));
-    data_type = class(read_file(h5_files(1).name,1,1));
-    
-end
+
+data_type = class(read_file(h5_files(1).name,1,1));
 
 data = matfile(ds_filename,'Writable',true);
 data.Y  = zeros([FOV,0],data_type);
