@@ -44,7 +44,7 @@ for i = 1:size(mov_listing,2)
    elseif contains(tname,'AFTER')
        output_name = 'T03';
    end
-
+% check if they exist
     h5create([output_name,'.h5'],'/mov',(size(I)),'Datatype',data_type);
     h5write([output_name,'.h5'],'/mov',I);
     clear GG I output_name

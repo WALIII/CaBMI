@@ -31,11 +31,14 @@ subFolders = files2(dirFlags2);
 % Print folder names to command window.
 
 for i =  1:length(subFolders)
+    %cd(HDir);
     cd(subFolders(i).name);
     fprintf('Sub folder #%d = %s\n', i, subFolders(i).name);
     
     CaBMI_Process('type',2);
-    
+     cd('../');
+          cd('../');
+
     % collect and save data
 end
 cd(HDir);
