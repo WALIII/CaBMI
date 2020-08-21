@@ -26,7 +26,7 @@ BMI_Data.MouseID = MouseID
 BMI_Data.condition = 1;
 BMI_Data.Frame = zeros(515,512);
 BMI_Data.frame_idx = 1;
-BMI_Data.Hit_Thresh = 3.5; % threshold for getting a 'hit' in SD
+BMI_Data.Hit_Thresh = 3.0; % threshold for getting a 'hit' in SD
 BMI_Data.Reset_Thresh = 1; % reset threshold ( in SD)
 BMI_Data.hit = 0; % index of hits
 BMI_Data.reward = 0; % index of rewards
@@ -41,7 +41,7 @@ BMI_Data.temp_frame_jitter = 0; % temp holder of frame jitter
 %Cursor Delay
 BMI_Data.cursor_offset = 0; % add n frames of delay between cursor and Direct neurons
 BMI_Data.BMIready = 0;
-
+BMI_Data.Magnification = 1.8;
 
 %% BASELINE
 filename = ['Baseline_BEFORE_',BMI_Data.MouseID];
@@ -123,6 +123,9 @@ time2run = 10; % minutes
 time2run_sec = time2run*60;% seconds
 time2run_frames = time2run_sec *30; % fps
 TotalFrames = round(time2run_frames);
+% Get Behavioral Data
+CaBMI_SI_acquireVoltageData
+%get data
 automatedGrab_BMI(TotalFrames,PATH,filename);
 pause(time2run_sec+5);
 disp('data finished collection!');

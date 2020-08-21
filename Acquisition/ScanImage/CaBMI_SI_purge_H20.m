@@ -5,7 +5,9 @@
 % lick data:
 
 PlotLicks = 1;
-type1 = 2;
+type1 = 1;
+times2 = 4;
+wait2 = 1;
 
 if PlotLicks ==1;
     s = daq.createSession('ni');
@@ -28,15 +30,15 @@ if PlotLicks ==1;
     
 end
 if type1 ==1;
-    for i = 1:1;
+    for i = 1:times2;
         
         fprintf(arduino,'%c',char(171)); pause(0.55); fprintf(arduino,'%c',char(197));% send answer variable content to arduino
-        pause(0.02)
+        pause(wait2)
     end
 elseif type1 ==2;
     % fine:
-    for i = 1:5;
-        fprintf(arduino,'%c',char(171)); pause(0.25); fprintf(arduino,'%c',char(17));% send answer variable content to arduino
+    for i = 1:4;
+        fprintf(arduino,'%c',char(171)); pause(0.55); fprintf(arduino,'%c',char(17));% send answer variable content to arduino
         pause(3)
     end
 end
