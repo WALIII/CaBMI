@@ -117,9 +117,7 @@ elseif strcmp(type,'std')
     max_proj=std(dff,[],3);
 end
 
-if exist('mask2use')>0
-    max_proj = mask2use.^exp;
-end
+if m
 %
 
 disp('Creating images...');
