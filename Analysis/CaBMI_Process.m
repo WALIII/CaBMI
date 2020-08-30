@@ -70,7 +70,7 @@ if metadata.ExpType == 1% for 1P data
     metadata.minSNR = 1.0;
 end
 
-if ExpType == 2% for 2P data
+if metadata.ExpType == 2% for 2P data
     metadata.fr = 30;                                         % frame rate
     metadata.tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
     metadata.K = 20;% used to be 7...                                            % number of components to be found
@@ -80,6 +80,7 @@ if ExpType == 2% for 2P data
     metadata.minSNR = 3.5;                                     % minimum SNR for trace
 end
 
+p = metadata.p
 
 
 % Start complete pipeline for calcium imaging data pre-processing
@@ -90,15 +91,18 @@ foldername = cd;
 
 
 % convert to .h5, with preprocessing...
-if ScanImageFormat ==1; % check if .h5 files exist..
-    mov_listing=dir(fullfile(pwd,'*.h5'));
-    mov_listing={mov_listing(:).name};
-    filenames=mov_listing;
-    if size(mov_listing,2)>0;
+if metadata.ScanImageFormat ==1; % check if .h5 files exist..
+    %     mov_listing=dir(fullfile(pwd,'*.h5'));
+    %     mov_listing={mov_listing(:).name};
+    %     filenames=mov_listing;
+    %    if size(mov_listing,2)>0;
+    if exist('H5_files')>0;
         disp(' ScanImage Files already extracted');
+        cd('H5_files');
     else
         CaBMI_FixTif
     end
+    
 end
 
 %% Load Files
@@ -112,13 +116,22 @@ numFiles = length(files);
 %% motion correct (and save registered h5 files as 2d matrices (to be used in the end)..)
 % register files one by one. use template obtained from file n to
 % initialize template of file n + 1;
+%% downsample h5 files and save into a single memory mapped matlab file
+if metadata.motion_correct
+    h5_files = subdir(fullfile(foldername,['*','rig.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+else
+    h5_files = subdir(fullfile(foldername,'*.h5'));
+end
 
-if exist('ds_data.mat','file') >= 1 %
+
+
+if size(h5_files,1) >= 1 %
     disp('data exists from previous extraction...');
+    numFiles = numFiles-length(h5_files);
 else
     disp('No previous extractions detected');
     % flag for non-rigid motion correction
-    if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
+    if metadata.non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
     options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
         'overlap_pre',64,'mot_uf',4,'bin_width',200,'max_shift',24,'max_dev',8,'us_fac',50,...
         'output_type','h5');
@@ -129,7 +142,7 @@ else
         fullname = files(i).name;
         [folder_name,file_name,ext] = fileparts(fullname);
         options_mc.h5_filename = fullfile(folder_name,[file_name,append,'.h5']);
-        if motion_correct
+        if metadata.motion_correct
             [M,shifts,template,options_mc,col_shift] = normcorre_batch(fullname,options_mc,template);
             save(fullfile(folder_name,[file_name,'_shifts',append,'.mat']),'shifts','-v7.3');           % save shifts of each file at the respective folder
         else    % if files are already motion corrected convert them to h5
@@ -139,12 +152,8 @@ else
     
 end
 %% downsample h5 files and save into a single memory mapped matlab file
-if motion_correct
-    if non_rigid ==1;
-        h5_files = subdir(fullfile(foldername,['*','nr.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
-    else
-        h5_files = subdir(fullfile(foldername,['*','_mc.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
-    end
+if metadata.motion_correct
+    h5_files = subdir(fullfile(foldername,['*','rig.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
 else
     h5_files = subdir(fullfile(foldername,'*.h5'));
 end
@@ -229,7 +238,7 @@ options = CNMFSetParms(...
 
 %% Run on patches (the main work is done here)
 
-[A,b,C,f,S,P,RESULTS,YrA] = run_CNMF_patches(data,K,patches,tau,0,options);  % do not perform deconvolution here since
+[A,b,C,f,S,P,RESULTS,YrA] = run_CNMF_patches(data,metadata.K,patches,metadata.tau,0,options);  % do not perform deconvolution here since
 % we are operating on downsampled data
 %% compute correlation image on a small sample of the data (optional - for visualization purposes)
 %Cn = correlation_image_max(data.Y,8);
@@ -335,7 +344,7 @@ if exist('YrAk','var'); R_keep = YrAk; else; R_keep = YrA(keep,:); end
 
 %% extract fluorescence on native temporal resolution
 
-options.fr = options.fr*tsub;                   % revert to origingal frame rate
+options.fr = options.fr*metadata.tsub;                   % revert to origingal frame rate
 N = size(C_keep,1);                             % total number of components
 T = sum(Ts);                                    % total number of timesteps
 C_full = imresize(C_keep,[N,T]);                % upsample to original frame rate
@@ -395,6 +404,7 @@ roi_ave.F_dff = F_dff;
 roi_ave.F_full = F_full;
 roi_ave.neuron_sn = S_dec;
 roi_ave.A = A_keep;
+metadata.options = options;
 roi_ave.metadata = metadata;
 
 

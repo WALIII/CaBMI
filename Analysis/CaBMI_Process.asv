@@ -25,12 +25,12 @@ rmpath(genpath('C:\Users\WAL3\Documents\MATLAB\CNMF_E'));
 
 
 % Initial Params
-ExpType = 2;% 1, 2, 3
-sSub = 4;                                % spatial downsampling when processing
-tSub = 10;                                % Temporal downsampling
-motion_correct = false;                                         % perform motion correction
-non_rigid = false;
-ScanImageFormat = 1; % I
+metadata.ExpType = 2;% 1, 2, 3
+metadata.sSub = 4;                                % spatial downsampling when processing
+metadata.tSub = 10;                                % Temporal downsampling
+metadata.motion_correct = true;                                         % perform motion correction
+metadata.non_rigid = false;
+metadata.ScanImageFormat = 1; % I
 
 
 nparams=length(varargin);
@@ -43,41 +43,41 @@ end
 for i=1:2:nparams
     switch lower(varargin{i})
         case 'type'
-            ExpType=varargin{i+1};
+            metadata.ExpType=varargin{i+1};
         case 'filt_alpha'
-            filt_alpha=varargin{i+1};
+            metadata.filt_alpha=varargin{i+1};
         case 'lims'
-            lims=varargin{i+1};
+            metadata.lims=varargin{i+1};
         case 'baseline'
-            per=varargin{i+1};
+            metadata.per=varargin{i+1};
         case 'sSub'
-            sSub=varargin{i+1};
+            metadata.sSub=varargin{i+1};
         case 'tSub'
-            tSub=varargin{i+1};
+            metadata.tSub=varargin{i+1};
         case 'scanimage'
-            ScanImageFormat=varargin{i+1};
+            metadata.ScanImageFormat=varargin{i+1};
     end
 end
 
 
-if ExpType == 1% for 1P data
-    fr = 20;                                         % frame rate
-    tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-    K = 20;      %30                                      % number of components to be found
-    tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)
-    p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
-    merge_thr = 0.8;                                  % merging threshold
-    minSNR = 1.0;
+if metadata.ExpType == 1% for 1P data
+    metadata.fr = 20;                                         % frame rate
+    metadata.tsub = 5;                                         % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+    metadata.K = 20;      %30                                      % number of components to be found
+    metadata.tau = 5;      %4                                    % std of gaussian kernel (half size of neuron)
+    metadata.p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+    metadata.merge_thr = 0.8;                                  % merging threshold
+    metadata.minSNR = 1.0;
 end
 
-if ExpType == 2% for 2P data
-    fr = 30;                                         % frame rate
-    tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
-    K = 20;% used to be 7...                                            % number of components to be found
-    tau = 10;      %8                                    % std of gaussian kernel (half size of neuron)
-    p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
-    merge_thr = 0.7;                                  % merging threshold
-    minSNR = 7;                                     % minimum SNR for trace
+if metadata.ExpType == 2% for 2P data
+    metadata.fr = 30;                                         % frame rate
+    metadata.tsub = 5;                                        % degree of downsampling (for 30Hz imaging rate you can try also larger, e.g. 8-10)
+    metadata.K = 20;% used to be 7...                                            % number of components to be found
+    metadata.tau = 10;      %8                                    % std of gaussian kernel (half size of neuron)
+    metadata.p = 2;                                            % order of autoregressive system (p = 0 no dynamics, p=1 just decay, p = 2, both rise and decay)
+    metadata.merge_thr = 0.7;                                  % merging threshold
+    metadata.minSNR = 3.5;                                     % minimum SNR for trace
 end
 
 
@@ -90,15 +90,17 @@ foldername = cd;
 
 
 % convert to .h5, with preprocessing...
-if ScanImageFormat ==1; % check if .h5 files exist..
-    mov_listing=dir(fullfile(pwd,'*.h5'));
-    mov_listing={mov_listing(:).name};
-    filenames=mov_listing;
-    if size(mov_listing,2)>0;
+if metadata.ScanImageFormat ==1; % check if .h5 files exist..
+    %     mov_listing=dir(fullfile(pwd,'*.h5'));
+    %     mov_listing={mov_listing(:).name};
+    %     filenames=mov_listing;
+    %    if size(mov_listing,2)>0;
+    if exist('H5_files')>0;
         disp(' ScanImage Files already extracted');
     else
         CaBMI_FixTif
     end
+    cd('H5_files');
 end
 
 %% Load Files
@@ -112,13 +114,22 @@ numFiles = length(files);
 %% motion correct (and save registered h5 files as 2d matrices (to be used in the end)..)
 % register files one by one. use template obtained from file n to
 % initialize template of file n + 1;
+%% downsample h5 files and save into a single memory mapped matlab file
+if metadata.motion_correct
+        h5_files = subdir(fullfile(foldername,['*','rig.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
+else
+    h5_files = subdir(fullfile(foldername,'*.h5'));
+end
 
-if exist('ds_data.mat','file') >= 1 %
+
+
+if size(h5_files,1) >= 1 %
     disp('data exists from previous extraction...');
+    numFiles = numFiles-
 else
     disp('No previous extractions detected');
     % flag for non-rigid motion correction
-    if non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
+    if metadata.non_rigid; append = '_nr'; else; append = '_rig'; end        % use this to save motion corrected files
     options_mc = NoRMCorreSetParms('d1',FOV(1),'d2',FOV(2),'grid_size',[128,128],'init_batch',200,...
         'overlap_pre',64,'mot_uf',4,'bin_width',200,'max_shift',24,'max_dev',8,'us_fac',50,...
         'output_type','h5');
@@ -129,7 +140,7 @@ else
         fullname = files(i).name;
         [folder_name,file_name,ext] = fileparts(fullname);
         options_mc.h5_filename = fullfile(folder_name,[file_name,append,'.h5']);
-        if motion_correct
+        if metadata.motion_correct
             [M,shifts,template,options_mc,col_shift] = normcorre_batch(fullname,options_mc,template);
             save(fullfile(folder_name,[file_name,'_shifts',append,'.mat']),'shifts','-v7.3');           % save shifts of each file at the respective folder
         else    % if files are already motion corrected convert them to h5
@@ -139,12 +150,8 @@ else
     
 end
 %% downsample h5 files and save into a single memory mapped matlab file
-if motion_correct
-    if non_rigid ==1;
-        h5_files = subdir(fullfile(foldername,['*','nr.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
-    else
-        h5_files = subdir(fullfile(foldername,['*','_mc.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
-    end
+if metadata.motion_correct
+        h5_files = subdir(fullfile(foldername,['*','rig.h5']));  % list of h5 files (modify this to list all the motion corrected files you need to process)
 else
     h5_files = subdir(fullfile(foldername,'*.h5'));
 end
@@ -162,7 +169,7 @@ data.Yr = zeros([prod(FOV),0],data_type);
 data.sizY = [FOV,0];
 F_dark = Inf;                                    % dark fluorescence (min of all data)
 batch_size = 2000;                               % read chunks of that size
-batch_size = round(batch_size/tsub)*tsub;        % make sure batch_size is divisble by tsub
+batch_size = round(batch_size/metadata.tsub)*metadata.tsub;        % make sure batch_size is divisble by tsub
 Ts = zeros(numFiles,1);                          % store length of each file
 cnt = 0;                                         % number of frames processed so far
 tt1 = tic;
@@ -172,9 +179,9 @@ for i = 1:numFiles
     dims = info.Datasets.Dataspace.Size;
     ndimsY = length(dims);                       % number of dimensions (data array might be already reshaped)
     Ts(i) = dims(end);
-    Ysub = zeros(FOV(1),FOV(2),floor(Ts(i)/tsub),data_type);
-    data.Y(FOV(1),FOV(2),sum(floor(Ts/tsub))) = zeros(1,data_type);
-    data.Yr(prod(FOV),sum(floor(Ts/tsub))) = zeros(1,data_type);
+    Ysub = zeros(FOV(1),FOV(2),floor(Ts(i)/metadata.tsub),data_type);
+    data.Y(FOV(1),FOV(2),sum(floor(Ts/metadata.tsub))) = zeros(1,data_type);
+    data.Yr(prod(FOV),sum(floor(Ts/metadata.tsub))) = zeros(1,data_type);
     cnt_sub = 0;
     for t = 1:batch_size:Ts(i)
         Y = bigread2(name,t,min(batch_size,Ts(i)-t+1));
@@ -183,7 +190,7 @@ for i = 1:numFiles
         ln = size(Y,ndimsY);
         Y = reshape(Y,[FOV,ln]);
         if size(Y,3)>10;
-            Y = cast(downsample_data(Y,'time',tsub),data_type);
+            Y = cast(downsample_data(Y,'time',metadata.tsub),data_type);
         end
         ln = size(Y,3);
         Ysub(:,:,cnt_sub+1:cnt_sub+ln) = Y;
@@ -210,21 +217,21 @@ options = CNMFSetParms(...
     'd1',sizY(1),'d2',sizY(2),...
     'deconv_method','constrained_foopsi',...    % neural activity deconvolution method
     'temporal_iter',2,...                       % number of block-coordinate descent steps
-    'ssub',sSub,...                                % spatial downsampling when processing
-    'tsub',tSub,...                                % further temporal downsampling when processing
-    'merge_thr',merge_thr,...                   % merging threshold
-    'gSig',tau,...
+    'ssub',metadata.sSub,...                                % spatial downsampling when processing
+    'tsub',metadata.tSub,...                                % further temporal downsampling when processing
+    'merge_thr',metadata.merge_thr,...                   % merging threshold
+    'gSig',metadata.tau,...
     'max_size_thr',400,'min_size_thr',90,...    % max/min acceptable size for each component
     'spatial_method','regularized',...          % method for updating spatial components
     'df_prctile',50,...                         % take the median of background fluorescence to compute baseline fluorescence
-    'fr',fr/tsub,...                            % downsamples
+    'fr',metadata.fr/metadata.tsub,...                            % downsamples
     'space_thresh',0.5,...                      % space correlation acceptance threshold
-    'min_SNR',minSNR,...                           % trace SNR acceptance threshold
+    'min_SNR',metadata.minSNR,...                           % trace SNR acceptance threshold
     'cnn_thr',0.2,...                           % cnn classifier acceptance threshold
     'nb',1,...                                  % number of background components per patch
     'gnb',3,...                                 % number of global background components
     'decay_time',0.5,...                        % length of typical transient for the indicator used
-    'p',p...
+    'p',metadata.p...
     );
 
 %% Run on patches (the main work is done here)
@@ -395,6 +402,7 @@ roi_ave.F_dff = F_dff;
 roi_ave.F_full = F_full;
 roi_ave.neuron_sn = S_dec;
 roi_ave.A = A_keep;
+roi_ave.metadata = metadata;
 
 
 save_dir='roi';
