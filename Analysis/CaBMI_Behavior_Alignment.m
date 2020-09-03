@@ -58,7 +58,6 @@ end
 Chp  = size(RewMov,4)/3;
 
 MRewMov = squeeze(median(RewMov(:,:,:,1:Chp),4));
-MRewMov_actual = MRewMov;
 MRewMov = MRewMov-median(MRewMov(:,:,:),3);
 
 MRewMov2 = squeeze(median(RewMov(:,:,:,Chp:(Chp*2)),4));
@@ -82,7 +81,7 @@ MRewMov__odd = MRewMov_odd-median(MRewMov_odd(:,:,:),3);
 
 % figure();
 % for i = 1: 200%size(RewMov,3);
-%     imagesc(RGB1(:,:,:,i),[0 70]);
+%     imagesc(RGB1(:,:,:,i),[0 60]);
 %     pause(0.05);
 % end
 
@@ -90,7 +89,7 @@ if playVid ==1;
     figure();
     for i = 1: size(RewMov,3);
         colormap(gray);
-        imagesc(MRewMov3(:,:,i),[0,70]);
+        imagesc(MRewMov3(:,:,i),[0,60]);
         pause(0.05);
     end
 end
@@ -118,9 +117,9 @@ plot(smooth(cc,5),'b')
 
 
 % calculate STD differences:
-X1 = std(MRewMov(:,:,70:101),[],3)-std(MRewMov(:,:,1:30),[],3);
-X2 = std(MRewMov2(:,:,70:101),[],3)-std(MRewMov2(:,:,1:30),[],3);
-X3 = std(MRewMov3(:,:,70:101),[],3)-std(MRewMov3(:,:,1:30),[],3);
+X1 = std(MRewMov(:,:,60:101),[],3)-std(MRewMov(:,:,1:30),[],3);
+X2 = std(MRewMov2(:,:,60:101),[],3)-std(MRewMov2(:,:,1:30),[],3);
+X3 = std(MRewMov3(:,:,60:101),[],3)-std(MRewMov3(:,:,1:30),[],3);
 
 figure();
 subplot(1,4,1);
@@ -139,7 +138,7 @@ imagesc(X3,[-10 10]);
 colorbar
 
 figure();
-X4 = std(MRewMov4(:,:,70:101),[],3)-std(MRewMov4(:,:,1:30),[],3);
+X4 = std(MRewMov4(:,:,60:101),[],3)-std(MRewMov4(:,:,1:30),[],3);
 subplot(1,2,1)
 imagesc((X4));
 title('std image')
@@ -149,8 +148,8 @@ imagesc(abs(X4));
 title('absolute value of std image')
 
 
-X_even = std(MRewMov_even(:,:,70:101),[],3)-std(MRewMov_even(:,:,1:30),[],3);
-X_odd = std(MRewMov_odd(:,:,70:101),[],3)-std(MRewMov_odd(:,:,1:30),[],3);
+X_even = std(MRewMov_even(:,:,60:101),[],3)-std(MRewMov_even(:,:,1:30),[],3);
+X_odd = std(MRewMov_odd(:,:,60:101),[],3)-std(MRewMov_odd(:,:,1:30),[],3);
 
 figure();
 imagesc(X_even.*X_odd);
@@ -160,7 +159,7 @@ imagesc(X_even.*X_odd);
 % PCA movie
 if PCA_Movie ==1
     disp('plotting the PC');
-    [pcaImage] = CaBMI_PCA_Mov_Plotting(MRewMov3(:,:,70:100));
+    [pcaImage] = CaBMI_PCA_Mov_Plotting(MRewMov4(:,:,60:100));
     
     % Plot PC data:
     
@@ -168,8 +167,8 @@ if PCA_Movie ==1
     for ii = 1:3
             PC_idx = imbinarize(pcaImage(:,:,ii)-mean(pcaImage,3));
 
-        for i = 1: size(MRewMov,3)
-            temp = MRewMov(:,:,i);
+        for i = 1: size(MRewMov4,3)
+            temp = MRewMov4(:,:,i);
             temp =  temp.*PC_idx;
             PC_TS(ii,i) = squeeze(mean(mean(temp,1),2));
         end
@@ -195,7 +194,7 @@ close(1);
 figure(1);
 
 
-[im1_rgb norm_max_proj{i},I{i},idx_img{i}] = CABMI_allpxs(MRewMov4(:,:,70:101),'filt_rad',3,'exp',4);
+[im1_rgb norm_max_proj{i},I{i},idx_img{i}] = CABMI_allpxs(MRewMov4(:,:,60:101),'filt_rad',2,'exp',4);
 
 
 
@@ -206,12 +205,12 @@ imagesc((squeeze(RewMov(:,:,100,2))))
 colormap(gray); freezeColors;
 
 hold on
-OverlayImage =  imagesc(mat2gray(abs(X4).^2));
+OverlayImage =  imagesc(abs(X4));
 caxis auto  
 colormap( OverlayImage.Parent, hot );
-alpha = (~isnan(mat2gray(X4)))*0.6;
+alpha = (~isnan(mat2gray(X4)))*0.8;
 set( OverlayImage, 'AlphaData', alpha );
-
+colorbar();
 
 
 figure();
