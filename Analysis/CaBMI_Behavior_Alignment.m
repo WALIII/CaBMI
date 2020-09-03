@@ -7,7 +7,7 @@ function [RewMov] =  CaBMI_Behavior_Alignment(Yf);
 %params:
 playManyMov = 0 ;
 playVid = 0;
-PCA_Movie = 1;
+PCA_Movie = 0;
 
 Y2 = mean(Yf,3);
 try
@@ -75,7 +75,7 @@ MRewMov4 = MRewMov4-median(MRewMov4(:,:,:),3);
 MRewMov_even = squeeze(median(RewMov(:,:,:,1:2:end),4));
 MRewMov_even = MRewMov_even-median(MRewMov_even(:,:,:),3);
 
-MRewMov_odd = squeeze(median(RewMov(:,:,:,1:2:end),4));
+MRewMov_odd = squeeze(median(RewMov(:,:,:,2:2:end),4));
 MRewMov__odd = MRewMov_odd-median(MRewMov_odd(:,:,:),3);
 
 %for ii = 1:200
@@ -147,7 +147,7 @@ imagesc((X4));
 title('std image')
 
 subplot(1,2,2);
-imagesc(abs(X4-meadian(X4(:))));
+imagesc(abs(X4-median(X4(:))));
 title('absolute value of std image')
 
 
@@ -155,7 +155,13 @@ X_even = std(MRewMov_even(:,:,60:101),[],3)-std(MRewMov_even(:,:,1:30),[],3);
 X_odd = std(MRewMov_odd(:,:,60:101),[],3)-std(MRewMov_odd(:,:,1:30),[],3);
 
 figure();
-imagesc(X_even.*X_odd);
+subplot(121)
+imagesc(abs(X_even-median(X_even(:))));
+title('even trials');
+
+subplot(122)
+imagesc(abs(X_odd-median(X_odd(:))));
+title('odd trials');
 
 
 
@@ -189,6 +195,8 @@ for i = 1: size(MRewMov4,3)
 end
 % figure(); plot(STD_TS);
 
+
+if playVid ==1;
 %% Plot based on the dff video
 dff_vid = diff(Raw_MRewMov4,3);
 figure();
@@ -199,6 +207,7 @@ for i = 1: 200;
 end
 GG = squeeze(mean(mean(GGt,2),1));
 figure(); plot(GG)
+end
 
 
 
