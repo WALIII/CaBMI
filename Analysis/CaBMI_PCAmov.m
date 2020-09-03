@@ -35,7 +35,7 @@ listOfRGBValues = double(reshape(mov_data2, rows * columns, frames));
 [coeff, score] = fastICA(listOfRGBValues,5);
 
 % Take the coefficients and transform the RGB list into a PCA list.
-transformedImagePixelList = listOfRGBValues * coeff;
+transformedImagePixelList = listOfRGBValues .* coeff;
 
 
 
