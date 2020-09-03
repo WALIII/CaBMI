@@ -147,7 +147,7 @@ imagesc((X4));
 title('std image')
 
 subplot(1,2,2);
-imagesc(abs(X4));
+imagesc(abs(X4-meadian(X4(:))));
 title('absolute value of std image')
 
 
