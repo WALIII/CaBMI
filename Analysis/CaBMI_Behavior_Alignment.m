@@ -28,7 +28,7 @@ for i = 1:size(Yf,3);
 end
 
 pVect = double(zscore((cc)));
-[Bpks,Blocs] = findpeaks(zscore(diff(pVect)),'MinPeakProminence',4,'MinPeakDistance',2);
+[Bpks,Blocs] = findpeaks(zscore(diff(pVect)),'MinPeakHeight',5,'MinPeakDistance',2);
 
 figure();
 hold on;
@@ -67,6 +67,7 @@ MRewMov3 = squeeze(median(RewMov(:,:,:,(Chp*2):(Chp*3)-1),4));
 MRewMov3 = MRewMov3-median(MRewMov3(:,:,:),3);
 
 MRewMov4 = squeeze(median(RewMov(:,:,:,:),4));
+Raw_MRewMov4 = squeeze(median(RewMov(:,:,:,:),4));
 MRewMov4 = MRewMov4-median(MRewMov4(:,:,:),3);
 
 MRewMov_even = squeeze(median(RewMov(:,:,:,1:2:end),4));
@@ -179,12 +180,24 @@ end
 % Plot based on the STD image
 mask1 = mat2gray((X4));
 mask2 = mat2gray(abs(X4));
-for i = 1: size(MRewMov,3)
-            temp = MRewMov(:,:,i);
+for i = 1: size(MRewMov4,3)
+            temp = MRewMov4(:,:,i);
             temp =  temp.*mask2;
             STD_TS(i) = squeeze(mean(mean(temp,1),2));
 end
-figure(); plot(STD_TS);
+% figure(); plot(STD_TS);
+
+%% Plot based on the dff video
+dff_vid = diff(Raw_MRewMov4,3);
+figure(); 
+for i = 1: 200; 
+    GGt(:,:,i) = abs(dff_vid(:,:,i)-mean(dff_vid,3));
+    imagesc(GGt(:,:,i),[0 200]); 
+    colormap(hot); pause(0.03);
+end
+GG = squeeze(mean(mean(GGt,2),1));
+figure(); plot(GG)
+
 
 
 
