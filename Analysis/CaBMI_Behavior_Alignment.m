@@ -44,6 +44,15 @@ for i = 1:size(Blocs,2)
     RewMov(:,:,:,i) = Yf(:,:,Blocs(i)-100:Blocs(i)+100);
 end
 
+Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+% create null block
+for i = 1:size(Blocs,2)
+    try
+    RewMov_null(:,:,:,i) = Yf(:,:,Blocs2(i)-100:Blocs2(i)+100);
+    catch
+    end
+end
+
 % play so many movy:
 if playManyMov ==1
     figure();
@@ -71,6 +80,11 @@ MRewMov3 = MRewMov3-median(MRewMov3(:,:,:),3);
 MRewMov4 = squeeze(median(RewMov(:,:,:,:),4));
 Raw_MRewMov4 = squeeze(median(RewMov(:,:,:,:),4));
 MRewMov4 = MRewMov4-median(MRewMov4(:,:,:),3);
+
+% Null mov:
+MRewMov_n = squeeze(median(RewMov_null(:,:,:,:),4));
+MRewMov_n  = MRewMov_n -median(MRewMov_n (:,:,:),3);
+
 
 MRewMov_even = squeeze(median(RewMov(:,:,:,1:2:end),4));
 MRewMov_even = MRewMov_even-median(MRewMov_even(:,:,:),3);
@@ -201,9 +215,23 @@ for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
     STD_TS(i) = squeeze(mean(mean(temp,1),2));
+    
+    temp2 = MRewMov_n(:,:,i);
+    temp2 =  temp2.*mask2;
+    STD_TS_n(i) = squeeze(mean(mean(temp2,1),2));
+
 end
-figure(); hold on; plot(zscore(STD_TS)); plot([100 100],[-2 4],'r--')
+figure(); 
+hold on; 
+GGG = cat(2,STD_TS,STD_TS_n);
+GGG = zscore(GGG);
+plot(GGG(1:201));
+plot(GGG(201:401));
+
+plot([100 100],[-2 4],'r--')
 title('STD based ROI');
+xlabel('Frames')
+ylabel('z-score');
 
 
 if playVid ==1;

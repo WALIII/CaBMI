@@ -44,6 +44,12 @@ for i = 1:size(Blocs,2)
     RewMov(:,:,:,i) = Yf(:,:,Blocs(i)-100:Blocs(i)+100);
 end
 
+Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+% create null block
+for i = 1:size(Blocs,2)
+    RewMov_null(:,:,:,i) = Yf(:,:,Blocs2(i)-100:Blocs2(i)+100);
+end
+
 % play so many movy:
 if playManyMov ==1
     figure();
@@ -71,6 +77,11 @@ MRewMov3 = MRewMov3-median(MRewMov3(:,:,:),3);
 MRewMov4 = squeeze(median(RewMov(:,:,:,:),4));
 Raw_MRewMov4 = squeeze(median(RewMov(:,:,:,:),4));
 MRewMov4 = MRewMov4-median(MRewMov4(:,:,:),3);
+
+% Null mov:
+MRewMov_n = squeeze(median(RewMov_null(:,:,:,:),4));
+MRewMov_n  = MRewMov_n -median(MRewMov_n (:,:,:),3);
+
 
 MRewMov_even = squeeze(median(RewMov(:,:,:,1:2:end),4));
 MRewMov_even = MRewMov_even-median(MRewMov_even(:,:,:),3);
@@ -151,7 +162,7 @@ imagesc(abs(X4-median(X4(:))));
 title('absolute value of std image')
 
 subplot(1,3,3);
-X4_2 = X4-mean(X4(:));
+X4_2 = X4-median(X4(:));
 X4_2(X4_2<0) = 0;
 imagesc(X4_2);
 title('absolute value of std image')
@@ -162,11 +173,15 @@ X_odd = std(MRewMov_odd(:,:,60:101),[],3)-std(MRewMov_odd(:,:,1:30),[],3);
 
 figure();
 subplot(121)
-imagesc(abs(X_even-median(X_even(:))));
+Ev = (X_even-median(X_even(:)));
+Ev(Ev<0) = 0;
+imagesc(Ev);
 title('even trials');
 
 subplot(122)
-imagesc(abs(X_odd-median(X_odd(:))));
+Od = (X_odd-median(X_odd(:)));
+Od(Od<0) = 0;
+imagesc(Od);
 title('odd trials');
 
 
@@ -192,15 +207,25 @@ if PCA_Movie ==1
 end
 
 % Plot based on the STD image
-mask1 = mat2gray((X4));
-mask2 = mat2gray(abs(X4));
+mask2 = mat2gray(X4_2);
 for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
     STD_TS(i) = squeeze(mean(mean(temp,1),2));
     
+    temp2 = MRewMov_n(:,:,i);
+    temp2 =  temp2.*mask2;
+    STD_TS_n(i) = squeeze(mean(mean(temp2,1),2));
+
 end
-figure(); plot(STD_TS);
+figure(); 
+hold on; 
+GGG = cat(2,STD_TS,STD_TS_n);
+GGG = zscore(GGG);
+plot(GGG(1:201));
+plot(GGG(201:401));
+
+plot([100 100],[-2 4],'r--')
 title('STD based ROI');
 
 
@@ -260,10 +285,10 @@ imagesc((squeeze(RewMov(:,:,100,2))))
 colormap(gray); freezeColors;
 
 hold on
-OverlayImage =  imagesc(abs(X4));
+OverlayImage =  imagesc(X4_2);
 caxis auto
 colormap( OverlayImage.Parent, hot );
-alpha = (~isnan(mat2gray(X4)))*0.8;
+alpha = (~isnan(mat2gray(X4_2)))*0.8;
 set( OverlayImage, 'AlphaData', alpha );
 colorbar();
 
