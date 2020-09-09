@@ -30,7 +30,7 @@ for i = 1:size(Yf,3);
 end
 
 pVect = double(zscore((cc)));
-[Bpks,Blocs] = findpeaks(zscore(diff(pVect)),'MinPeakHeight',5,'MinPeakDistance',2);
+[Bpks,Blocs] = findpeaks(zscore(diff(pVect)),'MinPeakHeight',4,'MinPeakDistance',2);
 
 figure();
 hold on;
@@ -142,12 +142,18 @@ colorbar
 
 figure();
 X4 = std(MRewMov4(:,:,60:101),[],3)-std(MRewMov4(:,:,1:30),[],3);
-subplot(1,2,1)
+subplot(1,3,1)
 imagesc((X4));
 title('std image')
 
-subplot(1,2,2);
+subplot(1,3,2);
 imagesc(abs(X4-median(X4(:))));
+title('absolute value of std image')
+
+subplot(1,3,3);
+X4_2 = X4-median(X4(:));
+X4_2(X4_2<0) = 0;
+imagesc(X4_2);
 title('absolute value of std image')
 
 
@@ -156,11 +162,15 @@ X_odd = std(MRewMov_odd(:,:,60:101),[],3)-std(MRewMov_odd(:,:,1:30),[],3);
 
 figure();
 subplot(121)
-imagesc(abs(X_even-median(X_even(:))));
+Ev = (X_even-median(X_even(:)));
+Ev(Ev<0) = 0;
+imagesc(Ev);
 title('even trials');
 
 subplot(122)
-imagesc(abs(X_odd-median(X_odd(:))));
+Od = (X_odd-median(X_odd(:)));
+Od(Od<0) = 0;
+imagesc(Od);
 title('odd trials');
 
 
@@ -186,28 +196,51 @@ if PCA_Movie ==1
 end
 
 % Plot based on the STD image
-mask1 = mat2gray((X4));
-mask2 = mat2gray(abs(X4));
+mask2 = mat2gray(X4_2);
 for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
     STD_TS(i) = squeeze(mean(mean(temp,1),2));
 end
-% figure(); plot(STD_TS);
+figure(); hold on; plot(zscore(STD_TS)); plot([100 100],[-2 4],'r--')
+title('STD based ROI');
 
 
 if playVid ==1;
+    clear GGt dff_vid
 %% Plot based on the dff video
-dff_vid = diff(Raw_MRewMov4,3);
+dff_vid = MRewMov4;
 figure();
 for i = 1: 200;
-    GGt(:,:,i) = abs(dff_vid(:,:,i)-mean(dff_vid,3));
-    imagesc(GGt(:,:,i),[0 200]);
+    GGt(:,:,i) = abs(dff_vid(:,:,i)-median(dff_vid,3));
+    imagesc(GGt(:,:,i),[0 120]);
     colormap(hot); pause(0.03);
 end
 GG = squeeze(mean(mean(GGt,2),1));
 figure(); plot(GG)
 end
+
+% 
+% 
+% % plot all mean vectors:
+% for i = 1:size(RewMov,4)
+% Rtemp = squeeze(RewMov(:,:,:,i));
+% for ii = 1:200;
+% R(:,:,ii) = abs(Rtemp(:,:,ii)-mean(Rtemp,3));
+% end
+% Rgg(:,i) = squeeze(mean(mean(R,2),1));
+% end
+% figure(); 
+% hold on;
+% cmap = hot(size(Rgg,2));
+% for i= 1:size(Rgg,2)
+%     plot(smooth(Rgg(:,i),10),'color',cmap(i,:));
+% end
+% 
+% 
+
+
+
 
 
 
@@ -229,10 +262,10 @@ imagesc((squeeze(RewMov(:,:,100,2))))
 colormap(gray); freezeColors;
 
 hold on
-OverlayImage =  imagesc(abs(X4));
+OverlayImage =  imagesc(X4_2);
 caxis auto
 colormap( OverlayImage.Parent, hot );
-alpha = (~isnan(mat2gray(X4)))*0.8;
+alpha = (~isnan(mat2gray(X4_2)))*0.8;
 set( OverlayImage, 'AlphaData', alpha );
 colorbar();
 
@@ -248,4 +281,37 @@ caxis auto
 colormap( OverlayImage.Parent, hot );
 alpha = (~isnan(mat2gray(X4)))*0.6;
 set( OverlayImage, 'AlphaData', alpha );
+
+
+
+
+if playVid ==1;
+%% Plot based on the dff video
+dff_vid = diff(Raw_MRewMov4,2,3);
+figure();
+for i = 1: 200;
+    
+    
+colormap(gray)
+imagesc(squeeze(MRewMov4(:,:,i)));
+colormap(gray); freezeColors;
+
+hold on
+ GGt(:,:,i) = abs(dff_vid(:,:,i)-mean(dff_vid,3));
+%     
+    OverlayImage = imagesc(GGt(:,:,i),[0 150]);
+    
+caxis auto
+colormap( OverlayImage.Parent, hot );
+alpha = (~isnan(mat2gray(X4)))*0.6;
+set( OverlayImage, 'AlphaData', alpha );
+
+pause(0.01);
+   
+end
+GG = squeeze(mean(mean(GGt,2),1));
+figure(); plot(GG)
+end
+
+
 
