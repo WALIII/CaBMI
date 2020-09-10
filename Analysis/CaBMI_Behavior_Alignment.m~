@@ -21,8 +21,9 @@ catch
     
 end
 
-
-
+% Plot the whole time-series:
+Mov_Vect = smooth(abs(diff(squeeze(mean(mean(Yf-median(Yf,3),2),1)))),1);
+figure(); plot(Mov_Vect)
 % itteratively, to save ram..
 for i = 1:size(Yf,3);
     h =  mean( Yf(ROI.coordinates{1}(:,2),ROI.coordinates{1}(:,1),i),1);
@@ -38,13 +39,36 @@ plot(pVect);
 plot(Blocs,ones(size(Blocs))+4,'*');
 
 
+Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+
 % * index into frames:
 clear RewMov MRewMov
 for i = 1:size(Blocs,2)
     RewMov(:,:,:,i) = Yf(:,:,Blocs(i)-100:Blocs(i)+100);
+    Des_Mov_Vect(i) = mean(Mov_Vect(Blocs(i)-10:Blocs(i)));
+        Des_Mov_Vect_n(i) = median(Mov_Vect(Blocs2(i)-10:Blocs2(i)));
+
 end
 
-Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+figure(); hold on;
+plot(Des_Mov_Vect,'r*');
+title(' Raw Movement over time')
+%plot(Des_Mov_Vect_n,'b*');
+
+clear idx1 var_to_plot
+n_epochs = 6;
+idx1 = 1:floor(size(Des_Mov_Vect,2)/n_epochs):size(Des_Mov_Vect,2); % 5 groups
+
+for i = 1: n_epochs-1
+var_to_plot{1}(i,:) = Des_Mov_Vect(idx1(i):idx1(i+1));
+end
+% plot movement over time:
+figure();
+errorbar([1:n_epochs-1], nanmean(var_to_plot{1}'),...
+        nanstd(var_to_plot{1}')/sqrt(length(var_to_plot{1}')), 'color', ...
+    'b', 'LineWidth', 2);
+title(' Movement over time');
+
 % create null block
 for i = 1:size(Blocs,2)
     try
@@ -212,7 +236,7 @@ end
 % Plot based on the STD image
 clear tt3a tt4a
 mask2 = mat2gray(X4_2);
-mask2(mask2<1) = 0;
+mask2(mask2<0.1) = 0;
 for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
@@ -244,9 +268,9 @@ figure();
 hold on;  plot(abs(tt3a'),'r'); plot(abs(tt4a'),'b');
 figure();
 hold on;
-plot((1:size(tt3a,2))/30-(100/30), mean(abs(tt3a'),2),'r','LineWidth',3); 
-plot((1:size(tt3a,2))/30-(100/30), mean(abs(tt4a'),2),'b','LineWidth',3);
-plot([100/30-(100/30) 100/30-(100/30)],[0 max(mean(abs(tt3a'),2))*1.1],'r--')
+plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt3a'),2)./size(tt3a,1),'r','LineWidth',3); 
+plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt4a'),2)./size(tt3a,1),'b','LineWidth',3);
+plot([100/30-(100/30) 100/30-(100/30)],[0 max(sum(abs(tt3a'),2)./size(tt3a,1))*1.1],'r--')
 
 
 % 

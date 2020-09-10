@@ -21,8 +21,9 @@ catch
     
 end
 
-
-
+% Plot the whole time-series:
+Mov_Vect = smooth(abs(diff(squeeze(mean(mean(Yf-median(Yf,3),2),1)))),2);
+figure(); plot(Mov_Vect)
 % itteratively, to save ram..
 for i = 1:size(Yf,3);
     h =  mean( Yf(ROI.coordinates{1}(:,2),ROI.coordinates{1}(:,1),i),1);
@@ -38,13 +39,36 @@ plot(pVect);
 plot(Blocs,ones(size(Blocs))+4,'*');
 
 
+Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+
 % * index into frames:
 clear RewMov MRewMov
 for i = 1:size(Blocs,2)
     RewMov(:,:,:,i) = Yf(:,:,Blocs(i)-100:Blocs(i)+100);
+    Des_Mov_Vect(i) = median(Mov_Vect(Blocs(i)-10:Blocs(i)));
+        Des_Mov_Vect_n(i) = median(Mov_Vect(Blocs2(i)-10:Blocs2(i)));
+
 end
 
-Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+figure(); hold on;
+plot(Des_Mov_Vect,'r*');
+title(' Raw Movement over time')
+%plot(Des_Mov_Vect_n,'b*');
+
+clear idx1 var_to_plot
+n_epochs = 6;
+idx1 = 1:floor(size(Des_Mov_Vect,2)/n_epochs):size(Des_Mov_Vect,2); % 5 groups
+
+for i = 1: n_epochs-1
+var_to_plot{1}(i,:) = Des_Mov_Vect(idx1(i):idx1(i+1));
+end
+% plot movement over time:
+figure();
+errorbar([1:n_epochs-1], nanmean(var_to_plot{1}'),...
+        nanstd(var_to_plot{1}')/sqrt(length(var_to_plot{1}')), 'color', ...
+    'b', 'LineWidth', 2);
+title(' Movement over time');
+
 % create null block
 for i = 1:size(Blocs,2)
     try
