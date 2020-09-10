@@ -45,7 +45,7 @@ Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
 clear RewMov MRewMov
 for i = 1:size(Blocs,2)
     RewMov(:,:,:,i) = Yf(:,:,Blocs(i)-100:Blocs(i)+100);
-    Des_Mov_Vect(i) = median(Mov_Vect(Blocs(i)-10:Blocs(i)));
+    Des_Mov_Vect(i) = median(Mov_Vect(Blocs(i)-90:Blocs(i)));
         Des_Mov_Vect_n(i) = median(Mov_Vect(Blocs2(i)-10:Blocs2(i)));
 
 end
