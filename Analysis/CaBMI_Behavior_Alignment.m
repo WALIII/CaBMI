@@ -221,17 +221,34 @@ for i = 1: size(MRewMov4,3)
     STD_TS_n(i) = squeeze(mean(mean(temp2,1),2));
 
 end
-figure(); 
-hold on; 
-GGG = cat(2,STD_TS,STD_TS_n);
-GGG = zscore(GGG);
-plot(GGG(1:201));
-plot(GGG(201:401));
 
-plot([100 100],[-2 4],'r--')
-title('STD based ROI');
-xlabel('Frames')
-ylabel('z-score');
+TTT = MRewMov4.*mask2;
+TTT2 = MRewMov_n.*mask2;
+tt3 = reshape(TTT,size(TTT,1)*size(TTT,2),size(TTT,3));
+tt4 = reshape(TTT2,size(TTT2,1)*size(TTT2,2),size(TTT2,3));
+
+figure(); 
+hold on;  plot(abs(tt3'),'r'); plot(abs(tt4'),'b');
+figure();
+hold on;
+plot((1:size(tt3,2))/30-(100/30), mean(abs(tt3'),2),'r','LineWidth',3); 
+plot((1:size(tt3,2))/30-(100/30), mean(abs(tt4'),2),'b','LineWidth',3);
+plot([100/30-(100/30) 100/30-(100/30)],[0 max(mean(abs(tt3'),2))*1.1],'r--')
+
+
+% 
+% 
+% figure(); 
+% hold on; 
+% GGG = cat(2,STD_TS,STD_TS_n);
+% GGG = zscore(GGG);
+% plot(GGG(1:201));
+% plot(GGG(201:401));
+% 
+% plot([100 100],[-2 4],'r--')
+% title('STD based ROI');
+% xlabel('Frames')
+% ylabel('z-score');
 
 
 if playVid ==1;

@@ -47,7 +47,10 @@ end
 Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
 % create null block
 for i = 1:size(Blocs,2)
+    try
     RewMov_null(:,:,:,i) = Yf(:,:,Blocs2(i)-100:Blocs2(i)+100);
+    catch
+    end
 end
 
 % play so many movy:
@@ -218,6 +221,23 @@ for i = 1: size(MRewMov4,3)
     STD_TS_n(i) = squeeze(mean(mean(temp2,1),2));
 
 end
+
+TTT = MRewMov4.*mask2;
+TTT2 = MRewMov_n.*mask2;
+tt3 = reshape(TTT,size(TTT,1)*size(TTT,2),size(TTT,3));
+tt4 = reshape(TTT2,size(TTT2,1)*size(TTT2,2),size(TTT2,3));
+
+figure(); 
+hold on;  plot(abs(tt3'),'r'); plot(abs(tt4'),'b');
+figure();
+hold on;
+plot(mean(abs(tt3'),2),'r','LineWidth',3); 
+plot(mean(abs(tt4'),2),'b','LineWidth',3);
+plot([100 100],[-2 4],'r--')
+
+
+
+
 figure(); 
 hold on; 
 GGG = cat(2,STD_TS,STD_TS_n);
@@ -227,6 +247,8 @@ plot(GGG(201:401));
 
 plot([100 100],[-2 4],'r--')
 title('STD based ROI');
+xlabel('Frames')
+ylabel('z-score');
 
 
 if playVid ==1;
