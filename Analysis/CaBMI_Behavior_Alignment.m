@@ -212,7 +212,7 @@ end
 % Plot based on the STD image
 clear tt3a tt4a
 mask2 = mat2gray(X4_2);
-mask2(mask2<0.01) = 0;
+mask2(mask2<0.1) = 0;
 for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
@@ -244,9 +244,9 @@ figure();
 hold on;  plot(abs(tt3a'),'r'); plot(abs(tt4a'),'b');
 figure();
 hold on;
-plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt3a'),2),'r','LineWidth',3); 
-plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt4a'),2),'b','LineWidth',3);
-plot([100/30-(100/30) 100/30-(100/30)],[0 max(sum(abs(tt3a'),2))*1.1],'r--')
+plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt3a'),2)./size(tt3a,1),'r','LineWidth',3); 
+plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt4a'),2)./size(tt3a,1),'b','LineWidth',3);
+plot([100/30-(100/30) 100/30-(100/30)],[0 max(sum(abs(tt3a'),2)./size(tt3a,1))*1.1],'r--')
 
 
 % 
