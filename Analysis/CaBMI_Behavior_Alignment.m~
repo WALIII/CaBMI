@@ -210,7 +210,9 @@ if PCA_Movie ==1
 end
 
 % Plot based on the STD image
+clear tt3a tt4a
 mask2 = mat2gray(X4_2);
+mask2(mask2<1) = 0;
 for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
@@ -227,28 +229,39 @@ TTT2 = MRewMov_n.*mask2;
 tt3 = reshape(TTT,size(TTT,1)*size(TTT,2),size(TTT,3));
 tt4 = reshape(TTT2,size(TTT2,1)*size(TTT2,2),size(TTT2,3));
 
+% remove zero pixels:
+counter = 1;
+for i = 1:size(tt3,1);
+if sum(tt3(i,:)) ==0
+else
+    tt3a(counter,:) = tt3(i,:);
+    tt4a(counter,:) = tt4(i,:);
+    counter = counter+1;
+end
+end
+
 figure(); 
-hold on;  plot(abs(tt3'),'r'); plot(abs(tt4'),'b');
+hold on;  plot(abs(tt3a'),'r'); plot(abs(tt4a'),'b');
 figure();
 hold on;
-plot(mean(abs(tt3'),2),'r','LineWidth',3); 
-plot(mean(abs(tt4'),2),'b','LineWidth',3);
-plot([100 100],[-2 4],'r--')
+plot((1:size(tt3a,2))/30-(100/30), mean(abs(tt3a'),2),'r','LineWidth',3); 
+plot((1:size(tt3a,2))/30-(100/30), mean(abs(tt4a'),2),'b','LineWidth',3);
+plot([100/30-(100/30) 100/30-(100/30)],[0 max(mean(abs(tt3a'),2))*1.1],'r--')
 
 
-
-
-figure(); 
-hold on; 
-GGG = cat(2,STD_TS,STD_TS_n);
-GGG = zscore(GGG);
-plot(GGG(1:201));
-plot(GGG(201:401));
-
-plot([100 100],[-2 4],'r--')
-title('STD based ROI');
-xlabel('Frames')
-ylabel('z-score');
+% 
+% 
+% figure(); 
+% hold on; 
+% GGG = cat(2,STD_TS,STD_TS_n);
+% GGG = zscore(GGG);
+% plot(GGG(1:201));
+% plot(GGG(201:401));
+% 
+% plot([100 100],[-2 4],'r--')
+% title('STD based ROI');
+% xlabel('Frames')
+% ylabel('z-score');
 
 
 if playVid ==1;
