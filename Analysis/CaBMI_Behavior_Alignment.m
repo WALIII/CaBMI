@@ -41,12 +41,14 @@ plot(Blocs,ones(size(Blocs))+4,'*');
 
 Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
 
+int1 = size(Blocs,2);
+Blocs3 = 1:size(Yf,3)/(int1+1): size(Yf,3);
 % * index into frames:
 clear RewMov MRewMov
 for i = 1:size(Blocs,2)
     RewMov(:,:,:,i) = Yf(:,:,Blocs(i)-100:Blocs(i)+100);
-    Des_Mov_Vect(i) = median(Mov_Vect(Blocs(i)-90:Blocs(i)));
-        Des_Mov_Vect_n(i) = median(Mov_Vect(Blocs2(i)-10:Blocs2(i)));
+    Des_Mov_Vect(i) = mean(Mov_Vect(Blocs(i)-10:Blocs(i)));
+        Des_Mov_Vect_n(i) = mean(Mov_Vect(Blocs3(i+1)-10:Blocs3(i+1)));
 
 end
 
@@ -57,6 +59,9 @@ title(' Raw Movement over time')
 
 clear idx1 var_to_plot
 n_epochs = 6;
+
+
+
 idx1 = 1:floor(size(Des_Mov_Vect,2)/n_epochs):size(Des_Mov_Vect,2); % 5 groups
 
 for i = 1: n_epochs-1
@@ -64,10 +69,25 @@ var_to_plot{1}(i,:) = Des_Mov_Vect(idx1(i):idx1(i+1));
 end
 % plot movement over time:
 figure();
+hold on;
 errorbar([1:n_epochs-1], nanmean(var_to_plot{1}'),...
         nanstd(var_to_plot{1}')/sqrt(length(var_to_plot{1}')), 'color', ...
     'b', 'LineWidth', 2);
-title(' Movement over time');
+
+clear idx1 var_to_plot
+idx1 = 1:floor(size(Des_Mov_Vect_n,2)/n_epochs):size(Des_Mov_Vect_n,2); % 5 groups
+
+for i = 1: n_epochs-1
+var_to_plot{1}(i,:) = Des_Mov_Vect_n(idx1(i):idx1(i+1));
+end
+% plot movement over time:
+errorbar([1:n_epochs-1], nanmean(var_to_plot{1}'),...
+        nanstd(var_to_plot{1}')/sqrt(length(var_to_plot{1}')), 'color', ...
+    'r', 'LineWidth', 2);
+title('BMI (b) Random (r) Movement over time');
+
+
+
 
 % create null block
 for i = 1:size(Blocs,2)
