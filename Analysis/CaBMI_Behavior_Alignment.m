@@ -212,7 +212,7 @@ end
 % Plot based on the STD image
 clear tt3a tt4a
 mask2 = mat2gray(X4_2);
-mask2(mask2<0.1) = 0;
+mask2(mask2<0.01) = 0;
 for i = 1: size(MRewMov4,3)
     temp = MRewMov4(:,:,i);
     temp =  temp.*mask2;
