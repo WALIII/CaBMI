@@ -12,10 +12,10 @@ PCA_Movie = 0;
 Y2 = mean(Yf,3);
 try
     load('image_roi/roi_data_image.mat')
-    disp('pick out the LED');
     
 catch
-    
+        disp('pick out the LED');
+
     FS_Image_ROI(Y2);
     load('image_roi/roi_data_image.mat')
     
@@ -39,7 +39,7 @@ plot(pVect);
 plot(Blocs,ones(size(Blocs))+4,'*');
 
 
-Blocs2 = randi(size(Yf,3),1,size(Blocs,2));
+Blocs2 = randi(size(Yf,3),1,size(Blocs,2)*2);
 
 int1 = size(Blocs,2);
 Blocs3 = 1:size(Yf,3)/(int1+1): size(Yf,3);
@@ -278,19 +278,95 @@ counter = 1;
 for i = 1:size(tt3,1);
 if sum(tt3(i,:)) ==0
 else
-    tt3a(counter,:) = tt3(i,:);
-    tt4a(counter,:) = tt4(i,:);
+    tt3a(counter,:) = smooth(tt3(i,:),10);
+    tt4a(counter,:) = smooth(tt4(i,:),10);
     counter = counter+1;
 end
 end
 
 figure(); 
 hold on;  plot(abs(tt3a'),'r'); plot(abs(tt4a'),'b');
+
+% plot w/ shaddederror 
 figure();
 hold on;
 plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt3a'),2)./size(tt3a,1),'r','LineWidth',3); 
 plot((1:size(tt3a,2))/30-(100/30), sum(abs(tt4a'),2)./size(tt3a,1),'b','LineWidth',3);
 plot([100/30-(100/30) 100/30-(100/30)],[0 max(sum(abs(tt3a'),2)./size(tt3a,1))*1.1],'r--')
+
+
+figure();
+hold on;
+for i = 1:2
+
+col = jet(2);
+if i ==1
+adata = tt3a;
+else
+    adata = tt4a;
+end
+L = size(adata,2);
+se = std(adata)/4%/sqrt(length(adata));
+mn = mean(adata);
+mn = smooth(mn,1)';
+ 
+h = fill([1:L L:-1:1],[mn-se fliplr(mn+se)],col(i,:)); alpha(0.5);
+plot(mn,'Color',col(i,:));
+end
+ 
+
+
+
+% % Plot with standard deviation bounds:
+% % for all hits
+% for ii = 1:size(RewMov,4)
+%     aa = squeeze(RewMov(:,:,:,ii)-median(RewMov(:,:,:,ii),3));
+%     aa = (aa);
+% temp_mov = squeeze(aa.*mask2);
+% tt3b = reshape(temp_mov,size(temp_mov,1)*size(temp_mov,2),size(temp_mov,3));
+% % remove zero pixels:
+% counter = 1;
+% for i = 1:size(tt3b,1);
+% if sum(tt3b(i,:)) ==0
+% else
+%     tt3b(counter,:) = tt3b(i,:);
+%     counter = counter+1;
+% end
+% end
+% tt3b_sum(:,ii) = mean(abs(tt3b));
+% 
+% 
+%     aa2 = squeeze(RewMov_null(:,:,:,ii)-median(RewMov_null(:,:,:,ii),3));
+%     aa2 = (aa2);
+% temp_mov2 = squeeze(aa2.*mask2);
+% tt3b2 = reshape(temp_mov2,size(temp_mov2,1)*size(temp_mov2,2),size(temp_mov2,3));
+% 
+% 
+% % remove zero pixels:
+% counter = 1;
+% for i = 1:size(tt3b2,1);
+% if sum(tt3b2(i,:)) ==0
+% else
+%     tt3b2(counter,:) = tt3b2(i,:);
+%     counter = counter+1;
+% end
+% end
+% 
+% 
+% tt3b_sum2(:,ii) = mean(abs(tt3b2));
+% 
+% end
+% 
+% 
+% figure();hold on;
+% S1 = median(tt3b_sum');
+% 
+% plot((S1))
+% S2 = median(tt3b_sum2');
+% plot((S2))
+% 
+% 
+% figure(); plot(tt3b_sum)
 
 
 % 
@@ -367,8 +443,8 @@ hold on
 OverlayImage =  imagesc(X4_2);
 caxis auto
 colormap( OverlayImage.Parent, hot );
-alpha = (~isnan(mat2gray(X4_2)))*0.8;
-set( OverlayImage, 'AlphaData', alpha );
+alpha1 = (~isnan(mat2gray(X4_2)))*0.8;
+set( OverlayImage, 'AlphaData', alpha1 );
 colorbar();
 
 
@@ -381,8 +457,8 @@ hold on
 OverlayImage =  imagesc(I{i});
 caxis auto
 colormap( OverlayImage.Parent, hot );
-alpha = (~isnan(mat2gray(X4)))*0.6;
-set( OverlayImage, 'AlphaData', alpha );
+alpha1 = (~isnan(mat2gray(X4)))*0.6;
+set( OverlayImage, 'AlphaData', alpha1 );
 
 
 
@@ -405,8 +481,8 @@ hold on
     
 caxis auto
 colormap( OverlayImage.Parent, hot );
-alpha = (~isnan(mat2gray(X4)))*0.6;
-set( OverlayImage, 'AlphaData', alpha );
+alpha1 = (~isnan(mat2gray(X4)))*0.6;
+set( OverlayImage, 'AlphaData', alpha1 );
 
 pause(0.01);
    
