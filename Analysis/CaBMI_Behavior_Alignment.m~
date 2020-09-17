@@ -443,14 +443,14 @@ figure(1);
 
 figure();
 colormap(gray)
-imagesc((squeeze(RewMov(:,:,98,size(Blocs,2)-1))))
+imagesc((squeeze(RewMov(:,:,100,2))))
 colormap(gray); freezeColors;
 
 hold on
 OverlayImage =  imagesc(X4_2);
 caxis auto
 colormap( OverlayImage.Parent, hot );
-alpha1 = (~isnan(mat2gray(X4_2)))*0.5;
+alpha1 = (~isnan(mat2gray(X4_2)))*0.8;
 set( OverlayImage, 'AlphaData', alpha1 );
 colorbar();
 
