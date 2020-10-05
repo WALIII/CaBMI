@@ -29,6 +29,7 @@ for i = 1:size(mov_listing,2)
     % now median filter data..
     disp('temporal mean filtering data');
     %I = medfilt3(I ,[1 1 5]);
+    I = imresize(I,0.5);
     I = movmean(I,5,3); % filter by 5 frames....
     
     data_type = class(I);
