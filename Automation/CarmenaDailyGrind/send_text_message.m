@@ -26,7 +26,7 @@ function send_text_message(number,carrier,subject,message)
 % =========================================================================
 % YOU NEED TO TYPE IN YOUR OWN EMAIL AND PASSWORDS:
 mail = 'wal3lab@gmail.com';    %Your GMail email address
-password = ;          %Your GMail password
+password = 'madlib3RD1989';          %Your GMail password
 % =========================================================================
 
 if nargin == 3

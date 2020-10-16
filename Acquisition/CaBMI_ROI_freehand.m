@@ -1,4 +1,4 @@
-function [ROI] = CaBMI_ROI_freehand(im)
+function [ROI] = CaBMI_ROI_freehand(im,cells)
 % Draw freehand ROIs, for dendrites
 
 % WAL3
@@ -7,7 +7,7 @@ function [ROI] = CaBMI_ROI_freehand(im)
 
 % Take 4 Regions of Interest
 cla('reset');
-cells = 8;
+
 
 disp('Make a selection...')
 

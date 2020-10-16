@@ -152,7 +152,7 @@ end
 
 
 %% Get Freehand ROIs
-[ROI] = CaBMI_ROI_freehand(ccimage);
+[ROI] = CaBMI_ROI_freehand(ccimage,8);
 
 
 
