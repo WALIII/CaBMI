@@ -77,6 +77,13 @@ for i = 1:length(subFolders); % go through all days
             CaBMI_Behavior_ProcessVideos
         end
         
+        % check about DLC folder
+        if exist('processed/DLC')>1
+            disp('DLC folder exists...');
+        else
+            CaBMI_DLC_Tiff2AVI;
+        end
+        
         cd('../'); % go back one folder
     end
     

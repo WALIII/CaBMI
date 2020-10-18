@@ -6,7 +6,7 @@ function CaBMI_DLC_Tiff2AVI
 
 
 % create AVI folder
-mkdir('DLC/videos')
+mkdir('processed/DLC/videos')
 
 % Get all Tiffs
 mov_listing= [ dir(fullfile(pwd,'*.tif'));  dir(fullfile(pwd,'*.tiff'))];
