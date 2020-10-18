@@ -1,4 +1,4 @@
-function  [timepoints] =  CaBMI_Behavior_Alignment2(Yf);
+function  [framepoints] =  CaBMI_Behavior_Alignment2(Yf);
 
 
 home_dir = cd;
@@ -29,8 +29,9 @@ pVect = pVect-min(pVect);
 pVect2 = pVect2-min(pVect2);
 
 % Get Imaging on times
-[Bpks,Imaging_on] = findpeaks(zscore((diff(pVect))),'MinPeakHeight',50,'MinPeakDistance',2);
-[Bpks,Imaging_off] = findpeaks(zscore((diff(-pVect))),'MinPeakHeight',50,'MinPeakDistance',2);
+[Bpks,Imaging_on] = findpeaks(zscore((diff(pVect))),'MinPeakHeight',30,'MinPeakDistance',2);
+[Bpks,Imaging_off] = findpeaks(zscore((diff(-pVect))),'MinPeakHeight',30,'MinPeakDistance',2);
+% figure(); plot(zscore(abs(diff(pVect))))
 
 % Get reward times
 [Bpks2,rewards] = findpeaks(zscore(diff(pVect2)),'MinPeakHeight',4,'MinPeakDistance',2);
@@ -44,7 +45,7 @@ plot(rewards,ones(size(rewards))+10,'*y');
 plot(Imaging_on,ones(size(Imaging_on))+10,'*r');
 plot(Imaging_off,ones(size(Imaging_off))+10,'*b');
 
-timepoints.Imaging_on = Imaging_on
-timepoints.Imaging_off = Imaging_off;
-timepoints.rewards = rewards;
+framepoints.Imaging_on = Imaging_on
+framepoints.Imaging_off = Imaging_off;
+framepoints.rewards = rewards;
 
