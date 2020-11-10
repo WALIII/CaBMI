@@ -41,13 +41,13 @@ for i = 1:length(subFolders); % go through all days
             disp('all files extracted');
         else
             disp('extraction error');
-            un_extracted_list(counter) = [subFolders(i).folder,'/',subFolders(i).name];
+            un_extracted_list{counter} = [subFolders(i).folder,'/',subFolders(i).name];
             counter  = counter+1;
         end
         clear a n b n2
         
     else
-        un_extracted_list(counter) = [subFolders(i).folder,'/',subFolders(i).name];
+        un_extracted_list{counter} = [subFolders(i).folder,'/',subFolders(i).name];
         counter  = counter+1;
     end
     
@@ -68,7 +68,7 @@ for i = 1:length(subFolders); % go through all days
     
     for i = 1:length(subFolders2); % go through all animals for this day
         % index into folders,
-        cd([subFolders(i).folder,'/',subFolders(i).name]); % index into day
+        cd([subFolders2(i).folder,'/',subFolders2(i).name]); % index into day
         
         % check if data has been processed folder exists ( data has been extracted)
         if exist('processed')>1

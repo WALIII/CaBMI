@@ -18,8 +18,8 @@ filenames=mov_listing;
 disp('Parsing Video files');
 
 % Video Writer
-v = VideoWriter('DLC/videos/FullVideo.avi');
-v_2 = VideoWriter('DLC/videos/Label.avi');
+v = VideoWriter('processed/DLC/videos/FullVideo.avi');
+v_2 = VideoWriter('processed/DLC/videos/Label.avi');
 % open video writer
 open(v); open(v_2);
 for i=1:length(mov_listing)
