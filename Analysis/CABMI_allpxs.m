@@ -25,7 +25,7 @@ time_select=0;
 startT = 1;
 stopT = size(MOV_DATA,3);
 exp = 2;
-scaling_on = 0;
+scaling_on = 1;
 
 if mod(nparams,2)>0
     error('Parameters must be specified as parameter/value pairs');

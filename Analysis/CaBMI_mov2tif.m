@@ -9,9 +9,9 @@ function CaBMI_mov2tif(varargin);
 
 
 % Default Params
-Total_max_size = 4000;
-max_size = 4000;
-downsamp = 0.5;
+Total_max_size = 400;
+max_size = 400;
+downsamp = 1;
 deinterlace =0;
 max_proj = 0;
 
